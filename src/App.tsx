@@ -1,153 +1,146 @@
 import { useState } from 'react';
-import { useAppData } from './store';
-import Dashboard from './components/Dashboard';
-import UnitsManager from './components/UnitsManager';
-import TenantsManager from './components/TenantsManager';
-import CostsManager from './components/CostsManager';
-import Settlement from './components/Settlement';
-
-type Tab = 'dashboard' | 'units' | 'tenants' | 'costs' | 'settlement';
-
-const TABS: { id: Tab; label: string; icon: string; activeClass: string; activeIconClass: string }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-line', activeClass: 'bg-blue-50 text-blue-700', activeIconClass: 'text-blue-600' },
-  { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building', activeClass: 'bg-indigo-50 text-indigo-700', activeIconClass: 'text-indigo-600' },
-  { id: 'tenants', label: 'Mieter', icon: 'fas fa-users', activeClass: 'bg-green-50 text-green-700', activeIconClass: 'text-green-600' },
-  { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt', activeClass: 'bg-orange-50 text-orange-700', activeIconClass: 'text-orange-600' },
-  { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar', activeClass: 'bg-purple-50 text-purple-700', activeIconClass: 'text-purple-600' },
-];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const data = useAppData();
+  const [downloading, setDownloading] = useState(false);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return <Dashboard tenants={data.tenants} units={data.units} costs={data.costs} />;
-      case 'units':
-        return (
-          <UnitsManager
-            units={data.units}
-            onAdd={data.addUnit}
-            onUpdate={data.updateUnit}
-            onDelete={data.deleteUnit}
-          />
-        );
-      case 'tenants':
-        return (
-          <TenantsManager
-            tenants={data.tenants}
-            units={data.units}
-            onAdd={data.addTenant}
-            onUpdate={data.updateTenant}
-            onDelete={data.deleteTenant}
-          />
-        );
-      case 'costs':
-        return (
-          <CostsManager
-            costs={data.costs}
-            onAdd={data.addCost}
-            onUpdate={data.updateCost}
-            onDelete={data.deleteCost}
-          />
-        );
-      case 'settlement':
-        return (
-          <Settlement
-            tenants={data.tenants}
-            units={data.units}
-            costs={data.costs}
-          />
-        );
-    }
+  const handleDownload = () => {
+    setDownloading(true);
+    // Direkter Download-Link
+    const a = document.createElement('a');
+    a.href = './nebenkosten.html';
+    a.download = 'Nebenkostenabrechnung.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => setDownloading(false), 1000);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <aside
-        className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 flex flex-col transition-all duration-300 flex-shrink-0`}
-      >
-        {/* Logo */}
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center flex-shrink-0">
-              <i className="fas fa-calculator text-white text-lg"></i>
-            </div>
-            {sidebarOpen && (
-              <div className="overflow-hidden">
-                <h1 className="font-bold text-gray-800 text-sm leading-tight">Nebenkosten</h1>
-                <p className="text-xs text-gray-500">Abrechnung</p>
-              </div>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-6">
+      <div className="max-w-2xl w-full">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-200">
+            <i className="fas fa-calculator text-white text-3xl"></i>
           </div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Nebenkostenabrechnung</h1>
+          <p className="text-gray-500 text-lg">Betriebskostenverwaltung für Vermieter</p>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-1">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${
-                activeTab === tab.id
-                  ? tab.activeClass
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
-              }`}
-              title={tab.label}
-            >
-              <i className={`${tab.icon} w-5 text-center ${activeTab === tab.id ? tab.activeIconClass : ''}`}></i>
-              {sidebarOpen && <span className="text-sm font-medium">{tab.label}</span>}
-            </button>
-          ))}
-        </nav>
+        {/* Download Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
+              <i className="fas fa-download text-green-600 text-xl"></i>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800 mb-1">Standalone-Version herunterladen</h2>
+              <p className="text-gray-500">
+                Lade die vollständige Anwendung als einzelne HTML-Datei herunter. 
+                Einfach per Doppelklick im Browser öffnen – keine Installation nötig!
+              </p>
+            </div>
+          </div>
 
-        {/* Toggle */}
-        <div className="p-3 border-t border-gray-200">
           <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            onClick={handleDownload}
+            disabled={downloading}
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-3 disabled:opacity-50"
           >
-            <i className={`fas fa-chevron-${sidebarOpen ? 'left' : 'right'}`}></i>
-            {sidebarOpen && <span className="text-sm">Einklappen</span>}
+            {downloading ? (
+              <>
+                <i className="fas fa-spinner fa-spin"></i>
+                Wird heruntergeladen...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-file-download text-xl"></i>
+                Nebenkostenabrechnung.html herunterladen
+              </>
+            )}
           </button>
-        </div>
-      </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        {/* Top Bar */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden text-gray-500 hover:text-gray-700"
-              >
-                <i className="fas fa-bars text-xl"></i>
-              </button>
+          <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+            <p className="text-sm text-blue-800 mb-2">
+              <i className="fas fa-info-circle mr-2"></i>
+              <strong>Tipp:</strong> Nach dem Download die Datei einfach doppelklicken – sie öffnet sich im Browser und funktioniert komplett offline!
+            </p>
+            <p className="text-xs text-blue-600">
+              <i className="fas fa-link mr-1"></i>
+              Alternativ: <a href="./nebenkosten.html" target="_blank" className="underline font-medium">Direkt zur Standalone-Version</a>
+            </p>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mx-auto mb-3">
+              <i className="fas fa-building text-blue-600"></i>
+            </div>
+            <h3 className="font-semibold text-gray-800 text-sm">Wohneinheiten</h3>
+            <p className="text-xs text-gray-500 mt-1">Verwalte alle Wohnungen und Flächen</p>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mx-auto mb-3">
+              <i className="fas fa-users text-green-600"></i>
+            </div>
+            <h3 className="font-semibold text-gray-800 text-sm">Mieterverwaltung</h3>
+            <p className="text-xs text-gray-500 mt-1">Mieter mit Ein-/Auszugsdaten</p>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mx-auto mb-3">
+              <i className="fas fa-file-invoice-dollar text-purple-600"></i>
+            </div>
+            <h3 className="font-semibold text-gray-800 text-sm">Abrechnung</h3>
+            <p className="text-xs text-gray-500 mt-1">Automatische Kostenverteilung</p>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6">
+          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <i className="fas fa-list-ol text-blue-600"></i>
+            So funktioniert's
+          </h3>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
               <div>
-                <h1 className="text-xl font-bold text-gray-800">
-                  {TABS.find((t) => t.id === activeTab)?.label}
-                </h1>
+                <p className="text-sm font-medium text-gray-800">Datei herunterladen</p>
+                <p className="text-xs text-gray-500">Klicke auf den blauen Download-Button oben</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-sm text-gray-500">
-                <i className="fas fa-database mr-1"></i>
-                Daten lokal gespeichert
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+              <div>
+                <p className="text-sm font-medium text-gray-800">Datei öffnen</p>
+                <p className="text-xs text-gray-500">Doppelklick auf die heruntergeladene HTML-Datei</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-orange-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+              <div>
+                <p className="text-sm font-medium text-gray-800">Daten eingeben</p>
+                <p className="text-xs text-gray-500">Wohneinheiten → Mieter → Kosten erfassen</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</div>
+              <div>
+                <p className="text-sm font-medium text-gray-800">Abrechnung erstellen</p>
+                <p className="text-xs text-gray-500">Unter "Abrechnung" die Aufstellung ansehen und drucken</p>
               </div>
             </div>
           </div>
-        </header>
-
-        {/* Content */}
-        <div className="p-6 max-w-7xl mx-auto">
-          {renderContent()}
         </div>
-      </main>
+
+        {/* Footer */}
+        <div className="text-center mt-6 text-sm text-gray-400">
+          <p>Alle Daten werden lokal in deinem Browser gespeichert (LocalStorage).</p>
+          <p className="mt-1">Keine Daten werden an Server gesendet. 100% offline-fähig.</p>
+        </div>
+      </div>
     </div>
   );
 }
