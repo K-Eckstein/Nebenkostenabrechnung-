@@ -5,7 +5,6 @@ export default function App() {
 
   const handleDownload = () => {
     setDownloading(true);
-    // Direkter Download-Link
     const a = document.createElement('a');
     a.href = './nebenkosten.html';
     a.download = 'Nebenkostenabrechnung.html';
@@ -16,15 +15,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-4">
+      <div className="max-w-3xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-200">
             <i className="fas fa-calculator text-white text-3xl"></i>
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Nebenkostenabrechnung</h1>
-          <p className="text-gray-500 text-lg">Betriebskostenverwaltung für Vermieter</p>
+          <p className="text-gray-500 text-lg">Rechtskonforme Betriebskostenverwaltung nach deutschem Mietrecht</p>
         </div>
 
         {/* Download Card */}
@@ -35,9 +34,8 @@ export default function App() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800 mb-1">Standalone-Version herunterladen</h2>
-              <p className="text-gray-500">
-                Lade die vollständige Anwendung als einzelne HTML-Datei herunter. 
-                Einfach per Doppelklick im Browser öffnen – keine Installation nötig!
+              <p className="text-gray-500 text-sm">
+                Einzelne HTML-Datei – per Doppelklick im Browser öffnen. Keine Installation, kein Server nötig.
               </p>
             </div>
           </div>
@@ -63,7 +61,7 @@ export default function App() {
           <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
             <p className="text-sm text-blue-800 mb-2">
               <i className="fas fa-info-circle mr-2"></i>
-              <strong>Tipp:</strong> Nach dem Download die Datei einfach doppelklicken – sie öffnet sich im Browser und funktioniert komplett offline!
+              <strong>Tipp:</strong> Nach dem Download die Datei einfach doppelklicken – sie funktioniert komplett offline!
             </p>
             <p className="text-xs text-blue-600">
               <i className="fas fa-link mr-1"></i>
@@ -73,27 +71,83 @@ export default function App() {
         </div>
 
         {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
-            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mx-auto mb-3">
-              <i className="fas fa-building text-blue-600"></i>
+        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
+          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <i className="fas fa-star text-yellow-500"></i>
+            Funktionen (Rechtskonform nach deutschem Mietrecht)
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-home text-blue-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Objekt-Stammdaten</div>
+                <div className="text-xs text-gray-500">Immobilie, Eigentümer, Adresse, Grundbuch</div>
+              </div>
             </div>
-            <h3 className="font-semibold text-gray-800 text-sm">Wohneinheiten</h3>
-            <p className="text-xs text-gray-500 mt-1">Verwalte alle Wohnungen und Flächen</p>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-building text-indigo-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Wohneinheiten</div>
+                <div className="text-xs text-gray-500">Fläche, Zimmer, Etage, Heizungstyp</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+              <i className="fas fa-exclamation-triangle text-yellow-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Leerstandserkennung</div>
+                <div className="text-xs text-gray-500">Kosten werden NICHT auf andere Mieter umgelegt (§ 556a BGB)</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-sliders-h text-purple-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Frei definierbare Schlüssel</div>
+                <div className="text-xs text-gray-500">Eigene Verteilerschlüssel erstellen</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
+              <i className="fas fa-times-circle text-red-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Nicht umlegbare Kosten</div>
+                <div className="text-xs text-gray-500">Instandhaltung wird automatisch als Vermieteranteil erkannt</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg border border-purple-100">
+              <i className="fas fa-balance-scale text-purple-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Rechtskonform</div>
+                <div className="text-xs text-gray-500">BetrKV, § 556a BGB, HeizkostenV, Wirtschaftlichkeitsgebot</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-file-invoice-dollar text-green-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Automatische Abrechnung</div>
+                <div className="text-xs text-gray-500">Einzelabrechnung je Mieter mit PDF-Druck</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-database text-gray-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">100% Offline & Privat</div>
+                <div className="text-xs text-gray-500">Alle Daten bleiben lokal auf Ihrem Computer</div>
+              </div>
+            </div>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
-            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mx-auto mb-3">
-              <i className="fas fa-users text-green-600"></i>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-sm">Mieterverwaltung</h3>
-            <p className="text-xs text-gray-500 mt-1">Mieter mit Ein-/Auszugsdaten</p>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
-            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center mx-auto mb-3">
-              <i className="fas fa-file-invoice-dollar text-purple-600"></i>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-sm">Abrechnung</h3>
-            <p className="text-xs text-gray-500 mt-1">Automatische Kostenverteilung</p>
+        </div>
+
+        {/* Legal */}
+        <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
+          <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
+            <i className="fas fa-gavel"></i>
+            Rechtskonformität
+          </h3>
+          <div className="text-sm text-purple-700 space-y-2">
+            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>BetrKV § 2:</strong> Nur umlegbare Betriebskosten werden auf Mieter verteilt</p>
+            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>§ 556a BGB:</strong> Leerstandskosten werden korrekt vom Vermieter getragen</p>
+            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>§ 555a BGB:</strong> Instandhaltungskosten als nicht umlagbar markiert</p>
+            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>HeizkostenV:</strong> Hinweis auf Verbrauchserfassung bei Heizkosten</p>
+            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>Abrechnungsfrist:</strong> 12 Monate nach § 556 Abs. 3 BGB</p>
           </div>
         </div>
 
@@ -101,44 +155,30 @@ export default function App() {
         <div className="bg-white rounded-xl border border-gray-100 p-6">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <i className="fas fa-list-ol text-blue-600"></i>
-            So funktioniert's
+            Anleitung
           </h3>
           <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">Datei herunterladen</p>
-                <p className="text-xs text-gray-500">Klicke auf den blauen Download-Button oben</p>
+            {[
+              { n: 1, color: 'blue', title: 'Datei herunterladen', desc: 'Klicke auf den blauen Download-Button' },
+              { n: 2, color: 'indigo', title: 'Objekt anlegen', desc: 'Trage Immobilie, Eigentümer und Adresse ein' },
+              { n: 3, color: 'green', title: 'Einheiten & Mieter', desc: 'Wohneinheiten erfassen und Mieter zuordnen' },
+              { n: 4, color: 'orange', title: 'Kosten eintragen', desc: 'Alle Betriebskosten mit Verteilerschlüssel erfassen' },
+              { n: 5, color: 'purple', title: 'Abrechnung erstellen', desc: 'Automatische Berechnung und PDF-Druck' },
+            ].map(s => (
+              <div key={s.n} className="flex items-start gap-3">
+                <div className={`w-6 h-6 rounded-full bg-${s.color}-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5`}>{s.n}</div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">{s.title}</p>
+                  <p className="text-xs text-gray-500">{s.desc}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">Datei öffnen</p>
-                <p className="text-xs text-gray-500">Doppelklick auf die heruntergeladene HTML-Datei</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-orange-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">Daten eingeben</p>
-                <p className="text-xs text-gray-500">Wohneinheiten → Mieter → Kosten erfassen</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</div>
-              <div>
-                <p className="text-sm font-medium text-gray-800">Abrechnung erstellen</p>
-                <p className="text-xs text-gray-500">Unter "Abrechnung" die Aufstellung ansehen und drucken</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="text-center mt-6 text-sm text-gray-400">
-          <p>Alle Daten werden lokal in deinem Browser gespeichert (LocalStorage).</p>
-          <p className="mt-1">Keine Daten werden an Server gesendet. 100% offline-fähig.</p>
+        <div className="text-center mt-6 text-xs text-gray-400">
+          <p>Alle Daten werden lokal in deinem Browser gespeichert (LocalStorage). Keine Daten werden an Server gesendet.</p>
+          <p className="mt-1">Dies ist eine Hilfestellung und ersetzt keine anwaltliche Beratung.</p>
         </div>
       </div>
     </div>

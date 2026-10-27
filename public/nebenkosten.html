@@ -8,58 +8,46 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f3f4f6; color: #1f2937; }
-        
         .app { display: flex; min-height: 100vh; }
-        
-        /* Sidebar */
-        .sidebar { width: 240px; background: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 20; }
+        .sidebar { width: 250px; background: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 20; overflow-y: auto; }
         .sidebar.collapsed { width: 72px; }
         .sidebar-header { padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 12px; }
         .sidebar-logo { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #2563eb, #4f46e5); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .sidebar-logo i { color: white; font-size: 18px; }
-        .sidebar-title { font-weight: 700; font-size: 14px; color: #1f2937; }
-        .sidebar-subtitle { font-size: 12px; color: #6b7280; }
-        
-        .nav { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
-        .nav-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; border: none; background: none; cursor: pointer; text-align: left; font-size: 14px; font-weight: 500; color: #4b5563; transition: all 0.2s; }
+        .sidebar-title { font-weight: 700; font-size: 13px; color: #1f2937; }
+        .sidebar-subtitle { font-size: 11px; color: #6b7280; }
+        .nav { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 2px; }
+        .nav-section { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px 4px; margin-top: 8px; }
+        .nav-btn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: none; background: none; cursor: pointer; text-align: left; font-size: 13px; font-weight: 500; color: #4b5563; transition: all 0.15s; }
         .nav-btn:hover { background: #f3f4f6; color: #1f2937; }
         .nav-btn.active { background: #eff6ff; color: #1d4ed8; }
-        .nav-btn i { width: 20px; text-align: center; }
+        .nav-btn i { width: 18px; text-align: center; font-size: 14px; }
         .nav-btn.active i { color: #2563eb; }
-        .nav-label { white-space: nowrap; overflow: hidden; }
-        
-        .sidebar-footer { padding: 12px; border-top: 1px solid #e5e7eb; }
-        .sidebar-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; border-radius: 8px; border: none; background: none; cursor: pointer; color: #6b7280; font-size: 14px; }
+        .sidebar-footer { padding: 8px; border-top: 1px solid #e5e7eb; }
+        .sidebar-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; border-radius: 8px; border: none; background: none; cursor: pointer; color: #6b7280; font-size: 13px; }
         .sidebar-toggle:hover { background: #f3f4f6; }
-        
-        /* Main */
-        .main { flex: 1; margin-left: 240px; transition: margin-left 0.3s; }
+        .main { flex: 1; margin-left: 250px; transition: margin-left 0.3s; }
         .main.expanded { margin-left: 72px; }
-        
-        .topbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 16px 24px; position: sticky; top: 0; z-index: 10; }
-        .topbar h1 { font-size: 20px; font-weight: 700; color: #1f2937; }
-        
+        .topbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+        .topbar h1 { font-size: 18px; font-weight: 700; color: #1f2937; }
+        .topbar-right { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px; }
         .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
-        
-        /* Cards */
-        .card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px; margin-bottom: 16px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .card-title { font-size: 18px; font-weight: 600; color: #1f2937; }
-        .card-subtitle { font-size: 13px; color: #6b7280; margin-top: 4px; }
-        
-        /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 20px; display: flex; align-items: center; gap: 12px; }
-        .stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 20px; margin-bottom: 16px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+        .card-title { font-size: 16px; font-weight: 600; color: #1f2937; }
+        .card-subtitle { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 16px; display: flex; align-items: center; gap: 12px; }
+        .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .stat-icon.blue { background: #dbeafe; color: #2563eb; }
         .stat-icon.green { background: #dcfce7; color: #16a34a; }
         .stat-icon.orange { background: #ffedd5; color: #ea580c; }
         .stat-icon.purple { background: #f3e8ff; color: #7c3aed; }
-        .stat-value { font-size: 24px; font-weight: 700; color: #1f2937; }
-        .stat-label { font-size: 13px; color: #6b7280; }
-        
-        /* Buttons */
-        .btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .stat-icon.red { background: #fee2e2; color: #dc2626; }
+        .stat-icon.gray { background: #f3f4f6; color: #6b7280; }
+        .stat-value { font-size: 20px; font-weight: 700; color: #1f2937; }
+        .stat-label { font-size: 12px; color: #6b7280; }
+        .btn { padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
         .btn-primary { background: #2563eb; color: white; }
         .btn-primary:hover { background: #1d4ed8; }
         .btn-success { background: #16a34a; color: white; }
@@ -73,82 +61,87 @@
         .btn-danger { background: #dc2626; color: white; }
         .btn-danger:hover { background: #b91c1c; }
         .btn-sm { padding: 4px 8px; font-size: 12px; }
-        
-        /* Forms */
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-label { font-size: 13px; font-weight: 500; color: #374151; }
-        .form-input { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s; }
-        .form-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-        .form-actions { display: flex; gap: 12px; margin-top: 16px; }
-        
-        /* Table */
-        .table-wrapper { overflow-x: auto; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { font-size: 12px; font-weight: 500; color: #374151; }
+        .form-label .req { color: #dc2626; }
+        .form-input, .form-select, .form-textarea { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; transition: border-color 0.15s; font-family: inherit; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-textarea { min-height: 60px; resize: vertical; }
+        .form-actions { display: flex; gap: 10px; margin-top: 14px; }
+        .form-hint { font-size: 11px; color: #9ca3af; margin-top: 2px; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 12px 16px; font-size: 13px; font-weight: 600; color: #4b5563; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
-        td { padding: 12px 16px; font-size: 14px; color: #374151; border-bottom: 1px solid #f3f4f6; }
+        th { text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 600; color: #4b5563; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+        td { padding: 10px 14px; font-size: 13px; color: #374151; border-bottom: 1px solid #f3f4f6; }
         tr:hover td { background: #f9fafb; }
         .text-right { text-align: right; }
-        
-        /* Badge */
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 500; background: #dbeafe; color: #1d4ed8; }
-        
-        /* Progress */
-        .progress-bar { width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 4px; transition: width 0.3s; }
-        .progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+        .text-center { text-align: center; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 500; }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-green { background: #dcfce7; color: #16a34a; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+        .badge-yellow { background: #fef9c3; color: #a16207; }
+        .badge-gray { background: #f3f4f6; color: #6b7280; }
+        .progress-bar { width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 3px; }
+        .progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px; }
         .progress-label span:first-child { color: #374151; font-weight: 500; }
         .progress-label span:last-child { color: #6b7280; }
-        
-        /* Filter */
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-        .filter-btn { padding: 6px 12px; border-radius: 9999px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; background: #f3f4f6; color: #4b5563; transition: all 0.2s; }
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .filter-btn { padding: 5px 10px; border-radius: 9999px; border: none; cursor: pointer; font-size: 12px; font-weight: 500; background: #f3f4f6; color: #4b5563; transition: all 0.15s; }
         .filter-btn:hover { background: #e5e7eb; }
         .filter-btn.active { background: #2563eb; color: white; }
-        
-        /* Empty state */
-        .empty-state { text-align: center; padding: 48px 24px; color: #9ca3af; }
-        .empty-state i { font-size: 36px; margin-bottom: 12px; }
-        
-        /* Welcome */
-        .welcome-card { background: linear-gradient(135deg, #eff6ff, #eef2ff); border: 1px solid #bfdbfe; border-radius: 12px; padding: 32px; text-align: center; }
-        .welcome-icon { width: 64px; height: 64px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-        .welcome-icon i { font-size: 24px; color: #2563eb; }
-        .welcome-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .welcome-step { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .step-number { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-weight: 700; color: white; font-size: 14px; }
-        .step-1 { background: #2563eb; }
-        .step-2 { background: #16a34a; }
-        .step-3 { background: #ea580c; }
-        
-        /* Settlement table */
-        .settlement-table th, .settlement-table td { padding: 8px 12px; font-size: 13px; }
-        .settlement-table tfoot td { font-weight: 700; border-top: 2px solid #e5e7eb; background: #f9fafb; }
-        
-        /* Summary cards */
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .summary-card { border-radius: 12px; padding: 20px; color: white; }
+        .empty-state { text-align: center; padding: 40px 20px; color: #9ca3af; }
+        .empty-state i { font-size: 32px; margin-bottom: 10px; }
+        .alert { padding: 12px 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; }
+        .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .alert-warning { background: #fefce8; border: 1px solid #fde047; color: #854d0e; }
+        .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        .alert-legal { background: #faf5ff; border: 1px solid #e9d5ff; color: #6b21a8; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal { background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; }
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .summary-card { border-radius: 12px; padding: 18px; color: white; }
         .summary-card.blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
         .summary-card.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .summary-card.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .summary-label { font-size: 13px; opacity: 0.9; }
-        .summary-value { font-size: 24px; font-weight: 700; margin-top: 4px; }
-        .summary-sub { font-size: 12px; opacity: 0.7; margin-top: 4px; }
-        
-        /* Print styles */
+        .summary-card.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .summary-label { font-size: 12px; opacity: 0.9; }
+        .summary-value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+        .summary-sub { font-size: 11px; opacity: 0.7; margin-top: 3px; }
+        .unit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+        .unit-card { background: white; border-radius: 10px; border: 1px solid #e5e7eb; padding: 14px; transition: box-shadow 0.15s; }
+        .unit-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .unit-card.vacant { border-color: #fde047; background: #fffef5; }
+        .unit-card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
+        .unit-card-info { font-size: 12px; color: #6b7280; line-height: 1.8; }
+        .unit-card-info i { width: 18px; color: #9ca3af; }
+        .legal-note { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 8px; padding: 12px; font-size: 12px; color: #6b21a8; margin-top: 12px; }
+        .legal-note i { margin-right: 6px; }
+        .settlement-table th, .settlement-table td { padding: 8px 10px; font-size: 12px; }
+        .settlement-table tfoot td { font-weight: 700; border-top: 2px solid #e5e7eb; background: #f9fafb; }
+        .vacant-row { background: #fefce8 !important; }
+        .vacant-row td { color: #92400e; font-style: italic; }
+        .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
+        .tab-btn { padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+        .tab-btn:hover { color: #374151; }
+        .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
         @media print {
-            .sidebar, .topbar, .btn, .no-print { display: none !important; }
+            .sidebar, .topbar, .btn, .no-print, .nav-section { display: none !important; }
             .main { margin-left: 0 !important; }
-            .content { padding: 0; }
-            .card { box-shadow: none; border: 1px solid #ddd; }
+            .content { padding: 0; max-width: 100%; }
+            .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+            body { background: white; }
         }
-        
-        /* Responsive */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.mobile-open { transform: translateX(0); }
             .main { margin-left: 0 !important; }
             .form-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -156,15 +149,21 @@
     <div id="app"></div>
 
     <script>
-        // ============ STATE ============
-        const STORAGE_KEY = 'nebenkosten_data_v2';
+        // ============ DATENMODELL ============
+        const STORAGE_KEY = 'nebenkosten_v3';
         
         function loadData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (raw) return JSON.parse(raw);
             } catch(e) { console.error(e); }
-            return { tenants: [], units: [], costs: [] };
+            return {
+                property: null, // Gesamtobjekt
+                units: [],
+                tenants: [],
+                costs: [],
+                customDistKeys: [], // Frei definierbare Schlüssel
+            };
         }
         
         function saveData(data) {
@@ -174,6 +173,7 @@
         let state = loadData();
         let activeTab = 'dashboard';
         let sidebarCollapsed = false;
+        let modalContent = null;
         
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -183,60 +183,169 @@
             return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
         }
         
-        const CATEGORIES = {
-            heating: 'Heizung', water: 'Wasser', sewage: 'Abwasser',
-            garbage: 'Müllabfuhr', electricity_common: 'Allgemeinstrom',
-            insurance: 'Versicherungen', maintenance: 'Instandhaltung',
-            property_tax: 'Grundsteuer', cleaning: 'Reinigung',
-            gardening: 'Gartenpflege', elevator: 'Aufzug', other: 'Sonstiges'
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            return new Date(dateStr).toLocaleDateString('de-DE');
+        }
+        
+        // ============ BETRKV KONFORME KATEGORIEN ============
+        const COST_CATEGORIES = {
+            heating: { label: 'Heizung', betrkv: true, heizkostenV: true, desc: 'Betriebskosten der zentralen Heizungsanlage (§ 1 HeizkostenV)' },
+            hot_water: { label: 'Warmwasser', betrkv: true, heizkostenV: true, desc: 'Betriebskosten der zentralen Warmwasserversorgung (§ 1 HeizkostenV)' },
+            water: { label: 'Kaltwasser', betrkv: true, desc: 'Wasserversorgung (§ 2 BetrKV Nr. 2)' },
+            sewage: { label: 'Abwasser', betrkv: true, desc: 'Entwässerung (§ 2 BetrKV Nr. 2)' },
+            garbage: { label: 'Müllabfuhr', betrkv: true, desc: 'Abfallbeseitigung (§ 2 BetrKV Nr. 8)' },
+            electricity_common: { label: 'Allgemeinstrom', betrkv: true, desc: 'Strom für Allgemeinflächen (§ 2 BetrKV Nr. 1)' },
+            insurance: { label: 'Versicherungen', betrkv: true, desc: 'Versicherungen (§ 2 BetrKV Nr. 13)' },
+            maintenance: { label: 'Instandhaltung', betrkv: false, desc: 'ACHTUNG: Nicht umlegbar! (§ 555a BGB - Vermieteranteil)' },
+            property_tax: { label: 'Grundsteuer', betrkv: true, desc: 'Grundsteuer (§ 2 BetrKV Nr. 1)' },
+            cleaning: { label: 'Reinigung', betrkv: true, desc: 'Treppenreinigung, Gartenpflege (§ 2 BetrKV Nr. 3,4)' },
+            gardening: { label: 'Gartenpflege', betrkv: true, desc: 'Pflege der Außenanlagen (§ 2 BetrKV Nr. 10)' },
+            elevator: { label: 'Aufzug', betrkv: true, desc: 'Betriebskosten Aufzug (§ 2 BetrKV Nr. 14)' },
+            chimney: { label: 'Schornsteinfeger', betrkv: true, desc: 'Schornsteinfeger (§ 2 BetrKV Nr. 6)' },
+            pest_control: { label: 'Schädlingsbekämpfung', betrkv: true, desc: 'Schädlingsbekämpfung (§ 2 BetrKV Nr. 7)' },
+            cable_tv: { label: 'Kabel-TV', betrkv: true, desc: 'Betriebskosten der Breitbandkommunikation (§ 2 BetrKV Nr. 15)' },
+            other: { label: 'Sonstiges', betrkv: true, desc: 'Sonstige Betriebskosten' },
         };
         
-        const DIST_KEYS = {
+        const STANDARD_DIST_KEYS = {
             area: 'Nach Wohnfläche (m²)',
             persons: 'Nach Personenzahl',
+            units: 'Nach Wohneinheiten',
             consumption: 'Nach Verbrauch',
-            units: 'Nach Wohneinheiten'
         };
         
-        // ============ CALCULATIONS ============
-        function calculateDistribution() {
+        function getAllDistKeys() {
+            const keys = { ...STANDARD_DIST_KEYS };
+            (state.customDistKeys || []).forEach(k => { keys[k.id] = k.name; });
+            return keys;
+        }
+        
+        // ============ BERECHNUNGEN (REchtskonform) ============
+        function isUnitVacant(unitId, costDate) {
+            const activeTenants = state.tenants.filter(t => {
+                if (t.unitId !== unitId) return false;
+                const d = new Date(costDate);
+                const moveIn = new Date(t.moveInDate);
+                const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
+                if (moveOut && d > moveOut) return false;
+                if (d < moveIn) return false;
+                return true;
+            });
+            return activeTenants.length === 0;
+        }
+        
+        function calculateSettlement(year) {
+            const filteredCosts = state.costs.filter(c => new Date(c.date).getFullYear().toString() === year);
+            const totalCosts = filteredCosts.reduce((s, c) => s + c.amount, 0);
+            
+            // Leerstandskosten berechnen (geht zu Lasten des Vermieters!)
+            let vacantCosts = 0;
+            let occupiedCosts = 0;
+            
+            // Nur umlegbare Kosten nach BetrKV
+            const umlegbarCosts = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv !== false);
+            const nichtUmlagbar = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv === false);
+            
             const distributions = [];
-            for (const cost of state.costs) {
+            
+            for (const cost of umlegbarCosts) {
+                // Prüfe ob Einheit leer steht
+                const occupiedUnits = state.units.filter(u => !isUnitVacant(u.id, cost.date));
+                
+                if (occupiedUnits.length === 0) {
+                    // Kompletter Leerstand = Vermieter trägt Kosten
+                    vacantCosts += cost.amount;
+                    continue;
+                }
+                
+                const allUnits = state.units;
+                const occupiedArea = occupiedUnits.reduce((s, u) => s + u.size, 0);
+                const totalArea = allUnits.reduce((s, u) => s + u.size, 0);
+                
+                // Anteil der vermieteten Fläche
+                const occupiedShare = cost.distributionKey === 'area' ? occupiedArea / totalArea : 1;
+                const umlageFähig = cost.amount * occupiedShare;
+                const vacantShare = cost.amount - umlageFähig;
+                
+                vacantCosts += vacantShare;
+                occupiedCosts += umlageFähig;
+                
+                // Verteilung auf Mieter
+                let totalWeight = 0;
                 const activeTenants = state.tenants.filter(t => {
-                    const costDate = new Date(cost.date);
+                    const unit = state.units.find(u => u.id === t.unitId);
+                    if (!unit) return false;
+                    const d = new Date(cost.date);
                     const moveIn = new Date(t.moveInDate);
                     const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
-                    if (moveOut && costDate > moveOut) return false;
-                    if (costDate < moveIn) return false;
+                    if (moveOut && d > moveOut) return false;
+                    if (d < moveIn) return false;
                     return true;
                 });
-                if (activeTenants.length === 0) continue;
                 
-                const totalWeight = activeTenants.reduce((sum, t) => {
-                    const unit = state.units.find(u => u.id === t.unitId);
-                    if (!unit) return sum;
-                    if (cost.distributionKey === 'area') return sum + unit.size;
-                    return sum + 1;
-                }, 0);
+                for (const tenant of activeTenants) {
+                    const unit = state.units.find(u => u.id === tenant.unitId);
+                    if (!unit) continue;
+                    let weight = 1;
+                    if (cost.distributionKey === 'area') weight = unit.size;
+                    // Custom key: gleichmäßig
+                    totalWeight += weight;
+                }
                 
                 if (totalWeight === 0) continue;
                 
                 for (const tenant of activeTenants) {
                     const unit = state.units.find(u => u.id === tenant.unitId);
                     if (!unit) continue;
-                    const weight = cost.distributionKey === 'area' ? unit.size : 1;
+                    let weight = 1;
+                    if (cost.distributionKey === 'area') weight = unit.size;
                     const share = weight / totalWeight;
+                    const amount = Math.round(umlageFähig * share * 100) / 100;
+                    
                     distributions.push({
                         tenantId: tenant.id,
                         tenantName: tenant.name,
+                        unitId: unit.id,
                         unitName: unit.name,
                         category: cost.category,
-                        amount: Math.round(cost.amount * share * 100) / 100,
-                        share: Math.round(share * 10000) / 100
+                        amount: amount,
+                        share: Math.round(share * 10000) / 100,
                     });
                 }
             }
-            return distributions;
+            
+            // Leerstehende Einheiten ermitteln
+            const vacantUnits = state.units.filter(u => {
+                return state.tenants.filter(t => {
+                    if (t.unitId !== u.id) return false;
+                    const now = new Date(year + '-12-31');
+                    const yearStart = new Date(year + '-01-01');
+                    const moveIn = new Date(t.moveInDate);
+                    const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
+                    if (moveOut && yearStart > moveOut) return false;
+                    if (moveIn > now) return false;
+                    return true;
+                }).length === 0;
+            });
+            
+            return {
+                totalCosts,
+                umlegbarCosts: umlegbarCosts.reduce((s, c) => s + c.amount, 0),
+                nichtUmlagbar: nichtUmlagbar.reduce((s, c) => s + c.amount, 0),
+                vacantCosts,
+                occupiedCosts,
+                distributions,
+                vacantUnits,
+                costsByCategory: getCostsByCategory(umlegbarCosts),
+                allCostsByCategory: getCostsByCategory(filteredCosts),
+            };
+        }
+        
+        function getCostsByCategory(costs) {
+            const result = {};
+            costs.forEach(c => { result[c.category] = (result[c.category] || 0) + c.amount; });
+            return result;
         }
         
         // ============ RENDER ============
@@ -252,6 +361,7 @@
                         </div>
                     </div>
                 </div>
+                ${modalContent ? renderModal() : ''}
             `;
             attachEvents();
         }
@@ -259,25 +369,38 @@
         function renderSidebar() {
             const tabs = [
                 { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-line' },
+            ];
+            const stammdaten = [
+                { id: 'property', label: 'Objekt', icon: 'fas fa-home' },
                 { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building' },
                 { id: 'tenants', label: 'Mieter', icon: 'fas fa-users' },
-                { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt' },
-                { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar' }
             ];
+            const bewirtschaftung = [
+                { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt' },
+                { id: 'distkeys', label: 'Verteilerschlüssel', icon: 'fas fa-sliders-h' },
+                { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar' },
+            ];
+            
+            const renderNavBtn = (t) => `
+                <button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">
+                    <i class="${t.icon}"></i>
+                    ${!sidebarCollapsed ? `<span>${t.label}</span>` : ''}
+                </button>
+            `;
             
             return `
                 <aside class="sidebar ${sidebarCollapsed ? 'collapsed' : ''}">
                     <div class="sidebar-header">
                         <div class="sidebar-logo"><i class="fas fa-calculator"></i></div>
-                        ${!sidebarCollapsed ? '<div><div class="sidebar-title">Nebenkosten</div><div class="sidebar-subtitle">Abrechnung</div></div>' : ''}
+                        ${!sidebarCollapsed ? `<div><div class="sidebar-title">${state.property?.name || 'Nebenkosten'}</div><div class="sidebar-subtitle">Abrechnung</div></div>` : ''}
                     </div>
                     <nav class="nav">
-                        ${tabs.map(t => `
-                            <button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">
-                                <i class="${t.icon}"></i>
-                                ${!sidebarCollapsed ? `<span class="nav-label">${t.label}</span>` : ''}
-                            </button>
-                        `).join('')}
+                        ${!sidebarCollapsed ? '<div class="nav-section">Übersicht</div>' : ''}
+                        ${tabs.map(renderNavBtn).join('')}
+                        ${!sidebarCollapsed ? '<div class="nav-section">Stammdaten</div>' : ''}
+                        ${stammdaten.map(renderNavBtn).join('')}
+                        ${!sidebarCollapsed ? '<div class="nav-section">Bewirtschaftung</div>' : ''}
+                        ${bewirtschaftung.map(renderNavBtn).join('')}
                     </nav>
                     <div class="sidebar-footer">
                         <button class="sidebar-toggle" id="toggleSidebar">
@@ -290,10 +413,18 @@
         }
         
         function renderTopbar() {
-            const titles = { dashboard: 'Dashboard', units: 'Wohneinheiten', tenants: 'Mieter', costs: 'Kosten', settlement: 'Nebenkostenabrechnung' };
+            const titles = {
+                dashboard: 'Dashboard', property: 'Objekt-Stammdaten', units: 'Wohneinheiten',
+                tenants: 'Mieter', costs: 'Betriebskosten', distkeys: 'Verteilerschlüssel',
+                settlement: 'Nebenkostenabrechnung'
+            };
             return `
                 <header class="topbar">
-                    <h1>${titles[activeTab]}</h1>
+                    <h1>${titles[activeTab] || 'Dashboard'}</h1>
+                    <div class="topbar-right">
+                        <i class="fas fa-database"></i>
+                        <span>Lokale Speicherung</span>
+                    </div>
                 </header>
             `;
         }
@@ -301,9 +432,11 @@
         function renderContent() {
             switch(activeTab) {
                 case 'dashboard': return renderDashboard();
+                case 'property': return renderProperty();
                 case 'units': return renderUnits();
                 case 'tenants': return renderTenants();
                 case 'costs': return renderCosts();
+                case 'distkeys': return renderDistKeys();
                 case 'settlement': return renderSettlement();
             }
         }
@@ -312,25 +445,25 @@
         function renderDashboard() {
             const totalCosts = state.costs.reduce((s,c) => s + c.amount, 0);
             const totalArea = state.units.reduce((s,u) => s + u.size, 0);
+            const occupiedUnits = state.units.filter(u => state.tenants.some(t => t.unitId === u.id));
+            const vacantUnits = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
             const currentYear = new Date().getFullYear();
             const yearCosts = state.costs.filter(c => new Date(c.date).getFullYear() === currentYear);
             const yearTotal = yearCosts.reduce((s,c) => s + c.amount, 0);
-            
-            // Costs by category
-            const byCat = {};
-            state.costs.forEach(c => { byCat[c.category] = (byCat[c.category] || 0) + c.amount; });
-            const topCats = Object.entries(byCat).sort((a,b) => b[1] - a[1]).slice(0, 5);
-            
-            const recentCosts = [...state.costs].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+            const nichtUmlagbar = state.costs.filter(c => COST_CATEGORIES[c.category]?.betrkv === false).reduce((s,c) => s + c.amount, 0);
             
             return `
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fas fa-building"></i></div>
-                        <div><div class="stat-value">${state.units.length}</div><div class="stat-label">Wohneinheiten</div></div>
+                        <div class="stat-icon blue"><i class="fas fa-home"></i></div>
+                        <div><div class="stat-value">${state.property ? '✓' : '—'}</div><div class="stat-label">Objekt angelegt</div></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon green"><i class="fas fa-users"></i></div>
+                        <div class="stat-icon green"><i class="fas fa-building"></i></div>
+                        <div><div class="stat-value">${state.units.length}</div><div class="stat-label">Einheiten (${totalArea.toFixed(0)} m²)</div></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-users"></i></div>
                         <div><div class="stat-value">${state.tenants.length}</div><div class="stat-label">Mieter</div></div>
                     </div>
                     <div class="stat-card">
@@ -338,89 +471,180 @@
                         <div><div class="stat-value">${formatCurrency(yearTotal)}</div><div class="stat-label">Kosten ${currentYear}</div></div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fas fa-ruler-combined"></i></div>
-                        <div><div class="stat-value">${totalArea.toFixed(0)} m²</div><div class="stat-label">Gesamtfläche</div></div>
+                        <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                        <div><div class="stat-value">${occupiedUnits.length}</div><div class="stat-label">Vermietet</div></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div><div class="stat-value">${vacantUnits.length}</div><div class="stat-label">Leerstände</div></div>
                     </div>
                 </div>
                 
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:16px; margin-bottom:24px;">
-                    <div class="card">
-                        <h3 class="card-title">Top Kostenkategorien</h3>
-                        <div style="margin-top:16px;">
-                            ${topCats.length > 0 ? topCats.map(([cat, amount]) => {
-                                const pct = totalCosts > 0 ? (amount / totalCosts * 100) : 0;
-                                return `
-                                    <div style="margin-bottom:12px;">
-                                        <div class="progress-label">
-                                            <span>${CATEGORIES[cat]}</span>
-                                            <span>${formatCurrency(amount)}</span>
-                                        </div>
-                                        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                                        <div style="font-size:11px; color:#9ca3af; margin-top:2px;">${pct.toFixed(1)}% der Gesamtkosten</div>
-                                    </div>
-                                `;
-                            }).join('') : '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Noch keine Kosten erfasst</p></div>'}
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3 class="card-title">Schnellübersicht</h3>
-                        <div style="margin-top:16px; display:flex; flex-direction:column; gap:12px;">
-                            <div style="display:flex; align-items:center; gap:12px; padding:12px; background:#f9fafb; border-radius:8px;">
-                                <div style="width:40px;height:40px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;"><i class="fas fa-euro-sign" style="color:#2563eb;"></i></div>
-                                <div><div style="font-size:13px;color:#6b7280;">Gesamtkosten</div><div style="font-weight:600;">${formatCurrency(totalCosts)}</div></div>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:12px; padding:12px; background:#f9fafb; border-radius:8px;">
-                                <div style="width:40px;height:40px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;"><i class="fas fa-home" style="color:#16a34a;"></i></div>
-                                <div><div style="font-size:13px;color:#6b7280;">Ø pro m²</div><div style="font-weight:600;">${totalArea > 0 ? formatCurrency(totalCosts/totalArea) + '/m²' : '—'}</div></div>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:12px; padding:12px; background:#f9fafb; border-radius:8px;">
-                                <div style="width:40px;height:40px;border-radius:50%;background:#ffedd5;display:flex;align-items:center;justify-content:center;"><i class="fas fa-user" style="color:#ea580c;"></i></div>
-                                <div><div style="font-size:13px;color:#6b7280;">Ø pro Mieter</div><div style="font-weight:600;">${state.tenants.length > 0 ? formatCurrency(totalCosts/state.tenants.length) : '—'}</div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                ${recentCosts.length > 0 ? `
-                <div class="card">
-                    <h3 class="card-title">Letzte Kostenpositionen</h3>
-                    <div style="margin-top:12px;">
-                        ${recentCosts.map(c => `
-                            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px; border-radius:8px; margin-bottom:4px;">
-                                <div style="display:flex; align-items:center; gap:12px;">
-                                    <div style="width:32px;height:32px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;"><i class="fas fa-receipt" style="color:#3b82f6; font-size:12px;"></i></div>
-                                    <div>
-                                        <div style="font-size:14px; font-weight:500;">${c.description}</div>
-                                        <div style="font-size:12px; color:#6b7280;">${CATEGORIES[c.category]} · ${new Date(c.date).toLocaleDateString('de-DE')}</div>
-                                    </div>
-                                </div>
-                                <div style="font-weight:600;">${formatCurrency(c.amount)}</div>
-                            </div>
-                        `).join('')}
+                ${nichtUmlagbar > 0 ? `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>Nicht umlegbare Kosten: ${formatCurrency(nichtUmlagbar)}</strong><br>
+                        <span style="font-size:12px;">Instandhaltungskosten sind nach § 555a BGB nicht auf Mieter umlegbar und vom Vermieter zu tragen.</span>
                     </div>
                 </div>
                 ` : ''}
                 
-                ${state.units.length === 0 && state.tenants.length === 0 && state.costs.length === 0 ? `
-                <div class="welcome-card">
-                    <div class="welcome-icon"><i class="fas fa-rocket"></i></div>
-                    <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Willkommen!</h3>
-                    <p style="color:#4b5563; max-width:500px; margin:0 auto;">Starten Sie mit der Erstellung Ihrer Nebenkostenabrechnung. Folgen Sie diesen Schritten:</p>
-                    <div class="welcome-steps">
-                        <div class="welcome-step">
-                            <div class="step-number step-1">1</div>
-                            <div style="font-size:14px; font-weight:500;">Wohneinheiten anlegen</div>
-                            <div style="font-size:12px; color:#6b7280; margin-top:4px;">Erfassen Sie Ihre Wohnungen</div>
+                ${vacantUnits.length > 0 ? `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>${vacantUnits.length} Leerstand/Einheiten</strong> — Kosten werden nicht auf Mieter umgelegt (§ 556a BGB)<br>
+                        <span style="font-size:12px;">Betroffen: ${vacantUnits.map(u => u.name).join(', ')}</span>
+                    </div>
+                </div>
+                ` : ''}
+                
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:16px;">
+                    <div class="card">
+                        <h3 class="card-title">Kosten nach Kategorie</h3>
+                        <div style="margin-top:12px;">
+                            ${(() => {
+                                const byCat = getCostsByCategory(state.costs);
+                                const sorted = Object.entries(byCat).sort((a,b) => b[1]-a[1]).slice(0,6);
+                                if (sorted.length === 0) return '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Noch keine Kosten</p></div>';
+                                return sorted.map(([cat, amount]) => {
+                                    const pct = totalCosts > 0 ? (amount/totalCosts*100) : 0;
+                                    const isNotUmlagbar = COST_CATEGORIES[cat]?.betrkv === false;
+                                    return `
+                                        <div style="margin-bottom:10px;">
+                                            <div class="progress-label">
+                                                <span>${COST_CATEGORIES[cat]?.label || cat} ${isNotUmlagbar ? '<span class="badge badge-red">Nicht umlegbar</span>' : ''}</span>
+                                                <span>${formatCurrency(amount)}</span>
+                                            </div>
+                                            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%; ${isNotUmlagbar ? 'background:linear-gradient(90deg,#ef4444,#dc2626)' : ''}"></div></div>
+                                        </div>
+                                    `;
+                                }).join('');
+                            })()}
                         </div>
-                        <div class="welcome-step">
-                            <div class="step-number step-2">2</div>
-                            <div style="font-size:14px; font-weight:500;">Mieter zuordnen</div>
-                            <div style="font-size:12px; color:#6b7280; margin-top:4px;">Tragen Sie Ihre Mieter ein</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Rechtliche Hinweise</h3>
+                        <div style="margin-top:12px; font-size:12px; color:#4b5563; line-height:1.8;">
+                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>BetrKV</strong>: Nur Betriebskosten nach § 2 BetrKV umlegbar</p>
+                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>§ 556a BGB</strong>: Abrechnung nach Fläche oder Verbrauch</p>
+                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>HeizkostenV</strong>: 50-70% nach Verbrauch</p>
+                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>§ 556 BGB</strong>: Abrechnungsfrist 12 Monate</p>
+                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>Leerstand</strong>: Kosten trägt der Vermieter</p>
+                            <p><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>Wirtschaftlichkeitsgebot</strong>: Kosten müssen angemessen sein</p>
                         </div>
-                        <div class="welcome-step">
-                            <div class="step-number step-3">3</div>
-                            <div style="font-size:14px; font-weight:500;">Kosten erfassen</div>
-                            <div style="font-size:12px; color:#6b7280; margin-top:4px;">Erfassen Sie Betriebskosten</div>
+                    </div>
+                </div>
+                
+                ${!state.property ? `
+                <div class="alert alert-info" style="margin-top:16px;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Erste Schritte:</strong> Beginnen Sie mit der Anlage Ihres Objekts unter "Objekt" in der Seitenleiste.
+                    </div>
+                </div>
+                ` : ''}
+            `;
+        }
+        
+        // ============ OBJEKT / IMMOBILIE ============
+        function renderProperty() {
+            const p = state.property;
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Gesamtobjekt / Immobilie</h2>
+                            <p class="card-subtitle">Stammdaten der Immobilie</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-legal">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>Rechtlicher Hinweis:</strong> Die Objektstammdaten sind wichtig für die korrekte Nebenkostenabrechnung nach § 556 BGB. 
+                            Der Eigentümer ist für die ordnungsgemäße Abrechnung verantwortlich.
+                        </div>
+                    </div>
+                    
+                    <div id="propertyForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Objektbezeichnung <span class="req">*</span></label>
+                                <input class="form-input" id="propName" value="${p?.name || ''}" placeholder="z.B. Mehrfamilienhaus Musterstraße 12">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Eigentümer <span class="req">*</span></label>
+                                <input class="form-input" id="propOwner" value="${p?.owner || ''}" placeholder="Name des Eigentümers">
+                            </div>
+                            <div class="form-group full">
+                                <label class="form-label">Adresse <span class="req">*</span></label>
+                                <input class="form-input" id="propAddress" value="${p?.address || ''}" placeholder="Straße, Hausnr., PLZ, Ort">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Baujahr</label>
+                                <input class="form-input" type="number" id="propYear" value="${p?.yearBuilt || ''}" placeholder="z.B. 1985">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Grundstücksfläche (m²)</label>
+                                <input class="form-input" type="number" id="propLandArea" value="${p?.landArea || ''}" step="0.01" placeholder="z.B. 850">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Gesamt-Wohnfläche (m²)</label>
+                                <input class="form-input" type="number" id="propTotalArea" value="${p?.totalArea || ''}" step="0.01" placeholder="Automatisch berechnet">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Flurstück / Grundbuch</label>
+                                <input class="form-input" id="propLandRegistry" value="${p?.landRegistry || ''}" placeholder="z.B. Flur 3, Nr. 123">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Eigentümer-Telefon</label>
+                                <input class="form-input" id="propPhone" value="${p?.phone || ''}" placeholder="Telefonnummer">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Eigentümer-E-Mail</label>
+                                <input class="form-input" type="email" id="propEmail" value="${p?.email || ''}" placeholder="email@example.de">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Steuernummer</label>
+                                <input class="form-input" id="propTaxId" value="${p?.taxId || ''}" placeholder="Für Abrechnungen">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bankverbindung</label>
+                                <input class="form-input" id="propBank" value="${p?.bank || ''}" placeholder="IBAN">
+                            </div>
+                            <div class="form-group full">
+                                <label class="form-label">Bemerkungen</label>
+                                <textarea class="form-textarea" id="propNotes" placeholder="Weitere Hinweise zum Objekt...">${p?.notes || ''}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="savePropertyBtn"><i class="fas fa-save"></i> Speichern</button>
+                        </div>
+                    </div>
+                </div>
+                
+                ${p ? `
+                <div class="card">
+                    <h3 class="card-title">Objektübersicht</h3>
+                    <div style="margin-top:12px; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
+                            <div style="font-size:11px; color:#6b7280;">Objekt</div>
+                            <div style="font-weight:600; font-size:14px;">${p.name}</div>
+                        </div>
+                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
+                            <div style="font-size:11px; color:#6b7280;">Eigentümer</div>
+                            <div style="font-weight:600; font-size:14px;">${p.owner || '—'}</div>
+                        </div>
+                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
+                            <div style="font-size:11px; color:#6b7280;">Adresse</div>
+                            <div style="font-weight:600; font-size:14px;">${p.address || '—'}</div>
+                        </div>
+                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
+                            <div style="font-size:11px; color:#6b7280;">Wohneinheiten</div>
+                            <div style="font-weight:600; font-size:14px;">${state.units.length}</div>
                         </div>
                     </div>
                 </div>
@@ -428,45 +652,58 @@
             `;
         }
         
-        // ============ UNITS ============
+        // ============ WOHOEINHEITEN ============
         function renderUnits() {
             const totalArea = state.units.reduce((s,u) => s + u.size, 0);
+            const vacantUnits = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
+            
             return `
+                ${!state.property ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst das Objekt an.</div>' : ''}
+                
                 <div class="card">
                     <div class="card-header">
                         <div>
                             <h2 class="card-title">Wohneinheiten</h2>
-                            <p class="card-subtitle">${state.units.length} Einheiten · ${totalArea.toFixed(0)} m² gesamt</p>
+                            <p class="card-subtitle">${state.units.length} Einheiten · ${totalArea.toFixed(0)} m² · ${vacantUnits.length} leerstehend</p>
                         </div>
                         <button class="btn btn-primary" id="addUnitBtn"><i class="fas fa-plus"></i> Neue Einheit</button>
                     </div>
-                    <div id="unitForm"></div>
-                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; margin-top:16px;">
-                        ${state.units.map(u => `
-                            <div class="card" style="margin-bottom:0;">
-                                <div style="display:flex; justify-content:space-between; align-items:start;">
-                                    <div>
-                                        <h3 style="font-size:16px; font-weight:600;">${u.name}</h3>
-                                        <div style="margin-top:8px; font-size:13px; color:#6b7280;">
-                                            <p><i class="fas fa-ruler-combined" style="width:20px; color:#3b82f6;"></i> ${u.size} m²</p>
-                                            <p><i class="fas fa-door-open" style="width:20px; color:#16a34a;"></i> ${u.rooms} Zimmer</p>
-                                            <p><i class="fas fa-building" style="width:20px; color:#7c3aed;"></i> ${u.floor}. Etage</p>
+                    <div id="unitFormArea"></div>
+                    
+                    <div class="unit-grid" style="margin-top:16px;">
+                        ${state.units.map(u => {
+                            const tenant = state.tenants.find(t => t.unitId === u.id && !t.moveOutDate);
+                            const isVacant = !tenant;
+                            return `
+                                <div class="unit-card ${isVacant ? 'vacant' : ''}">
+                                    <div class="unit-card-header">
+                                        <div>
+                                            <h3 style="font-size:15px; font-weight:600;">${u.name}</h3>
+                                            ${isVacant ? '<span class="badge badge-yellow">Leerstehend</span>' : `<span class="badge badge-green">${tenant.name}</span>`}
+                                        </div>
+                                        <div style="display:flex; gap:4px;">
+                                            <button class="btn btn-sm btn-secondary" data-edit-unit="${u.id}"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger" data-delete-unit="${u.id}"><i class="fas fa-trash"></i></button>
                                         </div>
                                     </div>
-                                    <div style="display:flex; gap:8px;">
-                                        <button class="btn btn-sm btn-secondary" data-edit-unit="${u.id}"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-danger" data-delete-unit="${u.id}"><i class="fas fa-trash"></i></button>
+                                    <div class="unit-card-info">
+                                        <p><i class="fas fa-ruler-combined"></i> ${u.size} m²</p>
+                                        <p><i class="fas fa-door-open"></i> ${u.rooms} Zimmer</p>
+                                        <p><i class="fas fa-layer-group"></i> ${u.floor}. Etage</p>
+                                        ${u.type ? `<p><i class="fas fa-tag"></i> ${u.type}</p>` : ''}
+                                        ${u.heatingType ? `<p><i class="fas fa-fire"></i> ${u.heatingType}</p>` : ''}
                                     </div>
                                 </div>
-                            </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
+                    
                     ${state.units.length === 0 ? '<div class="empty-state"><i class="fas fa-building"></i><p>Noch keine Wohneinheiten angelegt</p></div>' : ''}
                 </div>
             `;
         }
         
-        // ============ TENANTS ============
+        // ============ MIETER ============
         function renderTenants() {
             return `
                 <div class="card">
@@ -475,15 +712,26 @@
                             <h2 class="card-title">Mieter</h2>
                             <p class="card-subtitle">${state.tenants.length} Mieter</p>
                         </div>
-                        <button class="btn btn-success" id="addTenantBtn" ${state.units.length === 0 ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}><i class="fas fa-plus"></i> Neuer Mieter</button>
+                        <button class="btn btn-success" id="addTenantBtn" ${state.units.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neuer Mieter</button>
                     </div>
-                    ${state.units.length === 0 ? '<div style="background:#fefce8; border:1px solid #fde047; border-radius:8px; padding:12px; color:#854d0e; margin-bottom:16px;"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst mindestens eine Wohneinheit an.</div>' : ''}
-                    <div id="tenantForm"></div>
+                    
+                    ${state.units.length === 0 ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst Wohneinheiten an.</div>' : ''}
+                    
+                    <div class="alert alert-legal">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>§ 556 BGB:</strong> Der Verteilerschlüssel muss im Mietvertrag vereinbart sein. 
+                            Heiz- und Warmwasserkosten sind nach HeizkostenV zu 50-70% nach Verbrauch abzurechnen.
+                        </div>
+                    </div>
+                    
+                    <div id="tenantFormArea"></div>
+                    
                     ${state.tenants.length > 0 ? `
-                    <div class="table-wrapper" style="margin-top:16px;">
+                    <div style="overflow-x:auto; margin-top:16px;">
                         <table>
                             <thead><tr>
-                                <th>Name</th><th>Wohneinheit</th><th>Einzug</th><th>Kontakt</th><th class="text-right">Aktionen</th>
+                                <th>Name</th><th>Einheit</th><th>Einzug</th><th>Auszug</th><th>Kontakt</th><th class="text-right">Aktionen</th>
                             </tr></thead>
                             <tbody>
                                 ${state.tenants.map(t => {
@@ -492,8 +740,9 @@
                                     <tr>
                                         <td style="font-weight:500;">${t.name}</td>
                                         <td>${unit ? unit.name : '—'}</td>
-                                        <td>${new Date(t.moveInDate).toLocaleDateString('de-DE')}${t.moveOutDate ? ' <span style="color:#dc2626;">(ausgez. ' + new Date(t.moveOutDate).toLocaleDateString('de-DE') + ')</span>' : ''}</td>
-                                        <td style="font-size:13px; color:#6b7280;">
+                                        <td>${formatDate(t.moveInDate)}</td>
+                                        <td>${t.moveOutDate ? `<span class="badge badge-red">${formatDate(t.moveOutDate)}</span>` : '<span class="badge badge-green">Aktiv</span>'}</td>
+                                        <td style="font-size:12px; color:#6b7280;">
                                             ${t.email ? '<div><i class="fas fa-envelope"></i> ' + t.email + '</div>' : ''}
                                             ${t.phone ? '<div><i class="fas fa-phone"></i> ' + t.phone + '</div>' : ''}
                                         </td>
@@ -511,12 +760,13 @@
             `;
         }
         
-        // ============ COSTS ============
+        // ============ KOSTEN ============
         let costFilter = 'all';
         function renderCosts() {
             const filtered = costFilter === 'all' ? state.costs : state.costs.filter(c => c.category === costFilter);
             const total = filtered.reduce((s,c) => s + c.amount, 0);
             const sorted = [...filtered].sort((a,b) => new Date(b.date) - new Date(a.date));
+            const allKeys = getAllDistKeys();
             
             return `
                 <div class="card">
@@ -527,31 +777,49 @@
                         </div>
                         <button class="btn btn-warning" id="addCostBtn"><i class="fas fa-plus"></i> Neue Kosten</button>
                     </div>
+                    
+                    <div class="alert alert-legal">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>BetrKV § 2:</strong> Nur die hier aufgeführten Betriebskosten sind auf Mieter umlegbar. 
+                            <span class="badge badge-red">Nicht umlegbar</span> markierte Kosten trägt der Vermieter.
+                            Leerstandskosten werden automatisch vom Vermieter getragen.
+                        </div>
+                    </div>
+                    
                     <div class="filter-bar">
                         <button class="filter-btn ${costFilter === 'all' ? 'active' : ''}" data-filter="all">Alle</button>
-                        ${Object.entries(CATEGORIES).map(([k,v]) => `<button class="filter-btn ${costFilter === k ? 'active' : ''}" data-filter="${k}">${v}</button>`).join('')}
+                        ${Object.entries(COST_CATEGORIES).map(([k,v]) => `<button class="filter-btn ${costFilter === k ? 'active' : ''}" data-filter="${k}">${v.label}${v.betrkv === false ? ' ⚠' : ''}</button>`).join('')}
                     </div>
-                    <div id="costForm"></div>
+                    
+                    <div id="costFormArea"></div>
+                    
                     ${sorted.length > 0 ? `
-                    <div class="table-wrapper" style="margin-top:16px;">
+                    <div style="overflow-x:auto; margin-top:16px;">
                         <table>
                             <thead><tr>
                                 <th>Datum</th><th>Kategorie</th><th>Beschreibung</th><th>Verteiler</th><th class="text-right">Betrag</th><th class="text-right">Aktionen</th>
                             </tr></thead>
                             <tbody>
-                                ${sorted.map(c => `
-                                    <tr>
-                                        <td>${new Date(c.date).toLocaleDateString('de-DE')}</td>
-                                        <td><span class="badge">${CATEGORIES[c.category]}</span></td>
+                                ${sorted.map(c => {
+                                    const cat = COST_CATEGORIES[c.category];
+                                    const isNotUmlagbar = cat?.betrkv === false;
+                                    return `
+                                    <tr ${isNotUmlagbar ? 'style="background:#fef2f2;"' : ''}>
+                                        <td>${formatDate(c.date)}</td>
+                                        <td>
+                                            <span class="badge ${isNotUmlagbar ? 'badge-red' : 'badge-blue'}">${cat?.label || c.category}</span>
+                                            ${isNotUmlagbar ? '<div style="font-size:10px;color:#dc2626;margin-top:2px;">Nicht umlegbar!</div>' : ''}
+                                        </td>
                                         <td>${c.description}</td>
-                                        <td style="font-size:13px;">${DIST_KEYS[c.distributionKey]}</td>
+                                        <td style="font-size:12px;">${allKeys[c.distributionKey] || c.distributionKey}</td>
                                         <td class="text-right" style="font-weight:600;">${formatCurrency(c.amount)}</td>
                                         <td class="text-right">
                                             <button class="btn btn-sm btn-secondary" data-edit-cost="${c.id}"><i class="fas fa-edit"></i></button>
                                             <button class="btn btn-sm btn-danger" data-delete-cost="${c.id}"><i class="fas fa-trash"></i></button>
                                         </td>
-                                    </tr>
-                                `).join('')}
+                                    </tr>`;
+                                }).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -560,77 +828,94 @@
             `;
         }
         
-        // ============ SETTLEMENT ============
+        // ============ VERTEILERSCHLÜSSEL ============
+        function renderDistKeys() {
+            const customs = state.customDistKeys || [];
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Verteilerschlüssel</h2>
+                            <p class="card-subtitle">Standard- und frei definierbare Abrechnungsschlüssel</p>
+                        </div>
+                        <button class="btn btn-primary" id="addDistKeyBtn"><i class="fas fa-plus"></i> Neuer Schlüssel</button>
+                    </div>
+                    
+                    <div class="alert alert-legal">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>§ 556a BGB:</strong> Der Verteilerschlüssel muss im Mietvertrag vereinbart werden. 
+                            Übliche Schlüssel sind: Wohnfläche (m²), Personenzahl, Wohneinheiten oder Verbrauch.
+                            Bei Heizkosten ist die HeizkostenV zu beachten (50-70% nach Verbrauch).
+                        </div>
+                    </div>
+                    
+                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:#374151;">Standard-Schlüssel</h3>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; margin-bottom:24px;">
+                        ${Object.entries(STANDARD_DIST_KEYS).map(([k,v]) => `
+                            <div style="padding:12px; background:#f0f9ff; border-radius:8px; border:1px solid #bfdbfe;">
+                                <div style="font-weight:600; font-size:13px; color:#1e40af;">${v}</div>
+                                <div style="font-size:11px; color:#6b7280; margin-top:2px;">Schlüssel-ID: ${k}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:#374151;">Frei definierbare Schlüssel</h3>
+                    <div id="distKeyFormArea"></div>
+                    
+                    ${customs.length > 0 ? `
+                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; margin-top:12px;">
+                        ${customs.map(k => `
+                            <div style="padding:12px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <div style="font-weight:600; font-size:13px; color:#166534;">${k.name}</div>
+                                    <div style="font-size:11px; color:#6b7280;">${k.description || 'Keine Beschreibung'}</div>
+                                    <div style="font-size:10px; color:#9ca3af; margin-top:2px;">Basis: ${k.basis || '—'}</div>
+                                </div>
+                                <button class="btn btn-sm btn-danger" data-delete-dk="${k.id}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : '<div style="color:#9ca3af; font-size:13px; padding:12px;">Noch keine eigenen Schlüssel definiert.</div>'}
+                </div>
+            `;
+        }
+        
+        // ============ ABRECHNUNG ============
         let settlementYear = new Date().getFullYear().toString();
         function renderSettlement() {
             const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear().toString()))];
             if (years.length === 0) years.push(new Date().getFullYear().toString());
             years.sort().reverse();
             
+            const result = calculateSettlement(settlementYear);
             const filteredCosts = state.costs.filter(c => new Date(c.date).getFullYear().toString() === settlementYear);
-            const totalCosts = filteredCosts.reduce((s,c) => s + c.amount, 0);
-            const distributions = calculateDistribution().filter(d => {
-                const cost = state.costs.find(c => c.id === d.costId || true);
-                return filteredCosts.some(fc => fc.category === d.category);
-            });
-            
-            // Recalculate for filtered year
-            const yearDistributions = [];
-            for (const cost of filteredCosts) {
-                const activeTenants = state.tenants.filter(t => {
-                    const costDate = new Date(cost.date);
-                    const moveIn = new Date(t.moveInDate);
-                    const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
-                    if (moveOut && costDate > moveOut) return false;
-                    if (costDate < moveIn) return false;
-                    return true;
-                });
-                if (activeTenants.length === 0) continue;
-                const totalWeight = activeTenants.reduce((sum, t) => {
-                    const unit = state.units.find(u => u.id === t.unitId);
-                    if (!unit) return sum;
-                    return cost.distributionKey === 'area' ? sum + unit.size : sum + 1;
-                }, 0);
-                if (totalWeight === 0) continue;
-                for (const tenant of activeTenants) {
-                    const unit = state.units.find(u => u.id === tenant.unitId);
-                    if (!unit) continue;
-                    const weight = cost.distributionKey === 'area' ? unit.size : 1;
-                    const share = weight / totalWeight;
-                    yearDistributions.push({
-                        tenantId: tenant.id, tenantName: tenant.name, unitName: unit.name,
-                        category: cost.category, amount: Math.round(cost.amount * share * 100) / 100
-                    });
-                }
-            }
             
             // Group by tenant
             const tenantTotals = {};
-            yearDistributions.forEach(d => {
+            result.distributions.forEach(d => {
                 if (!tenantTotals[d.tenantId]) tenantTotals[d.tenantId] = { name: d.tenantName, unit: d.unitName, categories: {}, total: 0 };
                 tenantTotals[d.tenantId].categories[d.category] = (tenantTotals[d.tenantId].categories[d.category] || 0) + d.amount;
                 tenantTotals[d.tenantId].total += d.amount;
             });
             
-            // Costs by category
-            const byCat = {};
-            filteredCosts.forEach(c => { byCat[c.category] = (byCat[c.category] || 0) + c.amount; });
-            const usedCats = Object.keys(byCat);
+            const usedCats = Object.keys(result.costsByCategory);
+            const avgPerTenant = Object.keys(tenantTotals).length > 0 ? result.occupiedCosts / Object.keys(tenantTotals).length : 0;
             
-            const avgPerTenant = Object.keys(tenantTotals).length > 0 ? totalCosts / Object.keys(tenantTotals).length : 0;
+            // Vorauszahlungen (simuliert)
             
             return `
                 <div class="card no-print">
                     <div class="card-header">
                         <div>
                             <h2 class="card-title">Nebenkostenabrechnung ${settlementYear}</h2>
-                            <p class="card-subtitle">Abrechnungsjahr ${settlementYear}</p>
+                            <p class="card-subtitle">${state.property?.name || 'Objekt'} · Abrechnungszeitraum: 01.01.${settlementYear} – 31.12.${settlementYear}</p>
                         </div>
-                        <div style="display:flex; gap:12px;">
+                        <div style="display:flex; gap:10px;">
                             <select class="form-input" id="yearSelect">
                                 ${years.map(y => `<option value="${y}" ${y === settlementYear ? 'selected' : ''}>${y}</option>`).join('')}
                             </select>
-                            <button class="btn btn-purple" id="printBtn"><i class="fas fa-print"></i> Drucken</button>
+                            <button class="btn btn-purple" id="printBtn"><i class="fas fa-print"></i> Drucken / PDF</button>
                         </div>
                     </div>
                 </div>
@@ -638,48 +923,76 @@
                 <div class="summary-grid">
                     <div class="summary-card blue">
                         <div class="summary-label">Gesamtkosten</div>
-                        <div class="summary-value">${formatCurrency(totalCosts)}</div>
-                        <div class="summary-sub">${filteredCosts.length} Kostenpositionen</div>
+                        <div class="summary-value">${formatCurrency(result.totalCosts)}</div>
+                        <div class="summary-sub">${filteredCosts.length} Positionen</div>
                     </div>
                     <div class="summary-card green">
-                        <div class="summary-label">Mieter</div>
-                        <div class="summary-value">${Object.keys(tenantTotals).length}</div>
-                        <div class="summary-sub">abzurechnende Parteien</div>
+                        <div class="summary-label">Umlagefähig</div>
+                        <div class="summary-value">${formatCurrency(result.occupiedCosts)}</div>
+                        <div class="summary-sub">auf Mieter verteilt</div>
+                    </div>
+                    <div class="summary-card red">
+                        <div class="summary-label">Vermieteranteil</div>
+                        <div class="summary-value">${formatCurrency(result.vacantCosts + result.nichtUmlagbar)}</div>
+                        <div class="summary-sub">Leerstand + nicht umlegbar</div>
                     </div>
                     <div class="summary-card purple">
                         <div class="summary-label">Ø pro Mieter</div>
                         <div class="summary-value">${formatCurrency(avgPerTenant)}</div>
-                        <div class="summary-sub">durchschnittliche Belastung</div>
+                        <div class="summary-sub">${Object.keys(tenantTotals).length} Mieter</div>
                     </div>
                 </div>
                 
+                ${result.vacantUnits.length > 0 ? `
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Leerstandskosten: ${formatCurrency(result.vacantCosts)}</strong><br>
+                        <span style="font-size:12px;">
+                            Leerstehende Einheiten: ${result.vacantUnits.map(u => u.name).join(', ')}.<br>
+                            Nach § 556a BGB werden die auf leerstehende Einheiten entfallenden Kosten vom Vermieter getragen und nicht auf die übrigen Mieter umgelegt.
+                        </span>
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${result.nichtUmlagbar > 0 ? `
+                <div class="alert alert-danger">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <strong>Nicht umlegbare Kosten: ${formatCurrency(result.nichtUmlagbar)}</strong><br>
+                        <span style="font-size:12px;">Instandhaltungskosten sind nach § 555a BGB nicht auf Mieter umlegbar.</span>
+                    </div>
+                </div>
+                ` : ''}
+                
                 <div class="card">
                     <h3 class="card-title">Kosten nach Kategorie</h3>
-                    <div style="margin-top:16px;">
+                    <div style="margin-top:12px;">
                         ${usedCats.length > 0 ? usedCats.map(cat => {
-                            const amount = byCat[cat];
-                            const pct = totalCosts > 0 ? (amount / totalCosts * 100) : 0;
+                            const amount = result.costsByCategory[cat];
+                            const pct = result.occupiedCosts > 0 ? (amount / result.occupiedCosts * 100) : 0;
                             return `
-                                <div style="margin-bottom:12px;">
+                                <div style="margin-bottom:10px;">
                                     <div class="progress-label">
-                                        <span>${CATEGORIES[cat]}</span>
+                                        <span>${COST_CATEGORIES[cat]?.label || cat}</span>
                                         <span>${formatCurrency(amount)} (${pct.toFixed(1)}%)</span>
                                     </div>
                                     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
                                 </div>
                             `;
-                        }).join('') : '<p style="color:#9ca3af; text-align:center; padding:16px;">Keine Kosten für dieses Jahr</p>'}
+                        }).join('') : '<p style="color:#9ca3af; text-align:center; padding:16px;">Keine umlegbaren Kosten für dieses Jahr</p>'}
                     </div>
                 </div>
                 
                 ${Object.keys(tenantTotals).length > 0 ? `
                 <div class="card">
                     <h3 class="card-title">Einzelabrechnung je Mieter</h3>
-                    <div class="table-wrapper" style="margin-top:16px;">
+                    <div style="overflow-x:auto; margin-top:12px;">
                         <table class="settlement-table">
                             <thead><tr>
-                                <th>Mieter</th><th>Wohneinheit</th>
-                                ${usedCats.map(c => `<th class="text-right">${CATEGORIES[c]}</th>`).join('')}
+                                <th>Mieter</th><th>Einheit</th>
+                                ${usedCats.map(c => `<th class="text-right">${COST_CATEGORIES[c]?.label || c}</th>`).join('')}
                                 <th class="text-right">Gesamt</th>
                             </tr></thead>
                             <tbody>
@@ -693,118 +1006,165 @@
                                 `).join('')}
                             </tbody>
                             <tfoot><tr>
-                                <td colspan="2" style="font-weight:700;">Summe</td>
-                                ${usedCats.map(c => `<td class="text-right" style="font-weight:700;">${formatCurrency(byCat[c] || 0)}</td>`).join('')}
-                                <td class="text-right" style="font-weight:700; color:#2563eb; font-size:16px;">${formatCurrency(totalCosts)}</td>
+                                <td colspan="2" style="font-weight:700;">Summe umlagefähig</td>
+                                ${usedCats.map(c => `<td class="text-right" style="font-weight:700;">${formatCurrency(result.costsByCategory[c] || 0)}</td>`).join('')}
+                                <td class="text-right" style="font-weight:700; color:#2563eb; font-size:14px;">${formatCurrency(result.occupiedCosts)}</td>
                             </tr></tfoot>
                         </table>
                     </div>
                 </div>
                 ` : ''}
                 
-                ${state.costs.length === 0 ? '<div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>Keine Kosten erfasst. Legen Sie zuerst Betriebskosten an.</p></div>' : ''}
+                <div class="card">
+                    <h3 class="card-title">Rechtliche Grundlagen dieser Abrechnung</h3>
+                    <div style="margin-top:12px; font-size:12px; color:#4b5563; line-height:1.8;">
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Abrechnung nach <strong>Betriebskostenverordnung (BetrKV) § 2</strong></p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Umlage nach <strong>§ 556a BGB</strong> (Fläche/Verbrauch)</p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Leerstandskosten</strong> zu Lasten des Vermieters (§ 556a BGB)</p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Nicht umlegbare Kosten</strong> (Instandhaltung) separat ausgewiesen</p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Abrechnungsfrist <strong>12 Monate</strong> (§ 556 Abs. 3 BGB)</p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Wirtschaftlichkeitsgebot</strong> beachtet</p>
+                    </div>
+                    <div class="legal-note">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Hinweis:</strong> Diese Abrechnung ersetzt keine anwaltliche Beratung. 
+                        Bei Heizkosten ist zusätzlich die <strong>HeizkostenV</strong> zu beachten (50-70% nach Verbrauch). 
+                        Die Abrechnungsfrist beträgt 12 Monate nach Ende des Abrechnungszeitraums.
+                        ${state.property ? `<br><br><strong>${state.property.owner || ''}</strong><br>${state.property.address || ''}` : ''}
+                    </div>
+                </div>
+                
+                ${state.costs.length === 0 ? '<div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>Keine Kosten erfasst.</p></div>' : ''}
             `;
         }
         
-        // ============ FORMS ============
-        function showUnitForm(editId) {
-            const unit = editId ? state.units.find(u => u.id === editId) : null;
-            const form = document.getElementById('unitForm');
-            form.innerHTML = `
-                <div style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:16px;">
-                    <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">${unit ? 'Einheit bearbeiten' : 'Neue Wohneinheit'}</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Bezeichnung</label>
-                            <input class="form-input" id="unitName" value="${unit ? unit.name : ''}" placeholder="z.B. Whg. 1.1" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Fläche (m²)</label>
-                            <input class="form-input" type="number" id="unitSize" value="${unit ? unit.size : ''}" placeholder="65" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Zimmer</label>
-                            <input class="form-input" type="number" id="unitRooms" value="${unit ? unit.rooms : ''}" placeholder="3" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Etage</label>
-                            <input class="form-input" type="number" id="unitFloor" value="${unit ? unit.floor : ''}" placeholder="1" required>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button class="btn btn-primary" id="saveUnitBtn" data-edit-id="${editId || ''}">${unit ? 'Speichern' : 'Hinzufügen'}</button>
-                        <button class="btn btn-secondary" id="cancelUnitBtn">Abbrechen</button>
+        // ============ MODAL ============
+        function renderModal() {
+            return `
+                <div class="modal-overlay" id="modalOverlay">
+                    <div class="modal">
+                        ${modalContent}
                     </div>
                 </div>
             `;
-            document.getElementById('saveUnitBtn').onclick = () => {
-                const name = document.getElementById('unitName').value.trim();
-                const size = parseFloat(document.getElementById('unitSize').value);
-                const rooms = parseInt(document.getElementById('unitRooms').value);
-                const floor = parseInt(document.getElementById('unitFloor').value);
-                if (!name || !size) return alert('Bitte alle Pflichtfelder ausfüllen');
+        }
+        
+        function closeModal() { modalContent = null; render(); }
+        
+        // ============ FORMULARE ============
+        function showUnitForm(editId) {
+            const unit = editId ? state.units.find(u => u.id === editId) : null;
+            modalContent = `
+                <h2 class="modal-title">${unit ? 'Einheit bearbeiten' : 'Neue Wohneinheit'}</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Bezeichnung <span class="req">*</span></label>
+                        <input class="form-input" id="mUnitName" value="${unit?.name || ''}" placeholder="z.B. Whg. 1.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fläche (m²) <span class="req">*</span></label>
+                        <input class="form-input" type="number" id="mUnitSize" value="${unit?.size || ''}" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Zimmer</label>
+                        <input class="form-input" type="number" id="mUnitRooms" value="${unit?.rooms || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Etage</label>
+                        <input class="form-input" type="number" id="mUnitFloor" value="${unit?.floor || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Einheitentyp</label>
+                        <select class="form-input" id="mUnitType">
+                            <option value="Wohnung" ${unit?.type === 'Wohnung' ? 'selected' : ''}>Wohnung</option>
+                            <option value="Gewerbe" ${unit?.type === 'Gewerbe' ? 'selected' : ''}>Gewerbe</option>
+                            <option value="Stellplatz" ${unit?.type === 'Stellplatz' ? 'selected' : ''}>Stellplatz</option>
+                            <option value="Keller" ${unit?.type === 'Keller' ? 'selected' : ''}>Keller</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Heizungsart</label>
+                        <select class="form-input" id="mUnitHeating">
+                            <option value="Zentral" ${unit?.heatingType === 'Zentral' ? 'selected' : ''}>Zentral</option>
+                            <option value="Etagen" ${unit?.heatingType === 'Etagen' ? 'selected' : ''}>Etagenheizung</option>
+                            <option value="Fernwärme" ${unit?.heatingType === 'Fernwärme' ? 'selected' : ''}>Fernwärme</option>
+                            <option value="Keine" ${unit?.heatingType === 'Keine' ? 'selected' : ''}>Keine</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="saveUnitModal" data-id="${editId || ''}">${unit ? 'Speichern' : 'Anlegen'}</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                </div>
+            `;
+            render();
+            document.getElementById('saveUnitModal').onclick = () => {
+                const name = document.getElementById('mUnitName').value.trim();
+                const size = parseFloat(document.getElementById('mUnitSize').value);
+                const rooms = parseInt(document.getElementById('mUnitRooms').value) || 0;
+                const floor = parseInt(document.getElementById('mUnitFloor').value) || 0;
+                const type = document.getElementById('mUnitType').value;
+                const heatingType = document.getElementById('mUnitHeating').value;
+                if (!name || !size) return alert('Bitte Bezeichnung und Fläche ausfüllen.');
                 if (editId) {
                     const idx = state.units.findIndex(u => u.id === editId);
-                    state.units[idx] = { ...state.units[idx], name, size, rooms, floor };
+                    state.units[idx] = { ...state.units[idx], name, size, rooms, floor, type, heatingType };
                 } else {
-                    state.units.push({ id: generateId(), name, size, rooms, floor });
+                    state.units.push({ id: generateId(), name, size, rooms, floor, type, heatingType });
                 }
                 saveData(state);
-                render();
+                closeModal();
             };
-            document.getElementById('cancelUnitBtn').onclick = () => { document.getElementById('unitForm').innerHTML = ''; };
         }
         
         function showTenantForm(editId) {
-            if (state.units.length === 0) return alert('Bitte legen Sie zuerst eine Wohneinheit an.');
             const tenant = editId ? state.tenants.find(t => t.id === editId) : null;
-            const form = document.getElementById('tenantForm');
-            form.innerHTML = `
-                <div style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:16px;">
-                    <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">${tenant ? 'Mieter bearbeiten' : 'Neuer Mieter'}</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Name *</label>
-                            <input class="form-input" id="tenantName" value="${tenant ? tenant.name : ''}" placeholder="Max Mustermann" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">E-Mail</label>
-                            <input class="form-input" type="email" id="tenantEmail" value="${tenant ? tenant.email : ''}" placeholder="max@example.de">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Telefon</label>
-                            <input class="form-input" type="tel" id="tenantPhone" value="${tenant ? tenant.phone : ''}" placeholder="0123 456789">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Wohneinheit *</label>
-                            <select class="form-input" id="tenantUnit" required>
-                                <option value="">Bitte wählen...</option>
-                                ${state.units.map(u => `<option value="${u.id}" ${tenant && tenant.unitId === u.id ? 'selected' : ''}>${u.name} (${u.size} m²)</option>`).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Einzugsdatum *</label>
-                            <input class="form-input" type="date" id="tenantMoveIn" value="${tenant ? tenant.moveInDate : ''}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Auszugsdatum (optional)</label>
-                            <input class="form-input" type="date" id="tenantMoveOut" value="${tenant && tenant.moveOutDate ? tenant.moveOutDate : ''}">
-                        </div>
+            modalContent = `
+                <h2 class="modal-title">${tenant ? 'Mieter bearbeiten' : 'Neuer Mieter'}</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="req">*</span></label>
+                        <input class="form-input" id="mTenantName" value="${tenant?.name || ''}" placeholder="Vor- und Nachname">
                     </div>
-                    <div class="form-actions">
-                        <button class="btn btn-success" id="saveTenantBtn" data-edit-id="${editId || ''}">${tenant ? 'Speichern' : 'Hinzufügen'}</button>
-                        <button class="btn btn-secondary" id="cancelTenantBtn">Abbrechen</button>
+                    <div class="form-group">
+                        <label class="form-label">E-Mail</label>
+                        <input class="form-input" type="email" id="mTenantEmail" value="${tenant?.email || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefon</label>
+                        <input class="form-input" id="mTenantPhone" value="${tenant?.phone || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Wohneinheit <span class="req">*</span></label>
+                        <select class="form-input" id="mTenantUnit">
+                            <option value="">Bitte wählen...</option>
+                            ${state.units.map(u => `<option value="${u.id}" ${tenant?.unitId === u.id ? 'selected' : ''}>${u.name} (${u.size} m²)</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Einzugsdatum <span class="req">*</span></label>
+                        <input class="form-input" type="date" id="mTenantMoveIn" value="${tenant?.moveInDate || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Auszugsdatum</label>
+                        <input class="form-input" type="date" id="mTenantMoveOut" value="${tenant?.moveOutDate || ''}">
+                        <div class="form-hint">Leer = Mieter wohnt noch</div>
                     </div>
                 </div>
+                <div class="form-actions">
+                    <button class="btn btn-success" id="saveTenantModal" data-id="${editId || ''}">${tenant ? 'Speichern' : 'Anlegen'}</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                </div>
             `;
-            document.getElementById('saveTenantBtn').onclick = () => {
-                const name = document.getElementById('tenantName').value.trim();
-                const email = document.getElementById('tenantEmail').value.trim();
-                const phone = document.getElementById('tenantPhone').value.trim();
-                const unitId = document.getElementById('tenantUnit').value;
-                const moveInDate = document.getElementById('tenantMoveIn').value;
-                const moveOutDate = document.getElementById('tenantMoveOut').value || null;
-                if (!name || !unitId || !moveInDate) return alert('Bitte alle Pflichtfelder ausfüllen');
+            render();
+            document.getElementById('saveTenantModal').onclick = () => {
+                const name = document.getElementById('mTenantName').value.trim();
+                const email = document.getElementById('mTenantEmail').value.trim();
+                const phone = document.getElementById('mTenantPhone').value.trim();
+                const unitId = document.getElementById('mTenantUnit').value;
+                const moveInDate = document.getElementById('mTenantMoveIn').value;
+                const moveOutDate = document.getElementById('mTenantMoveOut').value || null;
+                if (!name || !unitId || !moveInDate) return alert('Bitte alle Pflichtfelder ausfüllen.');
                 if (editId) {
                     const idx = state.tenants.findIndex(t => t.id === editId);
                     state.tenants[idx] = { ...state.tenants[idx], name, email, phone, unitId, moveInDate, moveOutDate };
@@ -812,129 +1172,180 @@
                     state.tenants.push({ id: generateId(), name, email, phone, unitId, moveInDate, moveOutDate });
                 }
                 saveData(state);
-                render();
+                closeModal();
             };
-            document.getElementById('cancelTenantBtn').onclick = () => { document.getElementById('tenantForm').innerHTML = ''; };
         }
         
         function showCostForm(editId) {
             const cost = editId ? state.costs.find(c => c.id === editId) : null;
-            const form = document.getElementById('costForm');
-            form.innerHTML = `
-                <div style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:16px;">
-                    <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">${cost ? 'Kosten bearbeiten' : 'Neue Kosten erfassen'}</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Kategorie *</label>
-                            <select class="form-input" id="costCategory" required>
-                                ${Object.entries(CATEGORIES).map(([k,v]) => `<option value="${k}" ${cost && cost.category === k ? 'selected' : ''}>${v}</option>`).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Beschreibung *</label>
-                            <input class="form-input" id="costDesc" value="${cost ? cost.description : ''}" placeholder="z.B. Gasrechnung Q1" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Betrag (€) *</label>
-                            <input class="form-input" type="number" id="costAmount" value="${cost ? cost.amount : ''}" step="0.01" min="0" placeholder="1200.00" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Datum *</label>
-                            <input class="form-input" type="date" id="costDate" value="${cost ? cost.date : new Date().toISOString().split('T')[0]}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Verteilerschlüssel *</label>
-                            <select class="form-input" id="costDistKey" required>
-                                ${Object.entries(DIST_KEYS).map(([k,v]) => `<option value="${k}" ${cost && cost.distributionKey === k ? 'selected' : ''}>${v}</option>`).join('')}
-                            </select>
-                        </div>
+            const allKeys = getAllDistKeys();
+            modalContent = `
+                <h2 class="modal-title">${cost ? 'Kosten bearbeiten' : 'Neue Kosten erfassen'}</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Kategorie <span class="req">*</span></label>
+                        <select class="form-input" id="mCostCat">
+                            ${Object.entries(COST_CATEGORIES).map(([k,v]) => `<option value="${k}" ${cost?.category === k ? 'selected' : ''}>${v.label}${v.betrkv === false ? ' ⚠ Nicht umlegbar' : ''}</option>`).join('')}
+                        </select>
                     </div>
-                    <div class="form-actions">
-                        <button class="btn btn-warning" id="saveCostBtn" data-edit-id="${editId || ''}">${cost ? 'Speichern' : 'Hinzufügen'}</button>
-                        <button class="btn btn-secondary" id="cancelCostBtn">Abbrechen</button>
+                    <div class="form-group">
+                        <label class="form-label">Beschreibung <span class="req">*</span></label>
+                        <input class="form-input" id="mCostDesc" value="${cost?.description || ''}" placeholder="z.B. Gasrechnung Q1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Betrag (€) <span class="req">*</span></label>
+                        <input class="form-input" type="number" id="mCostAmount" value="${cost?.amount || ''}" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Datum <span class="req">*</span></label>
+                        <input class="form-input" type="date" id="mCostDate" value="${cost?.date || new Date().toISOString().split('T')[0]}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Verteilerschlüssel <span class="req">*</span></label>
+                        <select class="form-input" id="mCostDistKey">
+                            ${Object.entries(allKeys).map(([k,v]) => `<option value="${k}" ${cost?.distributionKey === k ? 'selected' : ''}>${v}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rechnungsnummer</label>
+                        <input class="form-input" id="mCostInvoice" value="${cost?.invoiceNo || ''}" placeholder="Optional">
                     </div>
                 </div>
+                <div class="form-actions">
+                    <button class="btn btn-warning" id="saveCostModal" data-id="${editId || ''}">${cost ? 'Speichern' : 'Anlegen'}</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                </div>
             `;
-            document.getElementById('saveCostBtn').onclick = () => {
-                const category = document.getElementById('costCategory').value;
-                const description = document.getElementById('costDesc').value.trim();
-                const amount = parseFloat(document.getElementById('costAmount').value);
-                const date = document.getElementById('costDate').value;
-                const distributionKey = document.getElementById('costDistKey').value;
-                if (!description || !amount || !date) return alert('Bitte alle Pflichtfelder ausfüllen');
+            render();
+            document.getElementById('saveCostModal').onclick = () => {
+                const category = document.getElementById('mCostCat').value;
+                const description = document.getElementById('mCostDesc').value.trim();
+                const amount = parseFloat(document.getElementById('mCostAmount').value);
+                const date = document.getElementById('mCostDate').value;
+                const distributionKey = document.getElementById('mCostDistKey').value;
+                const invoiceNo = document.getElementById('mCostInvoice').value.trim();
+                if (!description || !amount || !date) return alert('Bitte alle Pflichtfelder ausfüllen.');
                 if (editId) {
                     const idx = state.costs.findIndex(c => c.id === editId);
-                    state.costs[idx] = { ...state.costs[idx], category, description, amount, date, distributionKey };
+                    state.costs[idx] = { ...state.costs[idx], category, description, amount, date, distributionKey, invoiceNo };
                 } else {
-                    state.costs.push({ id: generateId(), category, description, amount, date, distributionKey });
+                    state.costs.push({ id: generateId(), category, description, amount, date, distributionKey, invoiceNo });
                 }
                 saveData(state);
-                render();
+                closeModal();
             };
-            document.getElementById('cancelCostBtn').onclick = () => { document.getElementById('costForm').innerHTML = ''; };
+        }
+        
+        function showDistKeyForm() {
+            modalContent = `
+                <h2 class="modal-title">Neuer Verteilerschlüssel</h2>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>Definieren Sie einen eigenen Verteilerschlüssel für die Kostenverteilung. Dieser muss im Mietvertrag vereinbart werden.</div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="req">*</span></label>
+                        <input class="form-input" id="mDkName" placeholder="z.B. Nach Mietanteil">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Berechnungsgrundlage</label>
+                        <input class="form-input" id="mDkBasis" placeholder="z.B. Mietzins, Anteil an Gesamtfläche">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Beschreibung</label>
+                        <textarea class="form-textarea" id="mDkDesc" placeholder="Beschreibung des Verteilverfahrens..."></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="saveDkModal">Anlegen</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                </div>
+            `;
+            render();
+            document.getElementById('saveDkModal').onclick = () => {
+                const name = document.getElementById('mDkName').value.trim();
+                const basis = document.getElementById('mDkBasis').value.trim();
+                const description = document.getElementById('mDkDesc').value.trim();
+                if (!name) return alert('Bitte Name eingeben.');
+                if (!state.customDistKeys) state.customDistKeys = [];
+                state.customDistKeys.push({ id: generateId(), name, basis, description });
+                saveData(state);
+                closeModal();
+            };
         }
         
         // ============ EVENTS ============
         function attachEvents() {
-            // Navigation
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.onclick = () => { activeTab = btn.dataset.tab; render(); };
             });
-            
-            // Sidebar toggle
             const toggleBtn = document.getElementById('toggleSidebar');
             if (toggleBtn) toggleBtn.onclick = () => { sidebarCollapsed = !sidebarCollapsed; render(); };
+            
+            const modalOverlay = document.getElementById('modalOverlay');
+            if (modalOverlay) modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+            
+            // Property
+            const savePropBtn = document.getElementById('savePropertyBtn');
+            if (savePropBtn) savePropBtn.onclick = () => {
+                state.property = {
+                    name: document.getElementById('propName').value.trim(),
+                    owner: document.getElementById('propOwner').value.trim(),
+                    address: document.getElementById('propAddress').value.trim(),
+                    yearBuilt: document.getElementById('propYear').value,
+                    landArea: document.getElementById('propLandArea').value,
+                    totalArea: document.getElementById('propTotalArea').value || state.units.reduce((s,u) => s + u.size, 0),
+                    landRegistry: document.getElementById('propLandRegistry').value.trim(),
+                    phone: document.getElementById('propPhone').value.trim(),
+                    email: document.getElementById('propEmail').value.trim(),
+                    taxId: document.getElementById('propTaxId').value.trim(),
+                    bank: document.getElementById('propBank').value.trim(),
+                    notes: document.getElementById('propNotes').value.trim(),
+                };
+                if (!state.property.name || !state.property.owner || !state.property.address) {
+                    return alert('Bitte mindestens Objektbezeichnung, Eigentümer und Adresse ausfüllen.');
+                }
+                saveData(state);
+                render();
+                alert('Objektdaten gespeichert!');
+            };
             
             // Units
             const addUnitBtn = document.getElementById('addUnitBtn');
             if (addUnitBtn) addUnitBtn.onclick = () => showUnitForm(null);
-            document.querySelectorAll('[data-edit-unit]').forEach(btn => {
-                btn.onclick = () => showUnitForm(btn.dataset.editUnit);
-            });
-            document.querySelectorAll('[data-delete-unit]').forEach(btn => {
-                btn.onclick = () => {
-                    if (confirm('Wohneinheit wirklich löschen? Zugehörige Mieter werden ebenfalls entfernt.')) {
-                        state.units = state.units.filter(u => u.id !== btn.dataset.deleteUnit);
-                        state.tenants = state.tenants.filter(t => t.unitId !== btn.dataset.deleteUnit);
-                        saveData(state);
-                        render();
-                    }
-                };
+            document.querySelectorAll('[data-edit-unit]').forEach(btn => btn.onclick = () => showUnitForm(btn.dataset.editUnit));
+            document.querySelectorAll('[data-delete-unit]').forEach(btn => btn.onclick = () => {
+                if (confirm('Einheit und zugehörige Mieter löschen?')) {
+                    state.units = state.units.filter(u => u.id !== btn.dataset.deleteUnit);
+                    state.tenants = state.tenants.filter(t => t.unitId !== btn.dataset.deleteUnit);
+                    saveData(state); render();
+                }
             });
             
             // Tenants
             const addTenantBtn = document.getElementById('addTenantBtn');
             if (addTenantBtn && state.units.length > 0) addTenantBtn.onclick = () => showTenantForm(null);
-            document.querySelectorAll('[data-edit-tenant]').forEach(btn => {
-                btn.onclick = () => showTenantForm(btn.dataset.editTenant);
-            });
-            document.querySelectorAll('[data-delete-tenant]').forEach(btn => {
-                btn.onclick = () => {
-                    if (confirm('Mieter wirklich löschen?')) {
-                        state.tenants = state.tenants.filter(t => t.id !== btn.dataset.deleteTenant);
-                        saveData(state);
-                        render();
-                    }
-                };
+            document.querySelectorAll('[data-edit-tenant]').forEach(btn => btn.onclick = () => showTenantForm(btn.dataset.editTenant));
+            document.querySelectorAll('[data-delete-tenant]').forEach(btn => btn.onclick = () => {
+                if (confirm('Mieter löschen?')) { state.tenants = state.tenants.filter(t => t.id !== btn.dataset.deleteTenant); saveData(state); render(); }
             });
             
             // Costs
             const addCostBtn = document.getElementById('addCostBtn');
             if (addCostBtn) addCostBtn.onclick = () => showCostForm(null);
-            document.querySelectorAll('[data-filter]').forEach(btn => {
-                btn.onclick = () => { costFilter = btn.dataset.filter; render(); };
+            document.querySelectorAll('[data-filter]').forEach(btn => btn.onclick = () => { costFilter = btn.dataset.filter; render(); });
+            document.querySelectorAll('[data-edit-cost]').forEach(btn => btn.onclick = () => showCostForm(btn.dataset.editCost));
+            document.querySelectorAll('[data-delete-cost]').forEach(btn => btn.onclick = () => {
+                if (confirm('Kostenposition löschen?')) { state.costs = state.costs.filter(c => c.id !== btn.dataset.deleteCost); saveData(state); render(); }
             });
-            document.querySelectorAll('[data-edit-cost]').forEach(btn => {
-                btn.onclick = () => showCostForm(btn.dataset.editCost);
-            });
-            document.querySelectorAll('[data-delete-cost]').forEach(btn => {
-                btn.onclick = () => {
-                    if (confirm('Kostenposition wirklich löschen?')) {
-                        state.costs = state.costs.filter(c => c.id !== btn.dataset.deleteCost);
-                        saveData(state);
-                        render();
-                    }
-                };
+            
+            // Dist Keys
+            const addDkBtn = document.getElementById('addDistKeyBtn');
+            if (addDkBtn) addDkBtn.onclick = () => showDistKeyForm();
+            document.querySelectorAll('[data-delete-dk]').forEach(btn => btn.onclick = () => {
+                state.customDistKeys = (state.customDistKeys || []).filter(k => k.id !== btn.dataset.deleteDk);
+                saveData(state); render();
             });
             
             // Settlement
