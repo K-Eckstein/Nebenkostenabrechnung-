@@ -1,5 +1,5 @@
 use anyhow::Result;
-use crate::models::*;
+use crate::models::{Settlement, TenantSettlement};
 
 pub fn export_settlement_to_pdf(settlement: &Settlement, tenants: &[TenantSettlement]) -> Result<Vec<u8>> {
     // PDF-Export Implementierung

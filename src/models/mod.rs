@@ -8,4 +8,4 @@ pub use property::Property;
 pub use unit::Unit;
 pub use tenant::Tenant;
 pub use cost::{Cost, CostCategory, DistributionKey};
-pub use settlement::Settlement;
+pub use settlement::{Settlement, TenantSettlement};
