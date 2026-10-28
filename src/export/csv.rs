@@ -8,16 +8,14 @@ pub fn export_costs_to_csv(costs: &[Cost]) -> Result<String> {
     
     for cost in costs {
         let date_str = cost.date.to_string();
-        let category_str = cost.category.to_string();
         let amount_str = cost.amount.to_string();
-        let dist_key_str = cost.distribution_key.to_string();
         
         wtr.write_record(&[
-            &date_str,
-            &category_str,
-            &cost.description,
-            &amount_str,
-            &dist_key_str,
+            date_str.as_str(),
+            cost.category.to_string(),
+            cost.description.as_str(),
+            amount_str.as_str(),
+            cost.distribution_key.to_string(),
         ])?;
     }
     
