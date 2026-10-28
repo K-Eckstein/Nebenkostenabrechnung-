@@ -28,7 +28,7 @@
         .sidebar-toggle:hover { background: #f3f4f6; }
         .main { flex: 1; margin-left: 250px; transition: margin-left 0.3s; }
         .main.expanded { margin-left: 72px; }
-        .topbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+        .topbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         .topbar h1 { font-size: 18px; font-weight: 700; color: #1f2937; }
         .topbar-right { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 8px; }
         .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
@@ -69,7 +69,7 @@
         .form-input, .form-select, .form-textarea { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; transition: border-color 0.15s; font-family: inherit; }
         .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         .form-textarea { min-height: 60px; resize: vertical; }
-        .form-actions { display: flex; gap: 10px; margin-top: 14px; }
+        .form-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
         .form-hint { font-size: 11px; color: #9ca3af; margin-top: 2px; }
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 10px 14px; font-size: 12px; font-weight: 600; color: #4b5563; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
@@ -128,54 +128,65 @@
         .amount-positive { color: #dc2626; font-weight: 600; }
         .amount-negative { color: #16a34a; font-weight: 600; }
         .amount-zero { color: #6b7280; }
-        .prepayment-display { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 13px; }
-        .prepayment-display .amount { font-weight: 700; color: #166534; }
         .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
         .tab-btn { padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
         .tab-btn:hover { color: #374151; }
         .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
         
-        /* PDF Print Styles */
-        .pdf-page { display: none; }
-        .pdf-page.active { display: block; }
-        
-        @media print {
-            .sidebar, .topbar, .btn, .no-print, .nav-section { display: none !important; }
-            .main { margin-left: 0 !important; }
-            .content { padding: 0; max-width: 100%; }
-            .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
-            body { background: white; }
-            .pdf-print { display: block !important; }
-            .pdf-print .pdf-page { display: block !important; page-break-after: always; }
-            .pdf-print .pdf-page:last-child { page-break-after: auto; }
-        }
-        
-        .pdf-page {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 20mm;
-            margin: 0 auto 20px;
-            background: white;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            font-size: 11pt;
-            line-height: 1.5;
-        }
-        .pdf-header { display: flex; justify-content: space-between; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #2563eb; }
-        .pdf-header-left h1 { font-size: 18pt; color: #1f2937; margin-bottom: 4px; }
-        .pdf-header-left p { font-size: 10pt; color: #6b7280; }
-        .pdf-header-right { text-align: right; font-size: 10pt; color: #4b5563; }
+        /* PDF Styles */
+        .pdf-page { width: 210mm; min-height: 297mm; padding: 20mm; margin: 0 auto 20px; background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: 11pt; line-height: 1.5; }
+        .pdf-letterhead { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #2563eb; }
+        .pdf-letterhead-sender { font-size: 9pt; color: #6b7280; line-height: 1.4; }
+        .pdf-letterhead-sender strong { color: #1f2937; font-size: 11pt; display: block; margin-bottom: 2px; }
+        .pdf-letterhead-logo { text-align: right; }
+        .pdf-letterhead-logo h1 { font-size: 14pt; color: #2563eb; margin-bottom: 2px; }
+        .pdf-letterhead-logo p { font-size: 8pt; color: #6b7280; }
+        .pdf-recipient { margin: 20px 0 30px; padding: 15px; background: #f9fafb; border-left: 3px solid #2563eb; }
+        .pdf-recipient p { font-size: 11pt; line-height: 1.6; }
+        .pdf-date { text-align: right; font-size: 10pt; color: #6b7280; margin-bottom: 20px; }
+        .pdf-subject { font-size: 13pt; font-weight: 700; margin-bottom: 20px; color: #1f2937; }
         .pdf-section { margin-bottom: 20px; }
-        .pdf-section h2 { font-size: 13pt; color: #1f2937; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e5e7eb; }
+        .pdf-section h2 { font-size: 12pt; color: #1f2937; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e5e7eb; }
         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
         .pdf-table th { background: #f3f4f6; padding: 8px 10px; text-align: left; font-size: 10pt; font-weight: 600; border: 1px solid #e5e7eb; }
         .pdf-table td { padding: 8px 10px; font-size: 10pt; border: 1px solid #e5e7eb; }
         .pdf-table .text-right { text-align: right; }
         .pdf-total-row { background: #eff6ff !important; font-weight: 700; }
-        .pdf-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #6b7280; }
-        .pdf-balance { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f0fdf4; border: 2px solid #16a34a; border-radius: 8px; margin-top: 20px; }
-        .pdf-balance.nachzahlung { background: #fef2f2; border-color: #dc2626; }
+        .pdf-balance { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .pdf-balance.guthaben { background: #f0fdf4; border: 2px solid #16a34a; }
+        .pdf-balance.nachzahlung { background: #fef2f2; border: 2px solid #dc2626; }
+        .pdf-balance.ausgeglichen { background: #f9fafb; border: 2px solid #6b7280; }
         .pdf-balance-label { font-size: 12pt; font-weight: 600; }
         .pdf-balance-amount { font-size: 16pt; font-weight: 700; }
+        .pdf-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #6b7280; }
+        .pdf-footer-sender { margin-top: 15px; font-size: 8pt; color: #9ca3af; line-height: 1.4; border-top: 1px solid #e5e7eb; padding-top: 10px; }
+        .pdf-signature { margin-top: 40px; }
+        .pdf-signature-line { border-top: 1px solid #374151; width: 200px; margin-top: 40px; padding-top: 5px; font-size: 10pt; }
+        
+        /* Protokoll PDF */
+        .protokoll-header { text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #2563eb; }
+        .protokoll-header h1 { font-size: 18pt; color: #1f2937; }
+        .protokoll-header p { font-size: 11pt; color: #6b7280; margin-top: 4px; }
+        .protokoll-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .protokoll-box { padding: 15px; border-radius: 8px; text-align: center; }
+        .protokoll-box.nachzahlung { background: #fef2f2; border: 1px solid #fecaca; }
+        .protokoll-box.guthaben { background: #f0fdf4; border: 1px solid #bbf7d0; }
+        .protokoll-box.gesamt { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .protokoll-box-label { font-size: 10pt; color: #6b7280; }
+        .protokoll-box-value { font-size: 16pt; font-weight: 700; margin-top: 4px; }
+        .protokoll-box.nachzahlung .protokoll-box-value { color: #dc2626; }
+        .protokoll-box.guthaben .protokoll-box-value { color: #16a34a; }
+        .protokoll-box.gesamt .protokoll-box-value { color: #2563eb; }
+        
+        @media print {
+            .sidebar, .topbar, .btn, .no-print, .nav-section { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .content { padding: 0; max-width: 100%; }
+            .card { box-shadow: none; border: none; }
+            body { background: white; }
+            .pdf-page { box-shadow: none; margin: 0; page-break-after: always; }
+            .pdf-page:last-child { page-break-after: auto; }
+        }
         
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -191,71 +202,50 @@
     <div id="app"></div>
 
     <script>
-        // ============ DATENMODELL ============
-        const STORAGE_KEY = 'nebenkosten_v4';
+        const STORAGE_KEY = 'nebenkosten_v5';
         
         function loadData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (raw) return JSON.parse(raw);
             } catch(e) { console.error(e); }
-            return {
-                property: null,
-                units: [],
-                tenants: [],
-                costs: [],
-                customDistKeys: [],
-                prepayments: [], // { tenantId, monthlyAmount, startDate, endDate }
-            };
+            return { property: null, units: [], tenants: [], costs: [], customDistKeys: [], prepayments: [] };
         }
         
-        function saveData(data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
+        function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
         
         let state = loadData();
         let activeTab = 'dashboard';
         let sidebarCollapsed = false;
         let modalContent = null;
+        let pdfView = null; // { type: 'tenant'|'protokoll', tenantId?: string, year: string }
         
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+        function formatCurrency(a) { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(a); }
+        function formatDate(d) { return d ? new Date(d).toLocaleDateString('de-DE') : '—'; }
         
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
-        }
-        
-        function formatDate(dateStr) {
-            if (!dateStr) return '—';
-            return new Date(dateStr).toLocaleDateString('de-DE');
-        }
-        
-        // ============ BETRKV KONFORME KATEGORIEN ============
         const COST_CATEGORIES = {
-            heating: { label: 'Heizung', betrkv: true, heizkostenV: true, desc: 'Betriebskosten der zentralen Heizungsanlage (§ 1 HeizkostenV)' },
-            hot_water: { label: 'Warmwasser', betrkv: true, heizkostenV: true, desc: 'Betriebskosten der zentralen Warmwasserversorgung (§ 1 HeizkostenV)' },
-            water: { label: 'Kaltwasser', betrkv: true, desc: 'Wasserversorgung (§ 2 BetrKV Nr. 2)' },
-            sewage: { label: 'Abwasser', betrkv: true, desc: 'Entwässerung (§ 2 BetrKV Nr. 2)' },
-            garbage: { label: 'Müllabfuhr', betrkv: true, desc: 'Abfallbeseitigung (§ 2 BetrKV Nr. 8)' },
-            electricity_common: { label: 'Allgemeinstrom', betrkv: true, desc: 'Strom für Allgemeinflächen (§ 2 BetrKV Nr. 1)' },
-            insurance: { label: 'Versicherungen', betrkv: true, desc: 'Versicherungen (§ 2 BetrKV Nr. 13)' },
-            maintenance: { label: 'Instandhaltung', betrkv: false, desc: 'ACHTUNG: Nicht umlegbar! (§ 555a BGB - Vermieteranteil)' },
-            property_tax: { label: 'Grundsteuer', betrkv: true, desc: 'Grundsteuer (§ 2 BetrKV Nr. 1)' },
-            cleaning: { label: 'Reinigung', betrkv: true, desc: 'Treppenreinigung, Gartenpflege (§ 2 BetrKV Nr. 3,4)' },
-            gardening: { label: 'Gartenpflege', betrkv: true, desc: 'Pflege der Außenanlagen (§ 2 BetrKV Nr. 10)' },
-            elevator: { label: 'Aufzug', betrkv: true, desc: 'Betriebskosten Aufzug (§ 2 BetrKV Nr. 14)' },
-            chimney: { label: 'Schornsteinfeger', betrkv: true, desc: 'Schornsteinfeger (§ 2 BetrKV Nr. 6)' },
-            pest_control: { label: 'Schädlingsbekämpfung', betrkv: true, desc: 'Schädlingsbekämpfung (§ 2 BetrKV Nr. 7)' },
-            cable_tv: { label: 'Kabel-TV', betrkv: true, desc: 'Betriebskosten der Breitbandkommunikation (§ 2 BetrKV Nr. 15)' },
-            other: { label: 'Sonstiges', betrkv: true, desc: 'Sonstige Betriebskosten' },
+            heating: { label: 'Heizung', betrkv: true, heizkostenV: true },
+            hot_water: { label: 'Warmwasser', betrkv: true, heizkostenV: true },
+            water: { label: 'Kaltwasser', betrkv: true },
+            sewage: { label: 'Abwasser', betrkv: true },
+            garbage: { label: 'Müllabfuhr', betrkv: true },
+            electricity_common: { label: 'Allgemeinstrom', betrkv: true },
+            insurance: { label: 'Versicherungen', betrkv: true },
+            maintenance: { label: 'Instandhaltung', betrkv: false },
+            property_tax: { label: 'Grundsteuer', betrkv: true },
+            cleaning: { label: 'Reinigung', betrkv: true },
+            gardening: { label: 'Gartenpflege', betrkv: true },
+            elevator: { label: 'Aufzug', betrkv: true },
+            chimney: { label: 'Schornsteinfeger', betrkv: true },
+            pest_control: { label: 'Schädlingsbekämpfung', betrkv: true },
+            cable_tv: { label: 'Kabel-TV', betrkv: true },
+            other: { label: 'Sonstiges', betrkv: true },
         };
         
         const STANDARD_DIST_KEYS = {
-            area: 'Nach Wohnfläche (m²)',
-            persons: 'Nach Personenzahl',
-            units: 'Nach Wohneinheiten',
-            consumption: 'Nach Verbrauch',
+            area: 'Nach Wohnfläche (m²)', persons: 'Nach Personenzahl',
+            units: 'Nach Wohneinheiten', consumption: 'Nach Verbrauch',
         };
         
         function getAllDistKeys() {
@@ -264,193 +254,139 @@
             return keys;
         }
         
-        // ============ BERECHNUNGEN ============
         function isUnitVacant(unitId, costDate) {
-            const activeTenants = state.tenants.filter(t => {
+            return state.tenants.filter(t => {
                 if (t.unitId !== unitId) return false;
-                const d = new Date(costDate);
-                const moveIn = new Date(t.moveInDate);
-                const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
-                if (moveOut && d > moveOut) return false;
-                if (d < moveIn) return false;
+                const d = new Date(costDate), mi = new Date(t.moveInDate);
+                const mo = t.moveOutDate ? new Date(t.moveOutDate) : null;
+                if (mo && d > mo) return false;
+                if (d < mi) return false;
                 return true;
-            });
-            return activeTenants.length === 0;
+            }).length === 0;
         }
         
         function calculatePrepayments(tenantId, year) {
-            const prepayments = state.prepayments.filter(p => p.tenantId === tenantId);
-            if (prepayments.length === 0) return 0;
-            
-            const yearStart = new Date(year + '-01-01');
-            const yearEnd = new Date(year + '-12-31');
+            const preps = state.prepayments.filter(p => p.tenantId === tenantId);
+            if (preps.length === 0) return 0;
+            const ys = new Date(year + '-01-01'), ye = new Date(year + '-12-31');
             let total = 0;
-            
-            for (const p of prepayments) {
-                const startDate = new Date(p.startDate);
-                const endDate = p.endDate ? new Date(p.endDate) : yearEnd;
-                
-                // Berechne Monate im Abrechnungszeitraum
-                const effectiveStart = startDate > yearStart ? startDate : yearStart;
-                const effectiveEnd = endDate < yearEnd ? endDate : yearEnd;
-                
-                if (effectiveStart > effectiveEnd) continue;
-                
-                const months = (effectiveEnd.getFullYear() - effectiveStart.getFullYear()) * 12 + 
-                              (effectiveEnd.getMonth() - effectiveStart.getMonth()) + 1;
-                
+            for (const p of preps) {
+                const sd = new Date(p.startDate), ed = p.endDate ? new Date(p.endDate) : ye;
+                const es = sd > ys ? sd : ys, ee = ed < ye ? ed : ye;
+                if (es > ee) continue;
+                const months = (ee.getFullYear() - es.getFullYear()) * 12 + (ee.getMonth() - es.getMonth()) + 1;
                 total += p.monthlyAmount * months;
             }
-            
             return total;
         }
         
         function calculateSettlement(year) {
-            const filteredCosts = state.costs.filter(c => new Date(c.date).getFullYear().toString() === year);
-            const totalCosts = filteredCosts.reduce((s, c) => s + c.amount, 0);
-            
-            let vacantCosts = 0;
-            let occupiedCosts = 0;
-            
-            const umlegbarCosts = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv !== false);
-            const nichtUmlagbar = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv === false);
-            
+            const fc = state.costs.filter(c => new Date(c.date).getFullYear().toString() === year);
+            const umlegbar = fc.filter(c => COST_CATEGORIES[c.category]?.betrkv !== false);
+            const nichtUmlagbar = fc.filter(c => COST_CATEGORIES[c.category]?.betrkv === false);
+            let vacantCosts = 0, occupiedCosts = 0;
             const distributions = [];
             
-            for (const cost of umlegbarCosts) {
-                const occupiedUnits = state.units.filter(u => !isUnitVacant(u.id, cost.date));
+            for (const cost of umlegbar) {
+                const occUnits = state.units.filter(u => !isUnitVacant(u.id, cost.date));
+                if (occUnits.length === 0) { vacantCosts += cost.amount; continue; }
+                const occArea = occUnits.reduce((s,u) => s + u.size, 0);
+                const totArea = state.units.reduce((s,u) => s + u.size, 0);
+                const occShare = cost.distributionKey === 'area' ? occArea / totArea : 1;
+                const umlageFaehig = cost.amount * occShare;
+                vacantCosts += (cost.amount - umlageFaehig);
+                occupiedCosts += umlageFaehig;
                 
-                if (occupiedUnits.length === 0) {
-                    vacantCosts += cost.amount;
-                    continue;
-                }
-                
-                const allUnits = state.units;
-                const occupiedArea = occupiedUnits.reduce((s, u) => s + u.size, 0);
-                const totalArea = allUnits.reduce((s, u) => s + u.size, 0);
-                
-                const occupiedShare = cost.distributionKey === 'area' ? occupiedArea / totalArea : 1;
-                const umlageFähig = cost.amount * occupiedShare;
-                const vacantShare = cost.amount - umlageFähig;
-                
-                vacantCosts += vacantShare;
-                occupiedCosts += umlageFähig;
-                
-                const activeTenants = state.tenants.filter(t => {
+                const tenants = state.tenants.filter(t => {
                     const unit = state.units.find(u => u.id === t.unitId);
                     if (!unit) return false;
-                    const d = new Date(cost.date);
-                    const moveIn = new Date(t.moveInDate);
-                    const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
-                    if (moveOut && d > moveOut) return false;
-                    if (d < moveIn) return false;
+                    const d = new Date(cost.date), mi = new Date(t.moveInDate);
+                    const mo = t.moveOutDate ? new Date(t.moveOutDate) : null;
+                    if (mo && d > mo) return false;
+                    if (d < mi) return false;
                     return true;
                 });
                 
-                let totalWeight = 0;
-                for (const tenant of activeTenants) {
-                    const unit = state.units.find(u => u.id === tenant.unitId);
-                    if (!unit) continue;
-                    let weight = 1;
-                    if (cost.distributionKey === 'area') weight = unit.size;
-                    totalWeight += weight;
+                let tw = 0;
+                for (const t of tenants) {
+                    const u = state.units.find(x => x.id === t.unitId);
+                    if (!u) continue;
+                    tw += cost.distributionKey === 'area' ? u.size : 1;
                 }
+                if (tw === 0) continue;
                 
-                if (totalWeight === 0) continue;
-                
-                for (const tenant of activeTenants) {
-                    const unit = state.units.find(u => u.id === tenant.unitId);
-                    if (!unit) continue;
-                    let weight = 1;
-                    if (cost.distributionKey === 'area') weight = unit.size;
-                    const share = weight / totalWeight;
-                    const amount = Math.round(umlageFähig * share * 100) / 100;
-                    
+                for (const t of tenants) {
+                    const u = state.units.find(x => x.id === t.unitId);
+                    if (!u) continue;
+                    const w = cost.distributionKey === 'area' ? u.size : 1;
+                    const share = w / tw;
                     distributions.push({
-                        tenantId: tenant.id,
-                        tenantName: tenant.name,
-                        unitId: unit.id,
-                        unitName: unit.name,
-                        category: cost.category,
-                        amount: amount,
+                        tenantId: t.id, tenantName: t.name, unitId: u.id, unitName: u.name,
+                        category: cost.category, amount: Math.round(umlageFaehig * share * 100) / 100,
                         share: Math.round(share * 10000) / 100,
                     });
                 }
             }
             
-            const vacantUnits = state.units.filter(u => {
-                return state.tenants.filter(t => {
-                    if (t.unitId !== u.id) return false;
-                    const now = new Date(year + '-12-31');
-                    const yearStart = new Date(year + '-01-01');
-                    const moveIn = new Date(t.moveInDate);
-                    const moveOut = t.moveOutDate ? new Date(t.moveOutDate) : null;
-                    if (moveOut && yearStart > moveOut) return false;
-                    if (moveIn > now) return false;
-                    return true;
-                }).length === 0;
-            });
+            const vacantUnits = state.units.filter(u => state.tenants.filter(t => {
+                if (t.unitId !== u.id) return false;
+                const now = new Date(year + '-12-31'), ys = new Date(year + '-01-01');
+                const mi = new Date(t.moveInDate), mo = t.moveOutDate ? new Date(t.moveOutDate) : null;
+                if (mo && ys > mo) return false;
+                if (mi > now) return false;
+                return true;
+            }).length === 0);
             
-            return {
-                totalCosts,
-                umlegbarCosts: umlegbarCosts.reduce((s, c) => s + c.amount, 0),
-                nichtUmlagbar: nichtUmlagbar.reduce((s, c) => s + c.amount, 0),
-                vacantCosts,
-                occupiedCosts,
-                distributions,
-                vacantUnits,
-                costsByCategory: getCostsByCategory(umlegbarCosts),
-                allCostsByCategory: getCostsByCategory(filteredCosts),
-            };
+            const byCat = {};
+            umlegbar.forEach(c => { byCat[c.category] = (byCat[c.category] || 0) + c.amount; });
+            
+            return { totalCosts: fc.reduce((s,c) => s + c.amount, 0), umlegbarTotal: umlegbar.reduce((s,c) => s + c.amount, 0), nichtUmlagbar: nichtUmlagbar.reduce((s,c) => s + c.amount, 0), vacantCosts, occupiedCosts, distributions, vacantUnits, costsByCategory: byCat };
         }
         
-        function getCostsByCategory(costs) {
-            const result = {};
-            costs.forEach(c => { result[c.category] = (result[c.category] || 0) + c.amount; });
-            return result;
+        function getTenantSettlement(tenantId, year) {
+            const result = calculateSettlement(year);
+            const tenantDists = result.distributions.filter(d => d.tenantId === tenantId);
+            const total = tenantDists.reduce((s,d) => s + d.amount, 0);
+            const categories = {};
+            tenantDists.forEach(d => { categories[d.category] = (categories[d.category] || 0) + d.amount; });
+            const prepayments = calculatePrepayments(tenantId, year);
+            return { total, categories, prepayments, balance: prepayments - total };
         }
         
         // ============ RENDER ============
         function render() {
-            const app = document.getElementById('app');
-            app.innerHTML = `
+            document.getElementById('app').innerHTML = `
                 <div class="app">
                     ${renderSidebar()}
                     <div class="main ${sidebarCollapsed ? 'expanded' : ''}">
                         ${renderTopbar()}
-                        <div class="content">
-                            ${renderContent()}
-                        </div>
+                        <div class="content">${renderContent()}</div>
                     </div>
                 </div>
-                ${modalContent ? renderModal() : ''}
+                ${modalContent ? `<div class="modal-overlay" id="modalOverlay"><div class="modal">${modalContent}</div></div>` : ''}
             `;
             attachEvents();
         }
         
         function renderSidebar() {
-            const tabs = [
-                { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-line' },
+            const items = [
+                { section: 'Übersicht', tabs: [{ id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-line' }] },
+                { section: 'Stammdaten', tabs: [
+                    { id: 'property', label: 'Objekt & Vermieter', icon: 'fas fa-home' },
+                    { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building' },
+                    { id: 'tenants', label: 'Mieter', icon: 'fas fa-users' },
+                    { id: 'prepayments', label: 'Vorauszahlungen', icon: 'fas fa-money-bill-wave' },
+                ]},
+                { section: 'Bewirtschaftung', tabs: [
+                    { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt' },
+                    { id: 'distkeys', label: 'Verteilerschlüssel', icon: 'fas fa-sliders-h' },
+                    { id: 'yearend', label: 'Jahreswechsel', icon: 'fas fa-calendar-plus' },
+                ]},
+                { section: 'Abrechnung', tabs: [
+                    { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar' },
+                    { id: 'protokoll', label: 'Vermieter-Protokoll', icon: 'fas fa-clipboard-list' },
+                ]},
             ];
-            const stammdaten = [
-                { id: 'property', label: 'Objekt', icon: 'fas fa-home' },
-                { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building' },
-                { id: 'tenants', label: 'Mieter', icon: 'fas fa-users' },
-                { id: 'prepayments', label: 'Vorauszahlungen', icon: 'fas fa-money-bill-wave' },
-            ];
-            const bewirtschaftung = [
-                { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt' },
-                { id: 'distkeys', label: 'Verteilerschlüssel', icon: 'fas fa-sliders-h' },
-                { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar' },
-            ];
-            
-            const renderNavBtn = (t) => `
-                <button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">
-                    <i class="${t.icon}"></i>
-                    ${!sidebarCollapsed ? `<span>${t.label}</span>` : ''}
-                </button>
-            `;
-            
             return `
                 <aside class="sidebar ${sidebarCollapsed ? 'collapsed' : ''}">
                     <div class="sidebar-header">
@@ -458,12 +394,15 @@
                         ${!sidebarCollapsed ? `<div><div class="sidebar-title">${state.property?.name || 'Nebenkosten'}</div><div class="sidebar-subtitle">Abrechnung</div></div>` : ''}
                     </div>
                     <nav class="nav">
-                        ${!sidebarCollapsed ? '<div class="nav-section">Übersicht</div>' : ''}
-                        ${tabs.map(renderNavBtn).join('')}
-                        ${!sidebarCollapsed ? '<div class="nav-section">Stammdaten</div>' : ''}
-                        ${stammdaten.map(renderNavBtn).join('')}
-                        ${!sidebarCollapsed ? '<div class="nav-section">Bewirtschaftung</div>' : ''}
-                        ${bewirtschaftung.map(renderNavBtn).join('')}
+                        ${items.map(s => `
+                            ${!sidebarCollapsed ? `<div class="nav-section">${s.section}</div>` : ''}
+                            ${s.tabs.map(t => `
+                                <button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">
+                                    <i class="${t.icon}"></i>
+                                    ${!sidebarCollapsed ? `<span>${t.label}</span>` : ''}
+                                </button>
+                            `).join('')}
+                        `).join('')}
                     </nav>
                     <div class="sidebar-footer">
                         <button class="sidebar-toggle" id="toggleSidebar">
@@ -476,23 +415,12 @@
         }
         
         function renderTopbar() {
-            const titles = {
-                dashboard: 'Dashboard', property: 'Objekt-Stammdaten', units: 'Wohneinheiten',
-                tenants: 'Mieter', prepayments: 'Vorauszahlungen', costs: 'Betriebskosten',
-                distkeys: 'Verteilerschlüssel', settlement: 'Nebenkostenabrechnung'
-            };
-            return `
-                <header class="topbar">
-                    <h1>${titles[activeTab] || 'Dashboard'}</h1>
-                    <div class="topbar-right">
-                        <i class="fas fa-database"></i>
-                        <span>Lokale Speicherung</span>
-                    </div>
-                </header>
-            `;
+            const titles = { dashboard:'Dashboard', property:'Objekt & Vermieter', units:'Wohneinheiten', tenants:'Mieter', prepayments:'Vorauszahlungen', costs:'Betriebskosten', distkeys:'Verteilerschlüssel', yearend:'Jahreswechsel', settlement:'Nebenkostenabrechnung', protokoll:'Vermieter-Protokoll' };
+            return `<header class="topbar"><h1>${titles[activeTab]}</h1><div class="topbar-right"><i class="fas fa-database"></i><span>Lokale Speicherung</span></div></header>`;
         }
         
         function renderContent() {
+            if (pdfView) return renderPdfView();
             switch(activeTab) {
                 case 'dashboard': return renderDashboard();
                 case 'property': return renderProperty();
@@ -501,220 +429,112 @@
                 case 'prepayments': return renderPrepayments();
                 case 'costs': return renderCosts();
                 case 'distkeys': return renderDistKeys();
+                case 'yearend': return renderYearEnd();
                 case 'settlement': return renderSettlement();
+                case 'protokoll': return renderProtokoll();
             }
         }
         
         // ============ DASHBOARD ============
         function renderDashboard() {
-            const totalCosts = state.costs.reduce((s,c) => s + c.amount, 0);
-            const totalArea = state.units.reduce((s,u) => s + u.size, 0);
-            const occupiedUnits = state.units.filter(u => state.tenants.some(t => t.unitId === u.id));
-            const vacantUnits = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
-            const currentYear = new Date().getFullYear();
-            const yearCosts = state.costs.filter(c => new Date(c.date).getFullYear() === currentYear);
-            const yearTotal = yearCosts.reduce((s,c) => s + c.amount, 0);
-            const nichtUmlagbar = state.costs.filter(c => COST_CATEGORIES[c.category]?.betrkv === false).reduce((s,c) => s + c.amount, 0);
-            const totalPrepayments = state.prepayments.reduce((s,p) => s + p.monthlyAmount * 12, 0);
+            const tc = state.costs.reduce((s,c) => s + c.amount, 0);
+            const ta = state.units.reduce((s,u) => s + u.size, 0);
+            const occ = state.units.filter(u => state.tenants.some(t => t.unitId === u.id));
+            const vac = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
+            const cy = new Date().getFullYear();
+            const yc = state.costs.filter(c => new Date(c.date).getFullYear() === cy);
+            const yt = yc.reduce((s,c) => s + c.amount, 0);
+            const nu = state.costs.filter(c => COST_CATEGORIES[c.category]?.betrkv === false).reduce((s,c) => s + c.amount, 0);
+            const tp = state.prepayments.reduce((s,p) => s + p.monthlyAmount * 12, 0);
             
             return `
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fas fa-home"></i></div>
-                        <div><div class="stat-value">${state.property ? '✓' : '—'}</div><div class="stat-label">Objekt angelegt</div></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fas fa-building"></i></div>
-                        <div><div class="stat-value">${state.units.length}</div><div class="stat-label">Einheiten (${totalArea.toFixed(0)} m²)</div></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fas fa-users"></i></div>
-                        <div><div class="stat-value">${state.tenants.length}</div><div class="stat-label">Mieter</div></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon orange"><i class="fas fa-receipt"></i></div>
-                        <div><div class="stat-value">${formatCurrency(yearTotal)}</div><div class="stat-label">Kosten ${currentYear}</div></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
-                        <div><div class="stat-value">${occupiedUnits.length}</div><div class="stat-label">Vermietet</div></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div><div class="stat-value">${vacantUnits.length}</div><div class="stat-label">Leerstände</div></div>
-                    </div>
+                    <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-home"></i></div><div><div class="stat-value">${state.property ? '✓' : '—'}</div><div class="stat-label">Objekt</div></div></div>
+                    <div class="stat-card"><div class="stat-icon green"><i class="fas fa-building"></i></div><div><div class="stat-value">${state.units.length}</div><div class="stat-label">Einheiten (${ta.toFixed(0)} m²)</div></div></div>
+                    <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-users"></i></div><div><div class="stat-value">${state.tenants.length}</div><div class="stat-label">Mieter</div></div></div>
+                    <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-receipt"></i></div><div><div class="stat-value">${formatCurrency(yt)}</div><div class="stat-label">Kosten ${cy}</div></div></div>
+                    <div class="stat-card"><div class="stat-icon green"><i class="fas fa-check-circle"></i></div><div><div class="stat-value">${occ.length}</div><div class="stat-label">Vermietet</div></div></div>
+                    <div class="stat-card"><div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div><div><div class="stat-value">${vac.length}</div><div class="stat-label">Leerstände</div></div></div>
                 </div>
-                
-                ${nichtUmlagbar > 0 ? `
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <div>
-                        <strong>Nicht umlegbare Kosten: ${formatCurrency(nichtUmlagbar)}</strong><br>
-                        <span style="font-size:12px;">Instandhaltungskosten sind nach § 555a BGB nicht auf Mieter umlegbar und vom Vermieter zu tragen.</span>
-                    </div>
-                </div>
-                ` : ''}
-                
-                ${vacantUnits.length > 0 ? `
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>${vacantUnits.length} Leerstand/Einheiten</strong> — Kosten werden nicht auf Mieter umgelegt (§ 556a BGB)<br>
-                        <span style="font-size:12px;">Betroffen: ${vacantUnits.map(u => u.name).join(', ')}</span>
-                    </div>
-                </div>
-                ` : ''}
-                
+                ${nu > 0 ? `<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i><div><strong>Nicht umlegbar: ${formatCurrency(nu)}</strong><br><span style="font-size:12px;">Instandhaltung nach § 555a BGB vom Vermieter zu tragen.</span></div></div>` : ''}
+                ${vac.length > 0 ? `<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i><div><strong>${vac.length} Leerstand</strong> — Kosten nicht auf Mieter umgelegt<br><span style="font-size:12px;">${vac.map(u => u.name).join(', ')}</span></div></div>` : ''}
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:16px;">
                     <div class="card">
                         <h3 class="card-title">Kosten nach Kategorie</h3>
-                        <div style="margin-top:12px;">
-                            ${(() => {
-                                const byCat = getCostsByCategory(state.costs);
-                                const sorted = Object.entries(byCat).sort((a,b) => b[1]-a[1]).slice(0,6);
-                                if (sorted.length === 0) return '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Noch keine Kosten</p></div>';
-                                return sorted.map(([cat, amount]) => {
-                                    const pct = totalCosts > 0 ? (amount/totalCosts*100) : 0;
-                                    const isNotUmlagbar = COST_CATEGORIES[cat]?.betrkv === false;
-                                    return `
-                                        <div style="margin-bottom:10px;">
-                                            <div class="progress-label">
-                                                <span>${COST_CATEGORIES[cat]?.label || cat} ${isNotUmlagbar ? '<span class="badge badge-red">Nicht umlegbar</span>' : ''}</span>
-                                                <span>${formatCurrency(amount)}</span>
-                                            </div>
-                                            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%; ${isNotUmlagbar ? 'background:linear-gradient(90deg,#ef4444,#dc2626)' : ''}"></div></div>
-                                        </div>
-                                    `;
-                                }).join('');
-                            })()}
-                        </div>
+                        <div style="margin-top:12px;">${(() => {
+                            const bc = {}; state.costs.forEach(c => { bc[c.category] = (bc[c.category] || 0) + c.amount; });
+                            const sorted = Object.entries(bc).sort((a,b) => b[1]-a[1]).slice(0,6);
+                            if (!sorted.length) return '<div class="empty-state"><i class="fas fa-chart-bar"></i><p>Noch keine Kosten</p></div>';
+                            return sorted.map(([cat, amt]) => {
+                                const pct = tc > 0 ? (amt/tc*100) : 0;
+                                const nu2 = COST_CATEGORIES[cat]?.betrkv === false;
+                                return `<div style="margin-bottom:10px;"><div class="progress-label"><span>${COST_CATEGORIES[cat]?.label || cat} ${nu2 ? '<span class="badge badge-red">Nicht umlegbar</span>' : ''}</span><span>${formatCurrency(amt)}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%; ${nu2 ? 'background:linear-gradient(90deg,#ef4444,#dc2626)' : ''}"></div></div></div>`;
+                            }).join('');
+                        })()}</div>
                     </div>
-                    
                     <div class="card">
-                        <h3 class="card-title">Vorauszahlungen ${currentYear}</h3>
+                        <h3 class="card-title">Vorauszahlungen ${cy}</h3>
                         <div style="margin-top:12px;">
-                            <div style="display:flex; justify-content:space-between; padding:12px; background:#f0fdf4; border-radius:8px; margin-bottom:8px;">
-                                <span style="font-size:13px; color:#166534;">Monatlich gesamt</span>
-                                <span style="font-weight:700; color:#166534;">${formatCurrency(totalPrepayments / 12)}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:12px; background:#eff6ff; border-radius:8px;">
-                                <span style="font-size:13px; color:#1e40af;">Jährlich gesamt</span>
-                                <span style="font-weight:700; color:#1e40af;">${formatCurrency(totalPrepayments)}</span>
-                            </div>
-                            <div style="margin-top:12px; font-size:12px; color:#6b7280;">
-                                <i class="fas fa-info-circle"></i> ${state.prepayments.length} Vorauszahlungen erfasst
-                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:12px; background:#f0fdf4; border-radius:8px; margin-bottom:8px;"><span style="font-size:13px; color:#166534;">Monatlich</span><span style="font-weight:700; color:#166534;">${formatCurrency(tp/12)}</span></div>
+                            <div style="display:flex; justify-content:space-between; padding:12px; background:#eff6ff; border-radius:8px;"><span style="font-size:13px; color:#1e40af;">Jährlich</span><span style="font-weight:700; color:#1e40af;">${formatCurrency(tp)}</span></div>
                         </div>
                     </div>
                 </div>
-                
-                ${!state.property ? `
-                <div class="alert alert-info" style="margin-top:16px;">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>Erste Schritte:</strong> Beginnen Sie mit der Anlage Ihres Objekts unter "Objekt" in der Seitenleiste.
-                    </div>
-                </div>
-                ` : ''}
             `;
         }
         
-        // ============ OBJEKT ============
+        // ============ OBJEKT & VERMIETER ============
         function renderProperty() {
             const p = state.property;
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Gesamtobjekt / Immobilie</h2>
-                            <p class="card-subtitle">Stammdaten der Immobilie</p>
-                        </div>
+                    <div class="card-header"><div><h2 class="card-title">Objekt & Vermieter</h2><p class="card-subtitle">Stammdaten der Immobilie und des Vermieters</p></div></div>
+                    <div class="alert alert-legal"><i class="fas fa-balance-scale"></i><div><strong>Rechtlicher Hinweis:</strong> Die Daten werden als Briefkopf auf jeder Mieter-Abrechnung verwendet. Der Vermieter ist für die ordnungsgemäße Abrechnung nach § 556 BGB verantwortlich.</div></div>
+                    <div class="tab-bar no-print">
+                        <button class="tab-btn ${!window._propTab || window._propTab === 'objekt' ? 'active' : ''}" onclick="window._propTab='objekt'; render()">Objektdaten</button>
+                        <button class="tab-btn ${window._propTab === 'vermieter' ? 'active' : ''}" onclick="window._propTab='vermieter'; render()">Vermieter / Briefkopf</button>
                     </div>
-                    
-                    <div class="alert alert-legal">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <strong>Rechtlicher Hinweis:</strong> Die Objektstammdaten sind wichtig für die korrekte Nebenkostenabrechnung nach § 556 BGB. 
-                            Der Eigentümer ist für die ordnungsgemäße Abrechnung verantwortlich.
-                        </div>
+                    ${(!window._propTab || window._propTab === 'objekt') ? `
+                    <div class="form-grid">
+                        <div class="form-group"><label class="form-label">Objektbezeichnung <span class="req">*</span></label><input class="form-input" id="propName" value="${p?.name || ''}" placeholder="z.B. Mehrfamilienhaus Musterstraße 12"></div>
+                        <div class="form-group"><label class="form-label">Baujahr</label><input class="form-input" type="number" id="propYear" value="${p?.yearBuilt || ''}"></div>
+                        <div class="form-group full"><label class="form-label">Objektadresse <span class="req">*</span></label><input class="form-input" id="propAddress" value="${p?.address || ''}" placeholder="Straße, Hausnr., PLZ, Ort"></div>
+                        <div class="form-group"><label class="form-label">Grundstücksfläche (m²)</label><input class="form-input" type="number" id="propLandArea" value="${p?.landArea || ''}" step="0.01"></div>
+                        <div class="form-group"><label class="form-label">Flurstück / Grundbuch</label><input class="form-input" id="propLandRegistry" value="${p?.landRegistry || ''}"></div>
+                        <div class="form-group full"><label class="form-label">Bemerkungen</label><textarea class="form-textarea" id="propNotes">${p?.notes || ''}</textarea></div>
                     </div>
-                    
-                    <div id="propertyForm">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Objektbezeichnung <span class="req">*</span></label>
-                                <input class="form-input" id="propName" value="${p?.name || ''}" placeholder="z.B. Mehrfamilienhaus Musterstraße 12">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Eigentümer <span class="req">*</span></label>
-                                <input class="form-input" id="propOwner" value="${p?.owner || ''}" placeholder="Name des Eigentümers">
-                            </div>
-                            <div class="form-group full">
-                                <label class="form-label">Adresse <span class="req">*</span></label>
-                                <input class="form-input" id="propAddress" value="${p?.address || ''}" placeholder="Straße, Hausnr., PLZ, Ort">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Baujahr</label>
-                                <input class="form-input" type="number" id="propYear" value="${p?.yearBuilt || ''}" placeholder="z.B. 1985">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Grundstücksfläche (m²)</label>
-                                <input class="form-input" type="number" id="propLandArea" value="${p?.landArea || ''}" step="0.01" placeholder="z.B. 850">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Gesamt-Wohnfläche (m²)</label>
-                                <input class="form-input" type="number" id="propTotalArea" value="${p?.totalArea || ''}" step="0.01" placeholder="Automatisch berechnet">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Flurstück / Grundbuch</label>
-                                <input class="form-input" id="propLandRegistry" value="${p?.landRegistry || ''}" placeholder="z.B. Flur 3, Nr. 123">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Eigentümer-Telefon</label>
-                                <input class="form-input" id="propPhone" value="${p?.phone || ''}" placeholder="Telefonnummer">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Eigentümer-E-Mail</label>
-                                <input class="form-input" type="email" id="propEmail" value="${p?.email || ''}" placeholder="email@example.de">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Steuernummer</label>
-                                <input class="form-input" id="propTaxId" value="${p?.taxId || ''}" placeholder="Für Abrechnungen">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Bankverbindung</label>
-                                <input class="form-input" id="propBank" value="${p?.bank || ''}" placeholder="IBAN">
-                            </div>
-                            <div class="form-group full">
-                                <label class="form-label">Bemerkungen</label>
-                                <textarea class="form-textarea" id="propNotes" placeholder="Weitere Hinweise zum Objekt...">${p?.notes || ''}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button class="btn btn-primary" id="savePropertyBtn"><i class="fas fa-save"></i> Speichern</button>
-                        </div>
+                    ` : `
+                    <div class="alert alert-info"><i class="fas fa-info-circle"></i><div>Diese Daten erscheinen als <strong>Absender/Briefkopf</strong> auf jeder Einzelabrechnung. Kann eine Hausverwaltung oder eine andere Anschrift sein.</div></div>
+                    <div class="form-grid">
+                        <div class="form-group"><label class="form-label">Name / Firma <span class="req">*</span></label><input class="form-input" id="propOwner" value="${p?.owner || ''}" placeholder="Max Mustermann oder Immobilien GmbH"></div>
+                        <div class="form-group"><label class="form-label">Zusatz (optional)</label><input class="form-input" id="propOwnerAdd" value="${p?.ownerAdd || ''}" placeholder="z.B. c/o Hausverwaltung Müller"></div>
+                        <div class="form-group full"><label class="form-label">Anschrift (Briefkopf) <span class="req">*</span></label><input class="form-input" id="propOwnerAddress" value="${p?.ownerAddress || ''}" placeholder="Straße, Hausnr., PLZ, Ort"></div>
+                        <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="propPhone" value="${p?.phone || ''}"></div>
+                        <div class="form-group"><label class="form-label">E-Mail</label><input class="form-input" type="email" id="propEmail" value="${p?.email || ''}"></div>
+                        <div class="form-group"><label class="form-label">Steuernummer</label><input class="form-input" id="propTaxId" value="${p?.taxId || ''}"></div>
+                        <div class="form-group"><label class="form-label">IBAN</label><input class="form-input" id="propBank" value="${p?.bank || ''}" placeholder="DE89 3704 0044 0532 0130 00"></div>
+                        <div class="form-group"><label class="form-label">Bank</label><input class="form-input" id="propBankName" value="${p?.bankName || ''}" placeholder="Commerzbank"></div>
                     </div>
+                    `}
+                    <div class="form-actions"><button class="btn btn-primary" id="savePropertyBtn"><i class="fas fa-save"></i> Speichern</button></div>
                 </div>
-                
                 ${p ? `
                 <div class="card">
-                    <h3 class="card-title">Objektübersicht</h3>
-                    <div style="margin-top:12px; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
-                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
-                            <div style="font-size:11px; color:#6b7280;">Objekt</div>
-                            <div style="font-weight:600; font-size:14px;">${p.name}</div>
+                    <h3 class="card-title">Briefkopf-Vorschau</h3>
+                    <div style="margin-top:12px; padding:20px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:2px solid #2563eb; padding-bottom:12px; margin-bottom:12px;">
+                            <div style="font-size:11px; color:#6b7280; line-height:1.5;">
+                                <strong style="color:#1f2937; font-size:13px; display:block;">${p.owner || '—'}</strong>
+                                ${p.ownerAdd || ''}<br>
+                                ${p.ownerAddress || '—'}
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:14px; font-weight:700; color:#2563eb;">${p.name || 'Objekt'}</div>
+                                <div style="font-size:9px; color:#6b7280;">${p.address || ''}</div>
+                            </div>
                         </div>
-                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
-                            <div style="font-size:11px; color:#6b7280;">Eigentümer</div>
-                            <div style="font-weight:600; font-size:14px;">${p.owner || '—'}</div>
-                        </div>
-                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
-                            <div style="font-size:11px; color:#6b7280;">Adresse</div>
-                            <div style="font-weight:600; font-size:14px;">${p.address || '—'}</div>
-                        </div>
-                        <div style="padding:12px; background:#f9fafb; border-radius:8px;">
-                            <div style="font-size:11px; color:#6b7280;">Wohneinheiten</div>
-                            <div style="font-weight:600; font-size:14px;">${state.units.length}</div>
+                        <div style="font-size:10px; color:#9ca3af; line-height:1.4;">
+                            ${[p.phone && 'Tel: '+p.phone, p.email, p.bankName && 'Bank: '+p.bankName, p.bank && 'IBAN: '+p.bank, p.taxId && 'St.-Nr: '+p.taxId].filter(Boolean).join(' | ')}
                         </div>
                     </div>
                 </div>
@@ -724,51 +544,20 @@
         
         // ============ WOHOEINHEITEN ============
         function renderUnits() {
-            const totalArea = state.units.reduce((s,u) => s + u.size, 0);
-            const vacantUnits = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
-            
+            const ta = state.units.reduce((s,u) => s + u.size, 0);
+            const vac = state.units.filter(u => !state.tenants.some(t => t.unitId === u.id));
             return `
-                ${!state.property ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst das Objekt an.</div>' : ''}
-                
+                ${!state.property ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte zuerst das Objekt anlegen.</div>' : ''}
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Wohneinheiten</h2>
-                            <p class="card-subtitle">${state.units.length} Einheiten · ${totalArea.toFixed(0)} m² · ${vacantUnits.length} leerstehend</p>
-                        </div>
-                        <button class="btn btn-primary" id="addUnitBtn"><i class="fas fa-plus"></i> Neue Einheit</button>
-                    </div>
-                    <div id="unitFormArea"></div>
-                    
+                    <div class="card-header"><div><h2 class="card-title">Wohneinheiten</h2><p class="card-subtitle">${state.units.length} Einheiten · ${ta.toFixed(0)} m² · ${vac.length} leerstehend</p></div><button class="btn btn-primary" id="addUnitBtn"><i class="fas fa-plus"></i> Neue Einheit</button></div>
                     <div class="unit-grid" style="margin-top:16px;">
                         ${state.units.map(u => {
-                            const tenant = state.tenants.find(t => t.unitId === u.id && !t.moveOutDate);
-                            const isVacant = !tenant;
-                            return `
-                                <div class="unit-card ${isVacant ? 'vacant' : ''}">
-                                    <div class="unit-card-header">
-                                        <div>
-                                            <h3 style="font-size:15px; font-weight:600;">${u.name}</h3>
-                                            ${isVacant ? '<span class="badge badge-yellow">Leerstehend</span>' : `<span class="badge badge-green">${tenant.name}</span>`}
-                                        </div>
-                                        <div style="display:flex; gap:4px;">
-                                            <button class="btn btn-sm btn-secondary" data-edit-unit="${u.id}"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" data-delete-unit="${u.id}"><i class="fas fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="unit-card-info">
-                                        <p><i class="fas fa-ruler-combined"></i> ${u.size} m²</p>
-                                        <p><i class="fas fa-door-open"></i> ${u.rooms} Zimmer</p>
-                                        <p><i class="fas fa-layer-group"></i> ${u.floor}. Etage</p>
-                                        ${u.type ? `<p><i class="fas fa-tag"></i> ${u.type}</p>` : ''}
-                                        ${u.heatingType ? `<p><i class="fas fa-fire"></i> ${u.heatingType}</p>` : ''}
-                                    </div>
-                                </div>
-                            `;
+                            const t = state.tenants.find(t => t.unitId === u.id && !t.moveOutDate);
+                            const iv = !t;
+                            return `<div class="unit-card ${iv ? 'vacant' : ''}"><div class="unit-card-header"><div><h3 style="font-size:15px; font-weight:600;">${u.name}</h3>${iv ? '<span class="badge badge-yellow">Leerstehend</span>' : `<span class="badge badge-green">${t.name}</span>`}</div><div style="display:flex; gap:4px;"><button class="btn btn-sm btn-secondary" data-edit-unit="${u.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-delete-unit="${u.id}"><i class="fas fa-trash"></i></button></div></div><div class="unit-card-info"><p><i class="fas fa-ruler-combined"></i> ${u.size} m²</p><p><i class="fas fa-door-open"></i> ${u.rooms} Zimmer</p><p><i class="fas fa-layer-group"></i> ${u.floor}. Etage</p>${u.type ? `<p><i class="fas fa-tag"></i> ${u.type}</p>` : ''}${u.heatingType ? `<p><i class="fas fa-fire"></i> ${u.heatingType}</p>` : ''}</div></div>`;
                         }).join('')}
                     </div>
-                    
-                    ${state.units.length === 0 ? '<div class="empty-state"><i class="fas fa-building"></i><p>Noch keine Wohneinheiten angelegt</p></div>' : ''}
+                    ${state.units.length === 0 ? '<div class="empty-state"><i class="fas fa-building"></i><p>Noch keine Einheiten</p></div>' : ''}
                 </div>
             `;
         }
@@ -777,121 +566,27 @@
         function renderTenants() {
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Mieter</h2>
-                            <p class="card-subtitle">${state.tenants.length} Mieter</p>
-                        </div>
-                        <button class="btn btn-success" id="addTenantBtn" ${state.units.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neuer Mieter</button>
-                    </div>
-                    
-                    ${state.units.length === 0 ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst Wohneinheiten an.</div>' : ''}
-                    
-                    <div class="alert alert-legal">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <strong>§ 556 BGB:</strong> Der Verteilerschlüssel muss im Mietvertrag vereinbart sein. 
-                            Heiz- und Warmwasserkosten sind nach HeizkostenV zu 50-70% nach Verbrauch abzurechnen.
-                        </div>
-                    </div>
-                    
-                    <div id="tenantFormArea"></div>
-                    
-                    ${state.tenants.length > 0 ? `
-                    <div style="overflow-x:auto; margin-top:16px;">
-                        <table>
-                            <thead><tr>
-                                <th>Name</th><th>Einheit</th><th>Einzug</th><th>Auszug</th><th>Vorauszahlung</th><th class="text-right">Aktionen</th>
-                            </tr></thead>
-                            <tbody>
-                                ${state.tenants.map(t => {
-                                    const unit = state.units.find(u => u.id === t.unitId);
-                                    const prepay = state.prepayments.find(p => p.tenantId === t.id);
-                                    return `
-                                    <tr>
-                                        <td style="font-weight:500;">${t.name}</td>
-                                        <td>${unit ? unit.name : '—'}</td>
-                                        <td>${formatDate(t.moveInDate)}</td>
-                                        <td>${t.moveOutDate ? `<span class="badge badge-red">${formatDate(t.moveOutDate)}</span>` : '<span class="badge badge-green">Aktiv</span>'}</td>
-                                        <td>${prepay ? `<span class="badge badge-blue">${formatCurrency(prepay.monthlyAmount)}/Monat</span>` : '<span class="badge badge-gray">Keine</span>'}</td>
-                                        <td class="text-right">
-                                            <button class="btn btn-sm btn-secondary" data-edit-tenant="${t.id}"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" data-delete-tenant="${t.id}"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>`;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    ` : '<div class="empty-state"><i class="fas fa-users"></i><p>Noch keine Mieter angelegt</p></div>'}
+                    <div class="card-header"><div><h2 class="card-title">Mieter</h2><p class="card-subtitle">${state.tenants.length} Mieter</p></div><button class="btn btn-success" id="addTenantBtn" ${state.units.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neuer Mieter</button></div>
+                    ${state.tenants.length > 0 ? `<div style="overflow-x:auto; margin-top:16px;"><table><thead><tr><th>Name</th><th>Einheit</th><th>Einzug</th><th>Status</th><th>Vorauszahlung</th><th class="text-right">Aktionen</th></tr></thead><tbody>${state.tenants.map(t => {
+                        const u = state.units.find(x => x.id === t.unitId);
+                        const p = state.prepayments.find(p => p.tenantId === t.id);
+                        return `<tr><td style="font-weight:500;">${t.name}</td><td>${u?.name || '—'}</td><td>${formatDate(t.moveInDate)}</td><td>${t.moveOutDate ? `<span class="badge badge-red">${formatDate(t.moveOutDate)}</span>` : '<span class="badge badge-green">Aktiv</span>'}</td><td>${p ? `<span class="badge badge-blue">${formatCurrency(p.monthlyAmount)}/Monat</span>` : '<span class="badge badge-gray">Keine</span>'}</td><td class="text-right"><button class="btn btn-sm btn-secondary" data-edit-tenant="${t.id}"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" data-delete-tenant="${t.id}"><i class="fas fa-trash"></i></button></td></tr>`;
+                    }).join('')}</tbody></table></div>` : '<div class="empty-state"><i class="fas fa-users"></i><p>Noch keine Mieter</p></div>'}
                 </div>
             `;
         }
         
         // ============ VORAUSZAHLUNGEN ============
         function renderPrepayments() {
-            const totalMonthly = state.prepayments.reduce((s,p) => s + p.monthlyAmount, 0);
-            const totalYearly = totalMonthly * 12;
-            
+            const tm = state.prepayments.reduce((s,p) => s + p.monthlyAmount, 0);
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Vorauszahlungen</h2>
-                            <p class="card-subtitle">${state.prepayments.length} Vorauszahlungen · ${formatCurrency(totalMonthly)}/Monat</p>
-                        </div>
-                        <button class="btn btn-success" id="addPrepayBtn" ${state.tenants.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neue Vorauszahlung</button>
-                    </div>
-                    
-                    ${state.tenants.length === 0 ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst Mieter an.</div>' : ''}
-                    
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <div>
-                            <strong>Vorauszahlungen</strong> sind die monatlichen Zahlungen der Mieter für Betriebskosten. 
-                            In der Abrechnung werden Vorauszahlungen mit den tatsächlichen Kosten verrechnet, 
-                            um Guthaben oder Nachzahlungen zu berechnen.
-                        </div>
-                    </div>
-                    
-                    <div class="stats-grid" style="margin-bottom:20px;">
-                        <div class="stat-card">
-                            <div class="stat-icon green"><i class="fas fa-money-bill-wave"></i></div>
-                            <div><div class="stat-value">${formatCurrency(totalMonthly)}</div><div class="stat-label">Monatlich gesamt</div></div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div>
-                            <div><div class="stat-value">${formatCurrency(totalYearly)}</div><div class="stat-label">Jährlich gesamt</div></div>
-                        </div>
-                    </div>
-                    
-                    <div id="prepayFormArea"></div>
-                    
-                    ${state.prepayments.length > 0 ? `
-                    <div style="overflow-x:auto; margin-top:16px;">
-                        <table>
-                            <thead><tr>
-                                <th>Mieter</th><th>Monatlich</th><th>Jährlich</th><th>Zeitraum</th><th class="text-right">Aktionen</th>
-                            </tr></thead>
-                            <tbody>
-                                ${state.prepayments.map(p => {
-                                    const tenant = state.tenants.find(t => t.id === p.tenantId);
-                                    return `
-                                    <tr>
-                                        <td style="font-weight:500;">${tenant ? tenant.name : 'Unbekannt'}</td>
-                                        <td><span class="badge badge-green">${formatCurrency(p.monthlyAmount)}</span></td>
-                                        <td style="font-weight:600;">${formatCurrency(p.monthlyAmount * 12)}</td>
-                                        <td style="font-size:12px;">${formatDate(p.startDate)}${p.endDate ? ' – ' + formatDate(p.endDate) : ' (laufend)'}</td>
-                                        <td class="text-right">
-                                            <button class="btn btn-sm btn-secondary" data-edit-prepay="${p.id}"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" data-delete-prepay="${p.id}"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>`;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    ` : '<div class="empty-state"><i class="fas fa-money-bill-wave"></i><p>Noch keine Vorauszahlungen erfasst</p></div>'}
+                    <div class="card-header"><div><h2 class="card-title">Vorauszahlungen</h2><p class="card-subtitle">${state.prepayments.length} Einträge · ${formatCurrency(tm)}/Monat</p></div><button class="btn btn-success" id="addPrepayBtn" ${state.tenants.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neue Vorauszahlung</button></div>
+                    <div class="alert alert-info"><i class="fas fa-info-circle"></i><div>Vorauszahlungen werden automatisch in das nächste Jahr übernommen. Änderungen können Sie direkt vornehmen.</div></div>
+                    ${state.prepayments.length > 0 ? `<div style="overflow-x:auto; margin-top:16px;"><table><thead><tr><th>Mieter</th><th>Monatlich</th><th>Jährlich</th><th>Zeitraum</th><th class="text-right">Aktionen</th></tr></thead><tbody>${state.prepayments.map(p => {
+                        const t = state.tenants.find(x => x.id === p.tenantId);
+                        return `<tr><td style="font-weight:500;">${t?.name || '—'}</td><td><span class="badge badge-green">${formatCurrency(p.monthlyAmount)}</span></td><td style="font-weight:600;">${formatCurrency(p.monthlyAmount*12)}</td><td style="font-size:12px;">${formatDate(p.startDate)}${p.endDate ? ' – '+formatDate(p.endDate) : ' (laufend)'}</td><td class="text-right"><button class="btn btn-sm btn-secondary" data-edit-prepay="${p.id}"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" data-delete-prepay="${p.id}"><i class="fas fa-trash"></i></button></td></tr>`;
+                    }).join('')}</tbody></table></div>` : '<div class="empty-state"><i class="fas fa-money-bill-wave"></i><p>Keine Vorauszahlungen</p></div>'}
                 </div>
             `;
         }
@@ -902,828 +597,683 @@
             const filtered = costFilter === 'all' ? state.costs : state.costs.filter(c => c.category === costFilter);
             const total = filtered.reduce((s,c) => s + c.amount, 0);
             const sorted = [...filtered].sort((a,b) => new Date(b.date) - new Date(a.date));
-            const allKeys = getAllDistKeys();
-            
+            const ak = getAllDistKeys();
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Betriebskosten</h2>
-                            <p class="card-subtitle">${state.costs.length} Einträge · Gesamt: ${formatCurrency(total)}</p>
-                        </div>
-                        <button class="btn btn-warning" id="addCostBtn"><i class="fas fa-plus"></i> Neue Kosten</button>
-                    </div>
-                    
-                    <div class="alert alert-legal">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <strong>BetrKV § 2:</strong> Nur die hier aufgeführten Betriebskosten sind auf Mieter umlegbar. 
-                            <span class="badge badge-red">Nicht umlegbar</span> markierte Kosten trägt der Vermieter.
-                            Leerstandskosten werden automatisch vom Vermieter getragen.
-                        </div>
-                    </div>
-                    
-                    <div class="filter-bar">
-                        <button class="filter-btn ${costFilter === 'all' ? 'active' : ''}" data-filter="all">Alle</button>
-                        ${Object.entries(COST_CATEGORIES).map(([k,v]) => `<button class="filter-btn ${costFilter === k ? 'active' : ''}" data-filter="${k}">${v.label}${v.betrkv === false ? ' ⚠' : ''}</button>`).join('')}
-                    </div>
-                    
-                    <div id="costFormArea"></div>
-                    
-                    ${sorted.length > 0 ? `
-                    <div style="overflow-x:auto; margin-top:16px;">
-                        <table>
-                            <thead><tr>
-                                <th>Datum</th><th>Kategorie</th><th>Beschreibung</th><th>Verteiler</th><th class="text-right">Betrag</th><th class="text-right">Aktionen</th>
-                            </tr></thead>
-                            <tbody>
-                                ${sorted.map(c => {
-                                    const cat = COST_CATEGORIES[c.category];
-                                    const isNotUmlagbar = cat?.betrkv === false;
-                                    return `
-                                    <tr ${isNotUmlagbar ? 'style="background:#fef2f2;"' : ''}>
-                                        <td>${formatDate(c.date)}</td>
-                                        <td>
-                                            <span class="badge ${isNotUmlagbar ? 'badge-red' : 'badge-blue'}">${cat?.label || c.category}</span>
-                                            ${isNotUmlagbar ? '<div style="font-size:10px;color:#dc2626;margin-top:2px;">Nicht umlegbar!</div>' : ''}
-                                        </td>
-                                        <td>${c.description}</td>
-                                        <td style="font-size:12px;">${allKeys[c.distributionKey] || c.distributionKey}</td>
-                                        <td class="text-right" style="font-weight:600;">${formatCurrency(c.amount)}</td>
-                                        <td class="text-right">
-                                            <button class="btn btn-sm btn-secondary" data-edit-cost="${c.id}"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" data-delete-cost="${c.id}"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>`;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    ` : '<div class="empty-state"><i class="fas fa-receipt"></i><p>Keine Kosten in dieser Kategorie</p></div>'}
+                    <div class="card-header"><div><h2 class="card-title">Betriebskosten</h2><p class="card-subtitle">${state.costs.length} Einträge · ${formatCurrency(total)}</p></div><div style="display:flex; gap:8px;"><button class="btn btn-secondary" id="copyCostsBtn"><i class="fas fa-copy"></i> Vorjahr kopieren</button><button class="btn btn-warning" id="addCostBtn"><i class="fas fa-plus"></i> Neue Kosten</button></div></div>
+                    <div class="alert alert-legal"><i class="fas fa-balance-scale"></i><div><strong>BetrKV § 2:</strong> Nur markierte Kosten umlegbar. <span class="badge badge-red">Nicht umlegbar</span> = Vermieteranteil. Leerstandskosten werden automatisch nicht umgelegt.</div></div>
+                    <div class="filter-bar"><button class="filter-btn ${costFilter==='all'?'active':''}" data-filter="all">Alle</button>${Object.entries(COST_CATEGORIES).map(([k,v]) => `<button class="filter-btn ${costFilter===k?'active':''}" data-filter="${k}">${v.label}${v.betrkv===false?' ⚠':''}</button>`).join('')}</div>
+                    ${sorted.length > 0 ? `<div style="overflow-x:auto;"><table><thead><tr><th>Datum</th><th>Kategorie</th><th>Beschreibung</th><th>Verteiler</th><th class="text-right">Betrag</th><th class="text-right">Aktionen</th></tr></thead><tbody>${sorted.map(c => {
+                        const cat = COST_CATEGORIES[c.category]; const nu = cat?.betrkv === false;
+                        return `<tr ${nu?'style="background:#fef2f2;"':''}><td>${formatDate(c.date)}</td><td><span class="badge ${nu?'badge-red':'badge-blue'}">${cat?.label||c.category}</span>${nu?'<div style="font-size:10px;color:#dc2626;">Nicht umlegbar</div>':''}</td><td>${c.description}</td><td style="font-size:12px;">${ak[c.distributionKey]||c.distributionKey}</td><td class="text-right" style="font-weight:600;">${formatCurrency(c.amount)}</td><td class="text-right"><button class="btn btn-sm btn-secondary" data-edit-cost="${c.id}"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" data-delete-cost="${c.id}"><i class="fas fa-trash"></i></button></td></tr>`;
+                    }).join('')}</tbody></table></div>` : '<div class="empty-state"><i class="fas fa-receipt"></i><p>Keine Kosten</p></div>'}
                 </div>
             `;
         }
         
         // ============ VERTEILERSCHLÜSSEL ============
         function renderDistKeys() {
-            const customs = state.customDistKeys || [];
+            const c = state.customDistKeys || [];
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Verteilerschlüssel</h2>
-                            <p class="card-subtitle">Standard- und frei definierbare Abrechnungsschlüssel</p>
-                        </div>
-                        <button class="btn btn-primary" id="addDistKeyBtn"><i class="fas fa-plus"></i> Neuer Schlüssel</button>
-                    </div>
-                    
-                    <div class="alert alert-legal">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <strong>§ 556a BGB:</strong> Der Verteilerschlüssel muss im Mietvertrag vereinbart werden. 
-                            Übliche Schlüssel sind: Wohnfläche (m²), Personenzahl, Wohneinheiten oder Verbrauch.
-                            Bei Heizkosten ist die HeizkostenV zu beachten (50-70% nach Verbrauch).
-                        </div>
-                    </div>
-                    
-                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:#374151;">Standard-Schlüssel</h3>
+                    <div class="card-header"><div><h2 class="card-title">Verteilerschlüssel</h2></div><button class="btn btn-primary" id="addDistKeyBtn"><i class="fas fa-plus"></i> Neuer Schlüssel</button></div>
+                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Standard-Schlüssel</h3>
                     <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; margin-bottom:24px;">
-                        ${Object.entries(STANDARD_DIST_KEYS).map(([k,v]) => `
-                            <div style="padding:12px; background:#f0f9ff; border-radius:8px; border:1px solid #bfdbfe;">
-                                <div style="font-weight:600; font-size:13px; color:#1e40af;">${v}</div>
-                                <div style="font-size:11px; color:#6b7280; margin-top:2px;">Schlüssel-ID: ${k}</div>
-                            </div>
-                        `).join('')}
+                        ${Object.entries(STANDARD_DIST_KEYS).map(([k,v]) => `<div style="padding:12px; background:#f0f9ff; border-radius:8px; border:1px solid #bfdbfe;"><div style="font-weight:600; font-size:13px; color:#1e40af;">${v}</div></div>`).join('')}
+                    </div>
+                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Eigene Schlüssel</h3>
+                    ${c.length > 0 ? `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px;">${c.map(k => `<div style="padding:12px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center;"><div><div style="font-weight:600; font-size:13px; color:#166534;">${k.name}</div><div style="font-size:11px; color:#6b7280;">${k.description||''}</div></div><button class="btn btn-sm btn-danger" data-delete-dk="${k.id}"><i class="fas fa-trash"></i></button></div>`).join('')}</div>` : '<p style="color:#9ca3af; font-size:13px;">Keine eigenen Schlüssel.</p>'}
+                </div>
+            `;
+        }
+        
+        // ============ JAHRESWECHSEL ============
+        function renderYearEnd() {
+            const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear()))].sort();
+            const latestYear = years.length > 0 ? years[years.length-1] : new Date().getFullYear();
+            const nextYear = latestYear + 1;
+            
+            const costsThisYear = state.costs.filter(c => new Date(c.date).getFullYear() === latestYear);
+            const costsNextYear = state.costs.filter(c => new Date(c.date).getFullYear() === nextYear);
+            
+            return `
+                <div class="card">
+                    <div class="card-header"><div><h2 class="card-title">Jahreswechsel / Datenübernahme</h2><p class="card-subtitle">Daten aus dem Vorjahr übernehmen und anpassen</p></div></div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Stammdaten bleiben erhalten:</strong> Objekt, Wohneinheiten, Mieter und Verteilerschlüssel werden automatisch übernommen. 
+                            Sie müssen nur die Daten ändern, die sich geändert haben (z.B. neue Kosten, angepasste Vorauszahlungen).
+                        </div>
                     </div>
                     
-                    <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:#374151;">Frei definierbare Schlüssel</h3>
-                    <div id="distKeyFormArea"></div>
-                    
-                    ${customs.length > 0 ? `
-                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:10px; margin-top:12px;">
-                        ${customs.map(k => `
-                            <div style="padding:12px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0; display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <div style="font-weight:600; font-size:13px; color:#166534;">${k.name}</div>
-                                    <div style="font-size:11px; color:#6b7280;">${k.description || 'Keine Beschreibung'}</div>
-                                    <div style="font-size:10px; color:#9ca3af; margin-top:2px;">Basis: ${k.basis || '—'}</div>
-                                </div>
-                                <button class="btn btn-sm btn-danger" data-delete-dk="${k.id}"><i class="fas fa-trash"></i></button>
-                            </div>
-                        `).join('')}
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-calendar"></i></div><div><div class="stat-value">${latestYear}</div><div class="stat-label">Aktuelles Abrechnungsjahr</div></div></div>
+                        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-receipt"></i></div><div><div class="stat-value">${costsThisYear.length}</div><div class="stat-label">Kosten ${latestYear}</div></div></div>
+                        <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-arrow-right"></i></div><div><div class="stat-value">${nextYear}</div><div class="stat-label">Nächstes Jahr</div></div></div>
+                        <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-copy"></i></div><div><div class="stat-value">${costsNextYear.length}</div><div class="stat-label">Bereits in ${nextYear}</div></div></div>
                     </div>
-                    ` : '<div style="color:#9ca3af; font-size:13px; padding:12px;">Noch keine eigenen Schlüssel definiert.</div>'}
+                    
+                    <h3 style="font-size:15px; font-weight:600; margin:20px 0 12px;">Was wird übernommen?</h3>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:12px; margin-bottom:20px;">
+                        <div style="padding:14px; background:#f0fdf4; border-radius:8px; border:1px solid #bbf7d0;">
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><i class="fas fa-check-circle" style="color:#16a34a;"></i><strong style="color:#166534;">Automatisch übernommen</strong></div>
+                            <ul style="font-size:12px; color:#4b5563; margin-left:26px; line-height:1.8;">
+                                <li>Objekt-Stammdaten</li>
+                                <li>Vermieter/Briefkopf</li>
+                                <li>Alle Wohneinheiten</li>
+                                <li>Alle Mieter (aktive)</li>
+                                <li>Verteilerschlüssel</li>
+                                <li>Vorauszahlungen (laufende)</li>
+                            </ul>
+                        </div>
+                        <div style="padding:14px; background:#fefce8; border-radius:8px; border:1px solid #fde047;">
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><i class="fas fa-edit" style="color:#a16207;"></i><strong style="color:#854d0e;">Manuell anpassen</strong></div>
+                            <ul style="font-size:12px; color:#4b5563; margin-left:26px; line-height:1.8;">
+                                <li>Betriebskosten (neue Rechnungen)</li>
+                                <li>Vorauszahlungshöhe (falls geändert)</li>
+                                <li>Mieterwechsel (Einzug/Auszug)</li>
+                                <li>Neue Wohneinheiten</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 style="font-size:15px; font-weight:600; margin:20px 0 12px;">Kosten aus Vorjahr übernehmen</h3>
+                    <p style="font-size:13px; color:#6b7280; margin-bottom:12px;">Kopiert alle Kostenpositionen aus ${latestYear} nach ${nextYear} (mit neuem Datum). Danach können Sie die Beträge anpassen.</p>
+                    
+                    <div class="form-grid" style="margin-bottom:16px;">
+                        <div class="form-group">
+                            <label class="form-label">Quelle (Vorjahr)</label>
+                            <select class="form-input" id="copyFromYear">
+                                ${years.map(y => `<option value="${y}" ${y === latestYear ? 'selected' : ''}>${y}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ziel (neues Jahr)</label>
+                            <input class="form-input" type="number" id="copyToYear" value="${nextYear}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Neues Datum</label>
+                            <input class="form-input" type="date" id="copyNewDate" value="${nextYear}-01-01">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="copyCostsYearBtn"><i class="fas fa-copy"></i> Kosten ins neue Jahr kopieren</button>
+                        <button class="btn btn-success" id="copyPrepaymentsBtn"><i class="fas fa-copy"></i> Vorauszahlungen prüfen/übernehmen</button>
+                    </div>
+                    
+                    <div class="legal-note" style="margin-top:20px;">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>Tipp:</strong> Nach dem Kopieren können Sie die Beträge einfach bearbeiten (z.B. neue Gasrechnung mit aktualisiertem Betrag). 
+                        Die Mieter, Einheiten und Schlüssel bleiben unverändert.
+                    </div>
                 </div>
             `;
         }
         
         // ============ ABRECHNUNG ============
         let settlementYear = new Date().getFullYear().toString();
-        let pdfTenantId = null;
         
         function renderSettlement() {
             const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear().toString()))];
-            if (years.length === 0) years.push(new Date().getFullYear().toString());
+            if (!years.length) years.push(new Date().getFullYear().toString());
             years.sort().reverse();
+            if (!years.includes(settlementYear)) settlementYear = years[0];
             
             const result = calculateSettlement(settlementYear);
-            const filteredCosts = state.costs.filter(c => new Date(c.date).getFullYear().toString() === settlementYear);
-            
-            // Group by tenant
             const tenantTotals = {};
             result.distributions.forEach(d => {
                 if (!tenantTotals[d.tenantId]) tenantTotals[d.tenantId] = { name: d.tenantName, unit: d.unitName, categories: {}, total: 0 };
                 tenantTotals[d.tenantId].categories[d.category] = (tenantTotals[d.tenantId].categories[d.category] || 0) + d.amount;
                 tenantTotals[d.tenantId].total += d.amount;
             });
-            
-            // Add prepayments and balance
             Object.keys(tenantTotals).forEach(tId => {
-                const prepayments = calculatePrepayments(tId, settlementYear);
-                tenantTotals[tId].prepayments = prepayments;
-                tenantTotals[tId].balance = prepayments - tenantTotals[tId].total; // positive = Guthaben, negative = Nachzahlung
+                tenantTotals[tId].prepayments = calculatePrepayments(tId, settlementYear);
+                tenantTotals[tId].balance = tenantTotals[tId].prepayments - tenantTotals[tId].total;
             });
             
             const usedCats = Object.keys(result.costsByCategory);
-            const avgPerTenant = Object.keys(tenantTotals).length > 0 ? result.occupiedCosts / Object.keys(tenantTotals).length : 0;
-            
-            const totalPrepayments = Object.values(tenantTotals).reduce((s,t) => s + t.prepayments, 0);
-            const totalBalance = Object.values(tenantTotals).reduce((s,t) => s + t.balance, 0);
+            const totalPrep = Object.values(tenantTotals).reduce((s,t) => s + t.prepayments, 0);
+            const totalBal = Object.values(tenantTotals).reduce((s,t) => s + t.balance, 0);
             
             return `
                 <div class="card no-print">
-                    <div class="card-header">
-                        <div>
-                            <h2 class="card-title">Nebenkostenabrechnung ${settlementYear}</h2>
-                            <p class="card-subtitle">${state.property?.name || 'Objekt'} · Abrechnungszeitraum: 01.01.${settlementYear} – 31.12.${settlementYear}</p>
-                        </div>
-                        <div style="display:flex; gap:10px;">
-                            <select class="form-input" id="yearSelect">
-                                ${years.map(y => `<option value="${y}" ${y === settlementYear ? 'selected' : ''}>${y}</option>`).join('')}
-                            </select>
-                            <button class="btn btn-purple" id="printBtn"><i class="fas fa-print"></i> Gesamt-PDF</button>
-                        </div>
-                    </div>
+                    <div class="card-header"><div><h2 class="card-title">Nebenkostenabrechnung ${settlementYear}</h2><p class="card-subtitle">${state.property?.name||'Objekt'} · 01.01.${settlementYear} – 31.12.${settlementYear}</p></div><div style="display:flex; gap:10px;"><select class="form-input" id="yearSelect">${years.map(y => `<option value="${y}" ${y===settlementYear?'selected':''}>${y}</option>`).join('')}</select><button class="btn btn-purple" id="printAllBtn"><i class="fas fa-print"></i> Alle PDFs</button></div></div>
                 </div>
                 
                 <div class="summary-grid">
-                    <div class="summary-card blue">
-                        <div class="summary-label">Gesamtkosten</div>
-                        <div class="summary-value">${formatCurrency(result.totalCosts)}</div>
-                        <div class="summary-sub">${filteredCosts.length} Positionen</div>
-                    </div>
-                    <div class="summary-card green">
-                        <div class="summary-label">Umlagefähig</div>
-                        <div class="summary-value">${formatCurrency(result.occupiedCosts)}</div>
-                        <div class="summary-sub">auf Mieter verteilt</div>
-                    </div>
-                    <div class="summary-card amber">
-                        <div class="summary-label">Vorauszahlungen</div>
-                        <div class="summary-value">${formatCurrency(totalPrepayments)}</div>
-                        <div class="summary-sub">von Mietern gezahlt</div>
-                    </div>
-                    <div class="summary-card ${totalBalance >= 0 ? 'emerald' : 'red'}">
-                        <div class="summary-label">Saldo gesamt</div>
-                        <div class="summary-value">${formatCurrency(Math.abs(totalBalance))}</div>
-                        <div class="summary-sub">${totalBalance >= 0 ? 'Guthaben Mieter' : 'Nachzahlung Mieter'}</div>
-                    </div>
+                    <div class="summary-card blue"><div class="summary-label">Gesamtkosten</div><div class="summary-value">${formatCurrency(result.totalCosts)}</div></div>
+                    <div class="summary-card green"><div class="summary-label">Umlagefähig</div><div class="summary-value">${formatCurrency(result.occupiedCosts)}</div></div>
+                    <div class="summary-card amber"><div class="summary-label">Vorauszahlungen</div><div class="summary-value">${formatCurrency(totalPrep)}</div></div>
+                    <div class="summary-card ${totalBal>=0?'emerald':'red'}"><div class="summary-label">Saldo gesamt</div><div class="summary-value">${formatCurrency(Math.abs(totalBal))}</div><div class="summary-sub">${totalBal>=0?'Guthaben':'Nachzahlung'}</div></div>
                 </div>
                 
-                ${result.vacantUnits.length > 0 ? `
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Leerstandskosten: ${formatCurrency(result.vacantCosts)}</strong><br>
-                        <span style="font-size:12px;">
-                            Leerstehende Einheiten: ${result.vacantUnits.map(u => u.name).join(', ')}.<br>
-                            Nach § 556a BGB werden die auf leerstehende Einheiten entfallenden Kosten vom Vermieter getragen und nicht auf die übrigen Mieter umgelegt.
-                        </span>
-                    </div>
-                </div>
-                ` : ''}
-                
-                ${result.nichtUmlagbar > 0 ? `
-                <div class="alert alert-danger">
-                    <i class="fas fa-times-circle"></i>
-                    <div>
-                        <strong>Nicht umlegbare Kosten: ${formatCurrency(result.nichtUmlagbar)}</strong><br>
-                        <span style="font-size:12px;">Instandhaltungskosten sind nach § 555a BGB nicht auf Mieter umlegbar.</span>
-                    </div>
-                </div>
-                ` : ''}
-                
-                <div class="card">
-                    <h3 class="card-title">Kosten nach Kategorie</h3>
-                    <div style="margin-top:12px;">
-                        ${usedCats.length > 0 ? usedCats.map(cat => {
-                            const amount = result.costsByCategory[cat];
-                            const pct = result.occupiedCosts > 0 ? (amount / result.occupiedCosts * 100) : 0;
-                            return `
-                                <div style="margin-bottom:10px;">
-                                    <div class="progress-label">
-                                        <span>${COST_CATEGORIES[cat]?.label || cat}</span>
-                                        <span>${formatCurrency(amount)} (${pct.toFixed(1)}%)</span>
-                                    </div>
-                                    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                                </div>
-                            `;
-                        }).join('') : '<p style="color:#9ca3af; text-align:center; padding:16px;">Keine umlegbaren Kosten für dieses Jahr</p>'}
-                    </div>
-                </div>
+                ${result.vacantUnits.length > 0 ? `<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i><div><strong>Leerstandskosten: ${formatCurrency(result.vacantCosts)}</strong><br><span style="font-size:12px;">${result.vacantUnits.map(u=>u.name).join(', ')}</span></div></div>` : ''}
+                ${result.nichtUmlagbar > 0 ? `<div class="alert alert-danger"><i class="fas fa-times-circle"></i><div><strong>Nicht umlegbar: ${formatCurrency(result.nichtUmlagbar)}</strong></div></div>` : ''}
                 
                 ${Object.keys(tenantTotals).length > 0 ? `
                 <div class="card">
                     <h3 class="card-title">Einzelabrechnung je Mieter</h3>
-                    <div style="overflow-x:auto; margin-top:12px;">
-                        <table class="settlement-table">
-                            <thead><tr>
-                                <th>Mieter</th><th>Einheit</th>
-                                ${usedCats.map(c => `<th class="text-right">${COST_CATEGORIES[c]?.label || c}</th>`).join('')}
-                                <th class="text-right">Kosten</th>
-                                <th class="text-right">Voraus-zahlung</th>
-                                <th class="text-right">Saldo</th>
-                                <th class="text-right no-print">PDF</th>
-                            </tr></thead>
-                            <tbody>
-                                ${Object.entries(tenantTotals).map(([id, data]) => {
-                                    const balanceClass = data.balance > 0 ? 'amount-negative' : data.balance < 0 ? 'amount-positive' : 'amount-zero';
-                                    const balanceLabel = data.balance > 0 ? 'Guthaben' : data.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen';
-                                    return `
-                                    <tr>
-                                        <td style="font-weight:500;">${data.name}</td>
-                                        <td>${data.unit}</td>
-                                        ${usedCats.map(c => `<td class="text-right">${data.categories[c] ? formatCurrency(data.categories[c]) : '—'}</td>`).join('')}
-                                        <td class="text-right" style="font-weight:600;">${formatCurrency(data.total)}</td>
-                                        <td class="text-right" style="color:#16a34a;">${formatCurrency(data.prepayments)}</td>
-                                        <td class="text-right ${balanceClass}">
-                                            ${formatCurrency(Math.abs(data.balance))}<br>
-                                            <span style="font-size:10px;">${balanceLabel}</span>
-                                        </td>
-                                        <td class="text-right no-print">
-                                            <button class="btn btn-sm btn-purple" data-pdf-tenant="${id}"><i class="fas fa-file-pdf"></i></button>
-                                        </td>
-                                    </tr>`;
-                                }).join('')}
-                            </tbody>
-                            <tfoot><tr>
-                                <td colspan="2" style="font-weight:700;">Summe</td>
-                                ${usedCats.map(c => `<td class="text-right" style="font-weight:700;">${formatCurrency(result.costsByCategory[c] || 0)}</td>`).join('')}
-                                <td class="text-right" style="font-weight:700; color:#2563eb;">${formatCurrency(result.occupiedCosts)}</td>
-                                <td class="text-right" style="font-weight:700; color:#16a34a;">${formatCurrency(totalPrepayments)}</td>
-                                <td class="text-right" style="font-weight:700; color:${totalBalance >= 0 ? '#16a34a' : '#dc2626'};">${formatCurrency(Math.abs(totalBalance))}</td>
-                                <td class="no-print"></td>
-                            </tr></tfoot>
-                        </table>
-                    </div>
+                    <div style="overflow-x:auto; margin-top:12px;"><table class="settlement-table"><thead><tr><th>Mieter</th><th>Einheit</th>${usedCats.map(c=>`<th class="text-right">${COST_CATEGORIES[c]?.label||c}</th>`).join('')}<th class="text-right">Kosten</th><th class="text-right">Voraus-zahlung</th><th class="text-right">Saldo</th><th class="text-right no-print">PDF</th></tr></thead><tbody>
+                        ${Object.entries(tenantTotals).map(([id, d]) => {
+                            const bc = d.balance > 0 ? 'amount-negative' : d.balance < 0 ? 'amount-positive' : 'amount-zero';
+                            const bl = d.balance > 0 ? 'Guthaben' : d.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen';
+                            return `<tr><td style="font-weight:500;">${d.name}</td><td>${d.unit}</td>${usedCats.map(c=>`<td class="text-right">${d.categories[c]?formatCurrency(d.categories[c]):'—'}</td>`).join('')}<td class="text-right" style="font-weight:600;">${formatCurrency(d.total)}</td><td class="text-right" style="color:#16a34a;">${formatCurrency(d.prepayments)}</td><td class="text-right ${bc}">${formatCurrency(Math.abs(d.balance))}<br><span style="font-size:10px;">${bl}</span></td><td class="text-right no-print"><button class="btn btn-sm btn-purple" data-pdf-tenant="${id}"><i class="fas fa-file-pdf"></i></button></td></tr>`;
+                        }).join('')}
+                    </tbody><tfoot><tr><td colspan="2">Summe</td>${usedCats.map(c=>`<td class="text-right">${formatCurrency(result.costsByCategory[c]||0)}</td>`).join('')}<td class="text-right" style="color:#2563eb;">${formatCurrency(result.occupiedCosts)}</td><td class="text-right" style="color:#16a34a;">${formatCurrency(totalPrep)}</td><td class="text-right" style="color:${totalBal>=0?'#16a34a':'#dc2626'};">${formatCurrency(Math.abs(totalBal))}</td><td class="no-print"></td></tr></tfoot></table></div>
+                </div>` : ''}
+            `;
+        }
+        
+        // ============ VERMIETER-PROTOKOLL ============
+        function renderProtokoll() {
+            const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear().toString()))];
+            if (!years.length) years.push(new Date().getFullYear().toString());
+            years.sort().reverse();
+            if (!years.includes(settlementYear)) settlementYear = years[0];
+            
+            const result = calculateSettlement(settlementYear);
+            const tenantData = {};
+            result.distributions.forEach(d => {
+                if (!tenantData[d.tenantId]) tenantData[d.tenantId] = { name: d.tenantName, unit: d.unitName, total: 0 };
+                tenantData[d.tenantId].total += d.amount;
+            });
+            Object.keys(tenantData).forEach(tId => {
+                tenantData[tId].prepayments = calculatePrepayments(tId, settlementYear);
+                tenantData[tId].balance = tenantData[tId].prepayments - tenantData[tId].total;
+            });
+            
+            const nachzahlung = Object.values(tenantData).filter(t => t.balance < 0);
+            const guthaben = Object.values(tenantData).filter(t => t.balance > 0);
+            const ausgeglichen = Object.values(tenantData).filter(t => t.balance === 0);
+            const totalNach = nachzahlung.reduce((s,t) => s + Math.abs(t.balance), 0);
+            const totalGut = guthaben.reduce((s,t) => s + t.balance, 0);
+            
+            return `
+                <div class="card no-print">
+                    <div class="card-header"><div><h2 class="card-title">Vermieter-Protokoll ${settlementYear}</h2><p class="card-subtitle">Übersicht über Nachzahlungen und Guthaben</p></div><div style="display:flex; gap:10px;"><select class="form-input" id="protokollYearSelect">${years.map(y => `<option value="${y}" ${y===settlementYear?'selected':''}>${y}</option>`).join('')}</select><button class="btn btn-purple" id="printProtokollBtn"><i class="fas fa-print"></i> Protokoll drucken</button></div></div>
                 </div>
-                ` : ''}
+                
+                <div class="summary-grid">
+                    <div class="summary-card red"><div class="summary-label">Nachzahlungen</div><div class="summary-value">${formatCurrency(totalNach)}</div><div class="summary-sub">${nachzahlung.length} Mieter</div></div>
+                    <div class="summary-card emerald"><div class="summary-label">Guthaben</div><div class="summary-value">${formatCurrency(totalGut)}</div><div class="summary-sub">${guthaben.length} Mieter</div></div>
+                    <div class="summary-card blue"><div class="summary-label">Ausgeglichen</div><div class="summary-value">${ausgeglichen.length}</div><div class="summary-sub">Mieter</div></div>
+                </div>
+                
+                ${nachzahlung.length > 0 ? `
+                <div class="card">
+                    <h3 class="card-title" style="color:#dc2626;"><i class="fas fa-arrow-down" style="margin-right:8px;"></i>Nachzahlungspflichtige Mieter</h3>
+                    <div style="overflow-x:auto; margin-top:12px;"><table><thead><tr><th>Mieter</th><th>Einheit</th><th class="text-right">Kosten</th><th class="text-right">Vorauszahlung</th><th class="text-right">Nachzahlung</th></tr></thead><tbody>
+                        ${nachzahlung.sort((a,b) => b.balance - a.balance).map(t => `<tr><td style="font-weight:500;">${t.name}</td><td>${t.unit}</td><td class="text-right">${formatCurrency(t.total)}</td><td class="text-right" style="color:#16a34a;">${formatCurrency(t.prepayments)}</td><td class="text-right amount-positive">${formatCurrency(Math.abs(t.balance))}</td></tr>`).join('')}
+                    </tbody><tfoot><tr><td colspan="4" style="font-weight:700;">Summe Nachzahlungen</td><td class="text-right" style="font-weight:700; color:#dc2626;">${formatCurrency(totalNach)}</td></tr></tfoot></table></div>
+                </div>` : ''}
+                
+                ${guthaben.length > 0 ? `
+                <div class="card">
+                    <h3 class="card-title" style="color:#16a34a;"><i class="fas fa-arrow-up" style="margin-right:8px;"></i>Guthaben-Mieter (Rückzahlung)</h3>
+                    <div style="overflow-x:auto; margin-top:12px;"><table><thead><tr><th>Mieter</th><th>Einheit</th><th class="text-right">Kosten</th><th class="text-right">Vorauszahlung</th><th class="text-right">Guthaben</th></tr></thead><tbody>
+                        ${guthaben.sort((a,b) => b.balance - a.balance).map(t => `<tr><td style="font-weight:500;">${t.name}</td><td>${t.unit}</td><td class="text-right">${formatCurrency(t.total)}</td><td class="text-right" style="color:#16a34a;">${formatCurrency(t.prepayments)}</td><td class="text-right amount-negative">${formatCurrency(t.balance)}</td></tr>`).join('')}
+                    </tbody><tfoot><tr><td colspan="4" style="font-weight:700;">Summe Guthaben</td><td class="text-right" style="font-weight:700; color:#16a34a;">${formatCurrency(totalGut)}</td></tr></tfoot></table></div>
+                </div>` : ''}
+                
+                ${ausgeglichen.length > 0 ? `
+                <div class="card">
+                    <h3 class="card-title" style="color:#6b7280;"><i class="fas fa-check" style="margin-right:8px;"></i>Ausgeglichene Mieter</h3>
+                    <div style="margin-top:12px;">${ausgeglichen.map(t => `<div style="display:flex; justify-content:space-between; padding:8px 12px; background:#f9fafb; border-radius:6px; margin-bottom:4px;"><span style="font-weight:500;">${t.name}</span><span style="color:#6b7280;">${t.unit} · ${formatCurrency(t.total)}</span></div>`).join('')}</div>
+                </div>` : ''}
                 
                 <div class="card">
-                    <h3 class="card-title">Rechtliche Grundlagen dieser Abrechnung</h3>
-                    <div style="margin-top:12px; font-size:12px; color:#4b5563; line-height:1.8;">
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Abrechnung nach <strong>Betriebskostenverordnung (BetrKV) § 2</strong></p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Umlage nach <strong>§ 556a BGB</strong> (Fläche/Verbrauch)</p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Leerstandskosten</strong> zu Lasten des Vermieters (§ 556a BGB)</p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Nicht umlegbare Kosten</strong> (Instandhaltung) separat ausgewiesen</p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Vorauszahlungsverrechnung</strong> nach § 556 Abs. 3 BGB</p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Abrechnungsfrist <strong>12 Monate</strong> (§ 556 Abs. 3 BGB)</p>
-                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Wirtschaftlichkeitsgebot</strong> beachtet</p>
-                    </div>
-                    <div class="legal-note">
-                        <i class="fas fa-info-circle"></i>
-                        <strong>Hinweis:</strong> Diese Abrechnung ersetzt keine anwaltliche Beratung. 
-                        Bei Heizkosten ist zusätzlich die <strong>HeizkostenV</strong> zu beachten (50-70% nach Verbrauch). 
-                        Die Abrechnungsfrist beträgt 12 Monate nach Ende des Abrechnungszeitraums.
-                        ${state.property ? `<br><br><strong>${state.property.owner || ''}</strong><br>${state.property.address || ''}` : ''}
+                    <h3 class="card-title">Gesamtübersicht</h3>
+                    <div style="margin-top:12px; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+                        <div style="padding:14px; background:#eff6ff; border-radius:8px;"><div style="font-size:12px; color:#6b7280;">Gesamtkosten</div><div style="font-weight:700; font-size:18px; color:#1e40af;">${formatCurrency(result.occupiedCosts)}</div></div>
+                        <div style="padding:14px; background:#f0fdf4; border-radius:8px;"><div style="font-size:12px; color:#6b7280;">Vorauszahlungen</div><div style="font-weight:700; font-size:18px; color:#166534;">${formatCurrency(Object.values(tenantData).reduce((s,t)=>s+t.prepayments,0))}</div></div>
+                        <div style="padding:14px; background:#fef2f2; border-radius:8px;"><div style="font-size:12px; color:#6b7280;">Vermieteranteil</div><div style="font-weight:700; font-size:18px; color:#991b1b;">${formatCurrency(result.vacantCosts + result.nichtUmlagbar)}</div></div>
                     </div>
                 </div>
-                
-                ${state.costs.length === 0 ? '<div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>Keine Kosten erfasst.</p></div>' : ''}
-                
-                ${pdfTenantId ? renderTenantPDF(pdfTenantId, tenantTotals[pdfTenantId], result, settlementYear) : ''}
             `;
         }
         
-        function renderTenantPDF(tenantId, data, result, year) {
-            if (!data) return '';
+        // ============ PDF ANSICHT ============
+        function renderPdfView() {
+            if (pdfView.type === 'tenant') return renderTenantPdf(pdfView.tenantId, pdfView.year);
+            if (pdfView.type === 'protokoll') return renderProtokollPdf(pdfView.year);
+            if (pdfView.type === 'all') return renderAllTenantPdfs(pdfView.year);
+            return '';
+        }
+        
+        function getLetterhead() {
+            const p = state.property;
+            if (!p) return { sender: 'Vermieter', senderHtml: '', footerHtml: '' };
+            const senderLines = [p.owner || '', p.ownerAdd || '', p.ownerAddress || ''].filter(Boolean);
+            const footerLines = [
+                p.phone ? 'Tel: ' + p.phone : '',
+                p.email || '',
+                p.bankName ? p.bankName : '',
+                p.bank ? 'IBAN: ' + p.bank : '',
+                p.taxId ? 'St.-Nr: ' + p.taxId : '',
+            ].filter(Boolean);
+            return {
+                sender: senderLines.join(', '),
+                senderHtml: `<div class="pdf-letterhead-sender"><strong>${p.owner || 'Vermieter'}</strong>${p.ownerAdd ? '<br>'+p.ownerAdd : ''}<br>${p.ownerAddress || ''}</div>`,
+                footerHtml: footerLines.join(' | '),
+            };
+        }
+        
+        function renderTenantPdf(tenantId, year) {
             const tenant = state.tenants.find(t => t.id === tenantId);
             if (!tenant) return '';
-            
-            const balanceClass = data.balance > 0 ? '' : 'nachzahlung';
-            const balanceLabel = data.balance > 0 ? 'Guthaben (Rückzahlung an Mieter)' : data.balance < 0 ? 'Nachzahlung (Zahlung durch Mieter)' : 'Ausgeglichen';
-            
+            const unit = state.units.find(u => u.id === tenant.unitId);
+            const settlement = getTenantSettlement(tenantId, year);
+            const result = calculateSettlement(year);
+            const lh = getLetterhead();
             const usedCats = Object.keys(result.costsByCategory);
+            const bc = settlement.balance > 0 ? 'guthaben' : settlement.balance < 0 ? 'nachzahlung' : 'ausgeglichen';
+            const bl = settlement.balance > 0 ? 'Guthaben' : settlement.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen';
+            const p = state.property;
             
             return `
-                <div class="pdf-print" style="margin-top:30px;">
-                    <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
-                        <h3 style="font-size:18px; font-weight:700;">PDF-Vorschau: ${data.name}</h3>
-                        <div style="display:flex; gap:10px;">
-                            <button class="btn btn-purple" onclick="window.print()"><i class="fas fa-print"></i> Drucken / Als PDF speichern</button>
-                            <button class="btn btn-secondary" onclick="closePdfPreview()"><i class="fas fa-times"></i> Schließen</button>
-                        </div>
+                <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <h3 style="font-size:18px; font-weight:700;">PDF-Vorschau: ${tenant.name}</h3>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-purple" onclick="window.print()"><i class="fas fa-print"></i> Drucken / PDF</button>
+                        <button class="btn btn-secondary" onclick="pdfView=null; render()"><i class="fas fa-times"></i> Schließen</button>
+                    </div>
+                </div>
+                <div class="pdf-page">
+                    <div class="pdf-letterhead">
+                        ${lh.senderHtml}
+                        <div class="pdf-letterhead-logo"><h1>${p?.name || 'Objekt'}</h1><p>${p?.address || ''}</p></div>
+                    </div>
+                    <div class="pdf-recipient">
+                        <p><strong>${tenant.name}</strong><br>${unit?.name || ''}<br>${p?.address || ''}</p>
+                    </div>
+                    <div class="pdf-date">${p?.ownerAddress || p?.address || ''}, den ${new Date().toLocaleDateString('de-DE')}</div>
+                    <div class="pdf-subject">Nebenkostenabrechnung für den Zeitraum 01.01.${year} – 31.12.${year}</div>
+                    <p style="margin-bottom:20px; font-size:10pt;">Sehr geehrte(r) ${tenant.name.split(' ').pop() || 'Mieter/in'},<br>anbei erhalten Sie die Nebenkostenabrechnung für das Jahr ${year}.</p>
+                    
+                    <div class="pdf-section">
+                        <h2>A. Umlegbare Betriebskosten</h2>
+                        <table class="pdf-table">
+                            <thead><tr><th>Pos.</th><th>Kostenart</th><th class="text-right">Gesamt</th><th class="text-right">Verteilerschlüssel</th><th class="text-right">Ihr Anteil</th></tr></thead>
+                            <tbody>
+                                ${usedCats.filter(c => settlement.categories[c]).map((cat, i) => {
+                                    const cost = state.costs.find(c => c.category === cat && new Date(c.date).getFullYear().toString() === year);
+                                    const dk = cost ? getAllDistKeys()[cost.distributionKey] : '—';
+                                    return `<tr><td>${i+1}</td><td>${COST_CATEGORIES[cat]?.label || cat}</td><td class="text-right">${formatCurrency(result.costsByCategory[cat])}</td><td class="text-right" style="font-size:9pt;">${dk}</td><td class="text-right"><strong>${formatCurrency(settlement.categories[cat])}</strong></td></tr>`;
+                                }).join('')}
+                                <tr class="pdf-total-row"><td></td><td><strong>Gesamtkosten</strong></td><td class="text-right">${formatCurrency(result.occupiedCosts)}</td><td></td><td class="text-right"><strong>${formatCurrency(settlement.total)}</strong></td></tr>
+                            </tbody>
+                        </table>
                     </div>
                     
-                    <div class="pdf-page">
-                        <div class="pdf-header">
-                            <div class="pdf-header-left">
-                                <h1>Nebenkostenabrechnung ${year}</h1>
-                                <p>${state.property?.name || 'Objekt'}</p>
-                            </div>
-                            <div class="pdf-header-right">
-                                <strong>${state.property?.owner || 'Eigentümer'}</strong><br>
-                                ${state.property?.address || ''}<br>
-                                ${state.property?.phone ? 'Tel: ' + state.property.phone + '<br>' : ''}
-                                ${state.property?.email ? state.property.email : ''}
-                            </div>
-                        </div>
-                        
-                        <div class="pdf-section">
-                            <h2>Mieter</h2>
-                            <p><strong>${tenant.name}</strong><br>
-                            ${state.units.find(u => u.id === tenant.unitId)?.name || ''}<br>
-                            ${state.property?.address || ''}</p>
-                            <p style="margin-top:10px; font-size:10pt; color:#6b7280;">
-                                Abrechnungszeitraum: 01.01.${year} – 31.12.${year}<br>
-                                Einzug: ${formatDate(tenant.moveInDate)}${tenant.moveOutDate ? ' | Auszug: ' + formatDate(tenant.moveOutDate) : ''}
-                            </p>
-                        </div>
-                        
-                        <div class="pdf-section">
-                            <h2>Umlegbare Betriebskosten</h2>
-                            <table class="pdf-table">
-                                <thead>
-                                    <tr>
-                                        <th>Kostenart</th>
-                                        <th class="text-right">Gesamt</th>
-                                        <th class="text-right">Verteilerschlüssel</th>
-                                        <th class="text-right">Ihr Anteil</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${usedCats.map(cat => {
-                                        const catAmount = result.costsByCategory[cat] || 0;
-                                        const tenantAmount = data.categories[cat] || 0;
-                                        if (tenantAmount === 0) return '';
-                                        const cost = state.costs.find(c => c.category === cat && new Date(c.date).getFullYear().toString() === year);
-                                        const distKey = cost ? getAllDistKeys()[cost.distributionKey] : '—';
-                                        return `
-                                            <tr>
-                                                <td>${COST_CATEGORIES[cat]?.label || cat}</td>
-                                                <td class="text-right">${formatCurrency(catAmount)}</td>
-                                                <td class="text-right" style="font-size:9pt;">${distKey}</td>
-                                                <td class="text-right"><strong>${formatCurrency(tenantAmount)}</strong></td>
-                                            </tr>
-                                        `;
-                                    }).join('')}
-                                    <tr class="pdf-total-row">
-                                        <td><strong>Gesamtkosten</strong></td>
-                                        <td class="text-right">${formatCurrency(result.occupiedCosts)}</td>
-                                        <td></td>
-                                        <td class="text-right"><strong>${formatCurrency(data.total)}</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="pdf-section">
-                            <h2>Verrechnung mit Vorauszahlungen</h2>
-                            <table class="pdf-table">
-                                <tbody>
-                                    <tr>
-                                        <td>Umlegbare Betriebskosten (siehe oben)</td>
-                                        <td class="text-right"><strong>${formatCurrency(data.total)}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Geleistete Vorauszahlungen (${formatCurrency(data.prepayments / 12)}/Monat)</td>
-                                        <td class="text-right" style="color:#16a34a;"><strong>– ${formatCurrency(data.prepayments)}</strong></td>
-                                    </tr>
-                                    <tr class="pdf-total-row">
-                                        <td><strong>${data.balance > 0 ? 'Guthaben' : data.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen'}</strong></td>
-                                        <td class="text-right"><strong>${formatCurrency(Math.abs(data.balance))}</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="pdf-balance ${balanceClass}">
-                            <div class="pdf-balance-label">${balanceLabel}</div>
-                            <div class="pdf-balance-amount">${formatCurrency(Math.abs(data.balance))}</div>
-                        </div>
-                        
-                        <div class="pdf-footer">
-                            <p><strong>Rechtliche Hinweise:</strong></p>
-                            <p style="margin-top:5px;">
-                                Diese Abrechnung erfolgt nach der Betriebskostenverordnung (BetrKV) und § 556 BGB. 
-                                Leerstandskosten wurden nicht auf Sie umgelegt (§ 556a BGB). 
-                                Die Abrechnungsfrist beträgt 12 Monate nach Ende des Abrechnungszeitraums.
-                                ${result.nichtUmlagbar > 0 ? ' Nicht umlegbare Kosten (z.B. Instandhaltung) sind nicht enthalten.' : ''}
-                            </p>
-                            <p style="margin-top:10px;">
-                                ${state.property?.address || ''}, den ${new Date().toLocaleDateString('de-DE')}<br><br>
-                                _________________________________________<br>
-                                ${state.property?.owner || 'Eigentümer'}
-                            </p>
-                        </div>
+                    <div class="pdf-section">
+                        <h2>B. Verrechnung mit Vorauszahlungen</h2>
+                        <table class="pdf-table">
+                            <tbody>
+                                <tr><td>Umlegbare Betriebskosten (lt. A)</td><td class="text-right"><strong>${formatCurrency(settlement.total)}</strong></td></tr>
+                                <tr><td>Geleistete Vorauszahlungen (${formatCurrency(settlement.prepayments/12)}/Monat)</td><td class="text-right" style="color:#16a34a;"><strong>– ${formatCurrency(settlement.prepayments)}</strong></td></tr>
+                                <tr class="pdf-total-row"><td><strong>Ergebnis</strong></td><td class="text-right"><strong>${settlement.balance >= 0 ? '– ' : ''}${formatCurrency(Math.abs(settlement.balance))}</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pdf-balance ${bc}">
+                        <div class="pdf-balance-label">${bl}</div>
+                        <div class="pdf-balance-amount">${formatCurrency(Math.abs(settlement.balance))}</div>
+                    </div>
+                    
+                    ${settlement.balance < 0 ? `<p style="font-size:10pt; margin-top:15px;">Bitte überweisen Sie den fälligen Betrag innerhalb von 30 Tagen auf das unten genannte Konto.</p>` : ''}
+                    ${settlement.balance > 0 ? `<p style="font-size:10pt; margin-top:15px;">Der Guthabenbetrag wird mit der nächsten Miete verrechnet oder auf Ihr Konto überwiesen.</p>` : ''}
+                    
+                    <div class="pdf-signature">
+                        <p>Mit freundlichen Grüßen</p>
+                        <div class="pdf-signature-line">${p?.owner || 'Vermieter'}</div>
+                    </div>
+                    
+                    <div class="pdf-footer">
+                        <p><strong>Rechtliche Hinweise:</strong> Abrechnung nach BetrKV § 2 und § 556a BGB. Leerstandskosten wurden nicht umgelegt. Abrechnungsfrist: 12 Monate (§ 556 Abs. 3 BGB). Einspruchsfrist: 12 Monate nach Zugang.</p>
+                        <div class="pdf-footer-sender">${lh.footerHtml}</div>
                     </div>
                 </div>
             `;
         }
         
-        function closePdfPreview() {
-            pdfTenantId = null;
-            render();
-        }
-        
-        // ============ MODAL ============
-        function renderModal() {
+        function renderProtokollPdf(year) {
+            const result = calculateSettlement(year);
+            const tenantData = {};
+            result.distributions.forEach(d => {
+                if (!tenantData[d.tenantId]) tenantData[d.tenantId] = { name: d.tenantName, unit: d.unitName, total: 0 };
+                tenantData[d.tenantId].total += d.amount;
+            });
+            Object.keys(tenantData).forEach(tId => {
+                tenantData[tId].prepayments = calculatePrepayments(tId, year);
+                tenantData[tId].balance = tenantData[tId].prepayments - tenantData[tId].total;
+            });
+            const nach = Object.values(tenantData).filter(t => t.balance < 0);
+            const gut = Object.values(tenantData).filter(t => t.balance > 0);
+            const totalNach = nach.reduce((s,t) => s + Math.abs(t.balance), 0);
+            const totalGut = gut.reduce((s,t) => s + t.balance, 0);
+            const p = state.property;
+            const lh = getLetterhead();
+            
             return `
-                <div class="modal-overlay" id="modalOverlay">
-                    <div class="modal">
-                        ${modalContent}
+                <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <h3 style="font-size:18px; font-weight:700;">Vermieter-Protokoll ${year}</h3>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-purple" onclick="window.print()"><i class="fas fa-print"></i> Drucken / PDF</button>
+                        <button class="btn btn-secondary" onclick="pdfView=null; render()"><i class="fas fa-times"></i> Schließen</button>
+                    </div>
+                </div>
+                <div class="pdf-page">
+                    <div class="pdf-letterhead">
+                        ${lh.senderHtml}
+                        <div class="pdf-letterhead-logo"><h1>VERMIETER-PROTOKOLL</h1><p>Intern · Vertraulich</p></div>
+                    </div>
+                    
+                    <div class="protokoll-header">
+                        <h1>Nebenkosten-Protokoll ${year}</h1>
+                        <p>${p?.name || 'Objekt'} · ${p?.address || ''}</p>
+                    </div>
+                    
+                    <div class="protokoll-summary">
+                        <div class="protokoll-box nachzahlung"><div class="protokoll-box-label">Offene Nachzahlungen</div><div class="protokoll-box-value">${formatCurrency(totalNach)}</div><div style="font-size:9pt; color:#6b7280; margin-top:4px;">${nach.length} Mieter</div></div>
+                        <div class="protokoll-box guthaben"><div class="protokoll-box-label">Rückzahlungen</div><div class="protokoll-box-value">${formatCurrency(totalGut)}</div><div style="font-size:9pt; color:#6b7280; margin-top:4px;">${gut.length} Mieter</div></div>
+                        <div class="protokoll-box gesamt"><div class="protokoll-box-label">Gesamtkosten umgelegt</div><div class="protokoll-box-value">${formatCurrency(result.occupiedCosts)}</div><div style="font-size:9pt; color:#6b7280; margin-top:4px;">${Object.keys(tenantData).length} Mieter</div></div>
+                    </div>
+                    
+                    <div class="pdf-section">
+                        <h2>Nachzahlungspflichtige Mieter</h2>
+                        ${nach.length > 0 ? `
+                        <table class="pdf-table">
+                            <thead><tr><th>Mieter</th><th>Einheit</th><th class="text-right">Kosten</th><th class="text-right">Vorauszahlung</th><th class="text-right">Nachzahlung</th><th>Status</th></tr></thead>
+                            <tbody>
+                                ${nach.sort((a,b) => Math.abs(b.balance) - Math.abs(a.balance)).map(t => `<tr><td><strong>${t.name}</strong></td><td>${t.unit}</td><td class="text-right">${formatCurrency(t.total)}</td><td class="text-right">${formatCurrency(t.prepayments)}</td><td class="text-right" style="color:#dc2626; font-weight:700;">${formatCurrency(Math.abs(t.balance))}</td><td><span style="background:#fee2e2; color:#dc2626; padding:2px 8px; border-radius:4px; font-size:9pt;">OFFEN</span></td></tr>`).join('')}
+                            </tbody>
+                            <tfoot><tr><td colspan="4"><strong>Summe</strong></td><td class="text-right" style="color:#dc2626; font-weight:700;">${formatCurrency(totalNach)}</td><td></td></tr></tfoot>
+                        </table>` : '<p style="color:#6b7280; font-style:italic;">Keine Nachzahlungen</p>'}
+                    </div>
+                    
+                    <div class="pdf-section">
+                        <h2>Guthaben-Mieter (Rückzahlung erforderlich)</h2>
+                        ${gut.length > 0 ? `
+                        <table class="pdf-table">
+                            <thead><tr><th>Mieter</th><th>Einheit</th><th class="text-right">Kosten</th><th class="text-right">Vorauszahlung</th><th class="text-right">Guthaben</th><th>Status</th></tr></thead>
+                            <tbody>
+                                ${gut.sort((a,b) => b.balance - a.balance).map(t => `<tr><td><strong>${t.name}</strong></td><td>${t.unit}</td><td class="text-right">${formatCurrency(t.total)}</td><td class="text-right">${formatCurrency(t.prepayments)}</td><td class="text-right" style="color:#16a34a; font-weight:700;">${formatCurrency(t.balance)}</td><td><span style="background:#dcfce7; color:#16a34a; padding:2px 8px; border-radius:4px; font-size:9pt;">RÜCKZAHLUNG</span></td></tr>`).join('')}
+                            </tbody>
+                            <tfoot><tr><td colspan="4"><strong>Summe</strong></td><td class="text-right" style="color:#16a34a; font-weight:700;">${formatCurrency(totalGut)}</td><td></td></tr></tfoot>
+                        </table>` : '<p style="color:#6b7280; font-style:italic;">Keine Guthaben</p>'}
+                    </div>
+                    
+                    <div class="pdf-section">
+                        <h2>Vermieteranteil (nicht umlegbar)</h2>
+                        <table class="pdf-table">
+                            <tbody>
+                                <tr><td>Leerstandskosten</td><td class="text-right">${formatCurrency(result.vacantCosts)}</td></tr>
+                                <tr><td>Nicht umlegbare Kosten (z.B. Instandhaltung)</td><td class="text-right">${formatCurrency(result.nichtUmlagbar)}</td></tr>
+                                <tr class="pdf-total-row"><td><strong>Gesamt Vermietersanteil</strong></td><td class="text-right"><strong>${formatCurrency(result.vacantCosts + result.nichtUmlagbar)}</strong></td></tr>
+                            </tbody>
+                        </table>
+                        ${result.vacantUnits.length > 0 ? `<p style="font-size:9pt; color:#6b7280; margin-top:8px;">Leerstehende Einheiten: ${result.vacantUnits.map(u=>u.name).join(', ')}</p>` : ''}
+                    </div>
+                    
+                    <div style="margin-top:30px; padding:15px; background:#f9fafb; border-radius:8px; font-size:10pt;">
+                        <p><strong>Zusammenfassung:</strong></p>
+                        <p style="margin-top:8px;">• ${nach.length} Mieter müssen insgesamt <strong style="color:#dc2626;">${formatCurrency(totalNach)}</strong> nachzahlen</p>
+                        <p>• ${gut.length} Mieter erhalten insgesamt <strong style="color:#16a34a;">${formatCurrency(totalGut)}</strong> zurück</p>
+                        <p>• Vermieter trägt <strong>${formatCurrency(result.vacantCosts + result.nichtUmlagbar)}</strong> (Leerstand + Instandhaltung)</p>
+                    </div>
+                    
+                    <div class="pdf-footer">
+                        <p>Erstellt am ${new Date().toLocaleDateString('de-DE')} · ${p?.name || 'Objekt'}</p>
+                        <div class="pdf-footer-sender">${lh.footerHtml}</div>
                     </div>
                 </div>
             `;
         }
         
+        function renderAllTenantPdfs(year) {
+            const result = calculateSettlement(year);
+            const tenantIds = [...new Set(result.distributions.map(d => d.tenantId))];
+            let html = `
+                <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <h3 style="font-size:18px; font-weight:700;">Alle Mieter-Abrechnungen ${year} (${tenantIds.length})</h3>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-purple" onclick="window.print()"><i class="fas fa-print"></i> Alle drucken</button>
+                        <button class="btn btn-secondary" onclick="pdfView=null; render()"><i class="fas fa-times"></i> Schließen</button>
+                    </div>
+                </div>
+            `;
+            tenantIds.forEach(tId => {
+                const tenant = state.tenants.find(t => t.id === tId);
+                if (!tenant) return;
+                const unit = state.units.find(u => u.id === tenant.unitId);
+                const settlement = getTenantSettlement(tId, year);
+                const lh = getLetterhead();
+                const usedCats = Object.keys(result.costsByCategory);
+                const bc = settlement.balance > 0 ? 'guthaben' : settlement.balance < 0 ? 'nachzahlung' : 'ausgeglichen';
+                const bl = settlement.balance > 0 ? 'Guthaben' : settlement.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen';
+                const p = state.property;
+                
+                html += `
+                    <div class="pdf-page">
+                        <div class="pdf-letterhead">${lh.senderHtml}<div class="pdf-letterhead-logo"><h1>${p?.name||'Objekt'}</h1><p>${p?.address||''}</p></div></div>
+                        <div class="pdf-recipient"><p><strong>${tenant.name}</strong><br>${unit?.name||''}<br>${p?.address||''}</p></div>
+                        <div class="pdf-date">${p?.ownerAddress||p?.address||''}, den ${new Date().toLocaleDateString('de-DE')}</div>
+                        <div class="pdf-subject">Nebenkostenabrechnung 01.01.${year} – 31.12.${year}</div>
+                        <div class="pdf-section"><h2>Betriebskosten</h2>
+                            <table class="pdf-table"><thead><tr><th>Kostenart</th><th class="text-right">Ihr Anteil</th></tr></thead><tbody>
+                                ${usedCats.filter(c=>settlement.categories[c]).map(cat => `<tr><td>${COST_CATEGORIES[cat]?.label||cat}</td><td class="text-right">${formatCurrency(settlement.categories[cat])}</td></tr>`).join('')}
+                                <tr class="pdf-total-row"><td><strong>Gesamt</strong></td><td class="text-right"><strong>${formatCurrency(settlement.total)}</strong></td></tr>
+                            </tbody></table>
+                        </div>
+                        <div class="pdf-section"><h2>Verrechnung</h2>
+                            <table class="pdf-table"><tbody>
+                                <tr><td>Betriebskosten</td><td class="text-right">${formatCurrency(settlement.total)}</td></tr>
+                                <tr><td>Vorauszahlungen</td><td class="text-right" style="color:#16a34a;">– ${formatCurrency(settlement.prepayments)}</td></tr>
+                                <tr class="pdf-total-row"><td><strong>${bl}</strong></td><td class="text-right"><strong>${formatCurrency(Math.abs(settlement.balance))}</strong></td></tr>
+                            </tbody></table>
+                        </div>
+                        <div class="pdf-balance ${bc}"><div class="pdf-balance-label">${bl}</div><div class="pdf-balance-amount">${formatCurrency(Math.abs(settlement.balance))}</div></div>
+                        <div class="pdf-signature"><p>Mit freundlichen Grüßen</p><div class="pdf-signature-line">${p?.owner||'Vermieter'}</div></div>
+                        <div class="pdf-footer"><div class="pdf-footer-sender">${lh.footerHtml}</div></div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+        
+        // ============ MODAL & FORMULARE ============
         function closeModal() { modalContent = null; render(); }
         
-        // ============ FORMULARE ============
         function showUnitForm(editId) {
-            const unit = editId ? state.units.find(u => u.id === editId) : null;
-            modalContent = `
-                <h2 class="modal-title">${unit ? 'Einheit bearbeiten' : 'Neue Wohneinheit'}</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Bezeichnung <span class="req">*</span></label>
-                        <input class="form-input" id="mUnitName" value="${unit?.name || ''}" placeholder="z.B. Whg. 1.1">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Fläche (m²) <span class="req">*</span></label>
-                        <input class="form-input" type="number" id="mUnitSize" value="${unit?.size || ''}" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Zimmer</label>
-                        <input class="form-input" type="number" id="mUnitRooms" value="${unit?.rooms || ''}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Etage</label>
-                        <input class="form-input" type="number" id="mUnitFloor" value="${unit?.floor || ''}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Einheitentyp</label>
-                        <select class="form-input" id="mUnitType">
-                            <option value="Wohnung" ${unit?.type === 'Wohnung' ? 'selected' : ''}>Wohnung</option>
-                            <option value="Gewerbe" ${unit?.type === 'Gewerbe' ? 'selected' : ''}>Gewerbe</option>
-                            <option value="Stellplatz" ${unit?.type === 'Stellplatz' ? 'selected' : ''}>Stellplatz</option>
-                            <option value="Keller" ${unit?.type === 'Keller' ? 'selected' : ''}>Keller</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Heizungsart</label>
-                        <select class="form-input" id="mUnitHeating">
-                            <option value="Zentral" ${unit?.heatingType === 'Zentral' ? 'selected' : ''}>Zentral</option>
-                            <option value="Etagen" ${unit?.heatingType === 'Etagen' ? 'selected' : ''}>Etagenheizung</option>
-                            <option value="Fernwärme" ${unit?.heatingType === 'Fernwärme' ? 'selected' : ''}>Fernwärme</option>
-                            <option value="Keine" ${unit?.heatingType === 'Keine' ? 'selected' : ''}>Keine</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" id="saveUnitModal" data-id="${editId || ''}">${unit ? 'Speichern' : 'Anlegen'}</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
-                </div>
-            `;
+            const u = editId ? state.units.find(x => x.id === editId) : null;
+            modalContent = `<h2 class="modal-title">${u?'Bearbeiten':'Neue Einheit'}</h2><div class="form-grid"><div class="form-group"><label class="form-label">Bezeichnung <span class="req">*</span></label><input class="form-input" id="f1" value="${u?.name||''}"></div><div class="form-group"><label class="form-label">Fläche (m²) <span class="req">*</span></label><input class="form-input" type="number" id="f2" value="${u?.size||''}" step="0.01"></div><div class="form-group"><label class="form-label">Zimmer</label><input class="form-input" type="number" id="f3" value="${u?.rooms||''}"></div><div class="form-group"><label class="form-label">Etage</label><input class="form-input" type="number" id="f4" value="${u?.floor||''}"></div><div class="form-group"><label class="form-label">Typ</label><select class="form-input" id="f5"><option ${u?.type==='Wohnung'?'selected':''}>Wohnung</option><option ${u?.type==='Gewerbe'?'selected':''}>Gewerbe</option><option ${u?.type==='Stellplatz'?'selected':''}>Stellplatz</option></select></div><div class="form-group"><label class="form-label">Heizung</label><select class="form-input" id="f6"><option ${u?.heatingType==='Zentral'?'selected':''}>Zentral</option><option ${u?.heatingType==='Etagen'?'selected':''}>Etagen</option><option ${u?.heatingType==='Fernwärme'?'selected':''}>Fernwärme</option></select></div></div><div class="form-actions"><button class="btn btn-primary" id="saveBtn">${u?'Speichern':'Anlegen'}</button><button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button></div>`;
             render();
-            document.getElementById('saveUnitModal').onclick = () => {
-                const name = document.getElementById('mUnitName').value.trim();
-                const size = parseFloat(document.getElementById('mUnitSize').value);
-                const rooms = parseInt(document.getElementById('mUnitRooms').value) || 0;
-                const floor = parseInt(document.getElementById('mUnitFloor').value) || 0;
-                const type = document.getElementById('mUnitType').value;
-                const heatingType = document.getElementById('mUnitHeating').value;
-                if (!name || !size) return alert('Bitte Bezeichnung und Fläche ausfüllen.');
-                if (editId) {
-                    const idx = state.units.findIndex(u => u.id === editId);
-                    state.units[idx] = { ...state.units[idx], name, size, rooms, floor, type, heatingType };
-                } else {
-                    state.units.push({ id: generateId(), name, size, rooms, floor, type, heatingType });
-                }
-                saveData(state);
-                closeModal();
+            document.getElementById('saveBtn').onclick = () => {
+                const name = document.getElementById('f1').value.trim(), size = parseFloat(document.getElementById('f2').value);
+                if (!name || !size) return alert('Pflichtfelder ausfüllen.');
+                const data = { name, size, rooms: parseInt(document.getElementById('f3').value)||0, floor: parseInt(document.getElementById('f4').value)||0, type: document.getElementById('f5').value, heatingType: document.getElementById('f6').value };
+                if (editId) { const i = state.units.findIndex(x=>x.id===editId); state.units[i] = {...state.units[i], ...data}; }
+                else state.units.push({ id: generateId(), ...data });
+                saveData(state); closeModal();
             };
         }
         
         function showTenantForm(editId) {
-            const tenant = editId ? state.tenants.find(t => t.id === editId) : null;
-            modalContent = `
-                <h2 class="modal-title">${tenant ? 'Mieter bearbeiten' : 'Neuer Mieter'}</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Name <span class="req">*</span></label>
-                        <input class="form-input" id="mTenantName" value="${tenant?.name || ''}" placeholder="Vor- und Nachname">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">E-Mail</label>
-                        <input class="form-input" type="email" id="mTenantEmail" value="${tenant?.email || ''}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Telefon</label>
-                        <input class="form-input" id="mTenantPhone" value="${tenant?.phone || ''}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Wohneinheit <span class="req">*</span></label>
-                        <select class="form-input" id="mTenantUnit">
-                            <option value="">Bitte wählen...</option>
-                            ${state.units.map(u => `<option value="${u.id}" ${tenant?.unitId === u.id ? 'selected' : ''}>${u.name} (${u.size} m²)</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Einzugsdatum <span class="req">*</span></label>
-                        <input class="form-input" type="date" id="mTenantMoveIn" value="${tenant?.moveInDate || ''}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Auszugsdatum</label>
-                        <input class="form-input" type="date" id="mTenantMoveOut" value="${tenant?.moveOutDate || ''}">
-                        <div class="form-hint">Leer = Mieter wohnt noch</div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-success" id="saveTenantModal" data-id="${editId || ''}">${tenant ? 'Speichern' : 'Anlegen'}</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
-                </div>
-            `;
+            const t = editId ? state.tenants.find(x => x.id === editId) : null;
+            modalContent = `<h2 class="modal-title">${t?'Bearbeiten':'Neuer Mieter'}</h2><div class="form-grid"><div class="form-group"><label class="form-label">Name <span class="req">*</span></label><input class="form-input" id="f1" value="${t?.name||''}"></div><div class="form-group"><label class="form-label">E-Mail</label><input class="form-input" type="email" id="f2" value="${t?.email||''}"></div><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="f3" value="${t?.phone||''}"></div><div class="form-group"><label class="form-label">Einheit <span class="req">*</span></label><select class="form-input" id="f4"><option value="">Wählen...</option>${state.units.map(u=>`<option value="${u.id}" ${t?.unitId===u.id?'selected':''}>${u.name}</option>`).join('')}</select></div><div class="form-group"><label class="form-label">Einzug <span class="req">*</span></label><input class="form-input" type="date" id="f5" value="${t?.moveInDate||''}"></div><div class="form-group"><label class="form-label">Auszug</label><input class="form-input" type="date" id="f6" value="${t?.moveOutDate||''}"></div></div><div class="form-actions"><button class="btn btn-success" id="saveBtn">${t?'Speichern':'Anlegen'}</button><button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button></div>`;
             render();
-            document.getElementById('saveTenantModal').onclick = () => {
-                const name = document.getElementById('mTenantName').value.trim();
-                const email = document.getElementById('mTenantEmail').value.trim();
-                const phone = document.getElementById('mTenantPhone').value.trim();
-                const unitId = document.getElementById('mTenantUnit').value;
-                const moveInDate = document.getElementById('mTenantMoveIn').value;
-                const moveOutDate = document.getElementById('mTenantMoveOut').value || null;
-                if (!name || !unitId || !moveInDate) return alert('Bitte alle Pflichtfelder ausfüllen.');
-                if (editId) {
-                    const idx = state.tenants.findIndex(t => t.id === editId);
-                    state.tenants[idx] = { ...state.tenants[idx], name, email, phone, unitId, moveInDate, moveOutDate };
-                } else {
-                    state.tenants.push({ id: generateId(), name, email, phone, unitId, moveInDate, moveOutDate });
-                }
-                saveData(state);
-                closeModal();
+            document.getElementById('saveBtn').onclick = () => {
+                const name = document.getElementById('f1').value.trim(), unitId = document.getElementById('f4').value, moveInDate = document.getElementById('f5').value;
+                if (!name || !unitId || !moveInDate) return alert('Pflichtfelder ausfüllen.');
+                const data = { name, email: document.getElementById('f2').value.trim(), phone: document.getElementById('f3').value.trim(), unitId, moveInDate, moveOutDate: document.getElementById('f6').value || null };
+                if (editId) { const i = state.tenants.findIndex(x=>x.id===editId); state.tenants[i] = {...state.tenants[i], ...data}; }
+                else state.tenants.push({ id: generateId(), ...data });
+                saveData(state); closeModal();
             };
         }
         
         function showPrepayForm(editId) {
-            const prepay = editId ? state.prepayments.find(p => p.id === editId) : null;
-            modalContent = `
-                <h2 class="modal-title">${prepay ? 'Vorauszahlung bearbeiten' : 'Neue Vorauszahlung'}</h2>
-                <div class="form-grid">
-                    <div class="form-group full">
-                        <label class="form-label">Mieter <span class="req">*</span></label>
-                        <select class="form-input" id="mPrepayTenant">
-                            <option value="">Bitte wählen...</option>
-                            ${state.tenants.map(t => {
-                                const unit = state.units.find(u => u.id === t.unitId);
-                                return `<option value="${t.id}" ${prepay?.tenantId === t.id ? 'selected' : ''}>${t.name} (${unit?.name || '—'})</option>`;
-                            }).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Monatlicher Betrag (€) <span class="req">*</span></label>
-                        <input class="form-input" type="number" id="mPrepayAmount" value="${prepay?.monthlyAmount || ''}" step="0.01" min="0" placeholder="z.B. 150.00">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Startdatum <span class="req">*</span></label>
-                        <input class="form-input" type="date" id="mPrepayStart" value="${prepay?.startDate || new Date().getFullYear() + '-01-01'}">
-                    </div>
-                    <div class="form-group full">
-                        <label class="form-label">Enddatum (optional)</label>
-                        <input class="form-input" type="date" id="mPrepayEnd" value="${prepay?.endDate || ''}">
-                        <div class="form-hint">Leer = Vorauszahlung läuft unbefristet</div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-success" id="savePrepayModal">${prepay ? 'Speichern' : 'Anlegen'}</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
-                </div>
-            `;
+            const p = editId ? state.prepayments.find(x => x.id === editId) : null;
+            modalContent = `<h2 class="modal-title">${p?'Bearbeiten':'Neue Vorauszahlung'}</h2><div class="form-grid"><div class="form-group full"><label class="form-label">Mieter <span class="req">*</span></label><select class="form-input" id="f1"><option value="">Wählen...</option>${state.tenants.map(t=>{const u=state.units.find(x=>x.id===t.unitId);return `<option value="${t.id}" ${p?.tenantId===t.id?'selected':''}>${t.name} (${u?.name||''})</option>`;}).join('')}</select></div><div class="form-group"><label class="form-label">Monatlich (€) <span class="req">*</span></label><input class="form-input" type="number" id="f2" value="${p?.monthlyAmount||''}" step="0.01"></div><div class="form-group"><label class="form-label">Startdatum <span class="req">*</span></label><input class="form-input" type="date" id="f3" value="${p?.startDate||new Date().getFullYear()+'-01-01'}"></div><div class="form-group full"><label class="form-label">Enddatum</label><input class="form-input" type="date" id="f4" value="${p?.endDate||''}"><div class="form-hint">Leer = unbefristet</div></div></div><div class="form-actions"><button class="btn btn-success" id="saveBtn">${p?'Speichern':'Anlegen'}</button><button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button></div>`;
             render();
-            document.getElementById('savePrepayModal').onclick = () => {
-                const tenantId = document.getElementById('mPrepayTenant').value;
-                const monthlyAmount = parseFloat(document.getElementById('mPrepayAmount').value);
-                const startDate = document.getElementById('mPrepayStart').value;
-                const endDate = document.getElementById('mPrepayEnd').value || null;
-                if (!tenantId || !monthlyAmount || !startDate) return alert('Bitte alle Pflichtfelder ausfüllen.');
-                if (editId) {
-                    const idx = state.prepayments.findIndex(p => p.id === editId);
-                    state.prepayments[idx] = { ...state.prepayments[idx], tenantId, monthlyAmount, startDate, endDate };
-                } else {
-                    state.prepayments.push({ id: generateId(), tenantId, monthlyAmount, startDate, endDate });
-                }
-                saveData(state);
-                closeModal();
+            document.getElementById('saveBtn').onclick = () => {
+                const tenantId = document.getElementById('f1').value, monthlyAmount = parseFloat(document.getElementById('f2').value), startDate = document.getElementById('f3').value;
+                if (!tenantId || !monthlyAmount || !startDate) return alert('Pflichtfelder ausfüllen.');
+                const data = { tenantId, monthlyAmount, startDate, endDate: document.getElementById('f4').value || null };
+                if (editId) { const i = state.prepayments.findIndex(x=>x.id===editId); state.prepayments[i] = {...state.prepayments[i], ...data}; }
+                else state.prepayments.push({ id: generateId(), ...data });
+                saveData(state); closeModal();
             };
         }
         
         function showCostForm(editId) {
-            const cost = editId ? state.costs.find(c => c.id === editId) : null;
-            const allKeys = getAllDistKeys();
-            modalContent = `
-                <h2 class="modal-title">${cost ? 'Kosten bearbeiten' : 'Neue Kosten erfassen'}</h2>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Kategorie <span class="req">*</span></label>
-                        <select class="form-input" id="mCostCat">
-                            ${Object.entries(COST_CATEGORIES).map(([k,v]) => `<option value="${k}" ${cost?.category === k ? 'selected' : ''}>${v.label}${v.betrkv === false ? ' ⚠ Nicht umlegbar' : ''}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Beschreibung <span class="req">*</span></label>
-                        <input class="form-input" id="mCostDesc" value="${cost?.description || ''}" placeholder="z.B. Gasrechnung Q1">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Betrag (€) <span class="req">*</span></label>
-                        <input class="form-input" type="number" id="mCostAmount" value="${cost?.amount || ''}" step="0.01" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Datum <span class="req">*</span></label>
-                        <input class="form-input" type="date" id="mCostDate" value="${cost?.date || new Date().toISOString().split('T')[0]}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Verteilerschlüssel <span class="req">*</span></label>
-                        <select class="form-input" id="mCostDistKey">
-                            ${Object.entries(allKeys).map(([k,v]) => `<option value="${k}" ${cost?.distributionKey === k ? 'selected' : ''}>${v}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Rechnungsnummer</label>
-                        <input class="form-input" id="mCostInvoice" value="${cost?.invoiceNo || ''}" placeholder="Optional">
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-warning" id="saveCostModal" data-id="${editId || ''}">${cost ? 'Speichern' : 'Anlegen'}</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
-                </div>
-            `;
+            const c = editId ? state.costs.find(x => x.id === editId) : null;
+            const ak = getAllDistKeys();
+            modalContent = `<h2 class="modal-title">${c?'Bearbeiten':'Neue Kosten'}</h2><div class="form-grid"><div class="form-group"><label class="form-label">Kategorie <span class="req">*</span></label><select class="form-input" id="f1">${Object.entries(COST_CATEGORIES).map(([k,v])=>`<option value="${k}" ${c?.category===k?'selected':''}>${v.label}${v.betrkv===false?' ⚠':''}</option>`).join('')}</select></div><div class="form-group"><label class="form-label">Beschreibung <span class="req">*</span></label><input class="form-input" id="f2" value="${c?.description||''}"></div><div class="form-group"><label class="form-label">Betrag (€) <span class="req">*</span></label><input class="form-input" type="number" id="f3" value="${c?.amount||''}" step="0.01"></div><div class="form-group"><label class="form-label">Datum <span class="req">*</span></label><input class="form-input" type="date" id="f4" value="${c?.date||new Date().toISOString().split('T')[0]}"></div><div class="form-group"><label class="form-label">Verteiler <span class="req">*</span></label><select class="form-input" id="f5">${Object.entries(ak).map(([k,v])=>`<option value="${k}" ${c?.distributionKey===k?'selected':''}>${v}</option>`).join('')}</select></div><div class="form-group"><label class="form-label">Rechnungsnr.</label><input class="form-input" id="f6" value="${c?.invoiceNo||''}"></div></div><div class="form-actions"><button class="btn btn-warning" id="saveBtn">${c?'Speichern':'Anlegen'}</button><button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button></div>`;
             render();
-            document.getElementById('saveCostModal').onclick = () => {
-                const category = document.getElementById('mCostCat').value;
-                const description = document.getElementById('mCostDesc').value.trim();
-                const amount = parseFloat(document.getElementById('mCostAmount').value);
-                const date = document.getElementById('mCostDate').value;
-                const distributionKey = document.getElementById('mCostDistKey').value;
-                const invoiceNo = document.getElementById('mCostInvoice').value.trim();
-                if (!description || !amount || !date) return alert('Bitte alle Pflichtfelder ausfüllen.');
-                if (editId) {
-                    const idx = state.costs.findIndex(c => c.id === editId);
-                    state.costs[idx] = { ...state.costs[idx], category, description, amount, date, distributionKey, invoiceNo };
-                } else {
-                    state.costs.push({ id: generateId(), category, description, amount, date, distributionKey, invoiceNo });
-                }
-                saveData(state);
-                closeModal();
+            document.getElementById('saveBtn').onclick = () => {
+                const description = document.getElementById('f2').value.trim(), amount = parseFloat(document.getElementById('f3').value), date = document.getElementById('f4').value;
+                if (!description || !amount || !date) return alert('Pflichtfelder ausfüllen.');
+                const data = { category: document.getElementById('f1').value, description, amount, date, distributionKey: document.getElementById('f5').value, invoiceNo: document.getElementById('f6').value.trim() };
+                if (editId) { const i = state.costs.findIndex(x=>x.id===editId); state.costs[i] = {...state.costs[i], ...data}; }
+                else state.costs.push({ id: generateId(), ...data });
+                saveData(state); closeModal();
             };
         }
         
         function showDistKeyForm() {
-            modalContent = `
-                <h2 class="modal-title">Neuer Verteilerschlüssel</h2>
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i>
-                    <div>Definieren Sie einen eigenen Verteilerschlüssel für die Kostenverteilung. Dieser muss im Mietvertrag vereinbart werden.</div>
-                </div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Name <span class="req">*</span></label>
-                        <input class="form-input" id="mDkName" placeholder="z.B. Nach Mietanteil">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Berechnungsgrundlage</label>
-                        <input class="form-input" id="mDkBasis" placeholder="z.B. Mietzins, Anteil an Gesamtfläche">
-                    </div>
-                    <div class="form-group full">
-                        <label class="form-label">Beschreibung</label>
-                        <textarea class="form-textarea" id="mDkDesc" placeholder="Beschreibung des Verteilverfahrens..."></textarea>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" id="saveDkModal">Anlegen</button>
-                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
-                </div>
-            `;
+            modalContent = `<h2 class="modal-title">Neuer Verteilerschlüssel</h2><div class="form-grid"><div class="form-group"><label class="form-label">Name <span class="req">*</span></label><input class="form-input" id="f1"></div><div class="form-group"><label class="form-label">Berechnungsgrundlage</label><input class="form-input" id="f2"></div><div class="form-group full"><label class="form-label">Beschreibung</label><textarea class="form-textarea" id="f3"></textarea></div></div><div class="form-actions"><button class="btn btn-primary" id="saveBtn">Anlegen</button><button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button></div>`;
             render();
-            document.getElementById('saveDkModal').onclick = () => {
-                const name = document.getElementById('mDkName').value.trim();
-                const basis = document.getElementById('mDkBasis').value.trim();
-                const description = document.getElementById('mDkDesc').value.trim();
-                if (!name) return alert('Bitte Name eingeben.');
+            document.getElementById('saveBtn').onclick = () => {
+                const name = document.getElementById('f1').value.trim();
+                if (!name) return alert('Name eingeben.');
                 if (!state.customDistKeys) state.customDistKeys = [];
-                state.customDistKeys.push({ id: generateId(), name, basis, description });
-                saveData(state);
-                closeModal();
+                state.customDistKeys.push({ id: generateId(), name, basis: document.getElementById('f2').value.trim(), description: document.getElementById('f3').value.trim() });
+                saveData(state); closeModal();
             };
         }
         
         // ============ EVENTS ============
         function attachEvents() {
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.onclick = () => { activeTab = btn.dataset.tab; pdfTenantId = null; render(); };
-            });
-            const toggleBtn = document.getElementById('toggleSidebar');
-            if (toggleBtn) toggleBtn.onclick = () => { sidebarCollapsed = !sidebarCollapsed; render(); };
-            
-            const modalOverlay = document.getElementById('modalOverlay');
-            if (modalOverlay) modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.onclick = () => { activeTab = btn.dataset.tab; pdfView = null; render(); });
+            const tb = document.getElementById('toggleSidebar');
+            if (tb) tb.onclick = () => { sidebarCollapsed = !sidebarCollapsed; render(); };
+            const mo = document.getElementById('modalOverlay');
+            if (mo) mo.onclick = e => { if (e.target === mo) closeModal(); };
             
             // Property
-            const savePropBtn = document.getElementById('savePropertyBtn');
-            if (savePropBtn) savePropBtn.onclick = () => {
-                state.property = {
-                    name: document.getElementById('propName').value.trim(),
-                    owner: document.getElementById('propOwner').value.trim(),
-                    address: document.getElementById('propAddress').value.trim(),
-                    yearBuilt: document.getElementById('propYear').value,
-                    landArea: document.getElementById('propLandArea').value,
-                    totalArea: document.getElementById('propTotalArea').value || state.units.reduce((s,u) => s + u.size, 0),
-                    landRegistry: document.getElementById('propLandRegistry').value.trim(),
-                    phone: document.getElementById('propPhone').value.trim(),
-                    email: document.getElementById('propEmail').value.trim(),
-                    taxId: document.getElementById('propTaxId').value.trim(),
-                    bank: document.getElementById('propBank').value.trim(),
-                    notes: document.getElementById('propNotes').value.trim(),
-                };
-                if (!state.property.name || !state.property.owner || !state.property.address) {
-                    return alert('Bitte mindestens Objektbezeichnung, Eigentümer und Adresse ausfüllen.');
+            const sp = document.getElementById('savePropertyBtn');
+            if (sp) sp.onclick = () => {
+                if (!state.property) state.property = {};
+                const tab = window._propTab || 'objekt';
+                if (tab === 'objekt') {
+                    state.property.name = document.getElementById('propName').value.trim();
+                    state.property.yearBuilt = document.getElementById('propYear').value;
+                    state.property.address = document.getElementById('propAddress').value.trim();
+                    state.property.landArea = document.getElementById('propLandArea').value;
+                    state.property.landRegistry = document.getElementById('propLandRegistry').value.trim();
+                    state.property.notes = document.getElementById('propNotes').value.trim();
+                } else {
+                    state.property.owner = document.getElementById('propOwner').value.trim();
+                    state.property.ownerAdd = document.getElementById('propOwnerAdd').value.trim();
+                    state.property.ownerAddress = document.getElementById('propOwnerAddress').value.trim();
+                    state.property.phone = document.getElementById('propPhone').value.trim();
+                    state.property.email = document.getElementById('propEmail').value.trim();
+                    state.property.taxId = document.getElementById('propTaxId').value.trim();
+                    state.property.bank = document.getElementById('propBank').value.trim();
+                    state.property.bankName = document.getElementById('propBankName').value.trim();
                 }
-                saveData(state);
-                render();
-                alert('Objektdaten gespeichert!');
+                if (!state.property.name || !state.property.address) return alert('Objektbezeichnung und Adresse sind Pflicht.');
+                saveData(state); render(); alert('Gespeichert!');
             };
             
             // Units
-            const addUnitBtn = document.getElementById('addUnitBtn');
-            if (addUnitBtn) addUnitBtn.onclick = () => showUnitForm(null);
-            document.querySelectorAll('[data-edit-unit]').forEach(btn => btn.onclick = () => showUnitForm(btn.dataset.editUnit));
-            document.querySelectorAll('[data-delete-unit]').forEach(btn => btn.onclick = () => {
-                if (confirm('Einheit und zugehörige Mieter löschen?')) {
-                    state.units = state.units.filter(u => u.id !== btn.dataset.deleteUnit);
-                    state.tenants = state.tenants.filter(t => t.unitId !== btn.dataset.deleteUnit);
-                    saveData(state); render();
-                }
-            });
+            const au = document.getElementById('addUnitBtn');
+            if (au) au.onclick = () => showUnitForm(null);
+            document.querySelectorAll('[data-edit-unit]').forEach(b => b.onclick = () => showUnitForm(b.dataset.editUnit));
+            document.querySelectorAll('[data-delete-unit]').forEach(b => b.onclick = () => { if (confirm('Einheit löschen?')) { state.units = state.units.filter(u=>u.id!==b.dataset.deleteUnit); state.tenants = state.tenants.filter(t=>t.unitId!==b.dataset.deleteUnit); saveData(state); render(); }});
             
             // Tenants
-            const addTenantBtn = document.getElementById('addTenantBtn');
-            if (addTenantBtn && state.units.length > 0) addTenantBtn.onclick = () => showTenantForm(null);
-            document.querySelectorAll('[data-edit-tenant]').forEach(btn => btn.onclick = () => showTenantForm(btn.dataset.editTenant));
-            document.querySelectorAll('[data-delete-tenant]').forEach(btn => btn.onclick = () => {
-                if (confirm('Mieter löschen?')) { state.tenants = state.tenants.filter(t => t.id !== btn.dataset.deleteTenant); saveData(state); render(); }
-            });
+            const at = document.getElementById('addTenantBtn');
+            if (at && state.units.length > 0) at.onclick = () => showTenantForm(null);
+            document.querySelectorAll('[data-edit-tenant]').forEach(b => b.onclick = () => showTenantForm(b.dataset.editTenant));
+            document.querySelectorAll('[data-delete-tenant]').forEach(b => b.onclick = () => { if (confirm('Mieter löschen?')) { state.tenants = state.tenants.filter(t=>t.id!==b.dataset.deleteTenant); saveData(state); render(); }});
             
             // Prepayments
-            const addPrepayBtn = document.getElementById('addPrepayBtn');
-            if (addPrepayBtn && state.tenants.length > 0) addPrepayBtn.onclick = () => showPrepayForm(null);
-            document.querySelectorAll('[data-edit-prepay]').forEach(btn => btn.onclick = () => showPrepayForm(btn.dataset.editPrepay));
-            document.querySelectorAll('[data-delete-prepay]').forEach(btn => btn.onclick = () => {
-                if (confirm('Vorauszahlung löschen?')) { state.prepayments = state.prepayments.filter(p => p.id !== btn.dataset.deletePrepay); saveData(state); render(); }
-            });
+            const ap = document.getElementById('addPrepayBtn');
+            if (ap && state.tenants.length > 0) ap.onclick = () => showPrepayForm(null);
+            document.querySelectorAll('[data-edit-prepay]').forEach(b => b.onclick = () => showPrepayForm(b.dataset.editPrepay));
+            document.querySelectorAll('[data-delete-prepay]').forEach(b => b.onclick = () => { if (confirm('Löschen?')) { state.prepayments = state.prepayments.filter(p=>p.id!==b.dataset.deletePrepay); saveData(state); render(); }});
             
             // Costs
-            const addCostBtn = document.getElementById('addCostBtn');
-            if (addCostBtn) addCostBtn.onclick = () => showCostForm(null);
-            document.querySelectorAll('[data-filter]').forEach(btn => btn.onclick = () => { costFilter = btn.dataset.filter; render(); });
-            document.querySelectorAll('[data-edit-cost]').forEach(btn => btn.onclick = () => showCostForm(btn.dataset.editCost));
-            document.querySelectorAll('[data-delete-cost]').forEach(btn => btn.onclick = () => {
-                if (confirm('Kostenposition löschen?')) { state.costs = state.costs.filter(c => c.id !== btn.dataset.deleteCost); saveData(state); render(); }
-            });
+            const ac = document.getElementById('addCostBtn');
+            if (ac) ac.onclick = () => showCostForm(null);
+            document.querySelectorAll('[data-filter]').forEach(b => b.onclick = () => { costFilter = b.dataset.filter; render(); });
+            document.querySelectorAll('[data-edit-cost]').forEach(b => b.onclick = () => showCostForm(b.dataset.editCost));
+            document.querySelectorAll('[data-delete-cost]').forEach(b => b.onclick = () => { if (confirm('Löschen?')) { state.costs = state.costs.filter(c=>c.id!==b.dataset.deleteCost); saveData(state); render(); }});
+            
+            // Copy costs
+            const cc = document.getElementById('copyCostsBtn');
+            if (cc) cc.onclick = () => {
+                const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear()))].sort();
+                if (years.length === 0) return alert('Keine Kosten zum Kopieren vorhanden.');
+                const fromYear = years[years.length-1];
+                const toYear = fromYear + 1;
+                const newDate = toYear + '-01-01';
+                const source = state.costs.filter(c => new Date(c.date).getFullYear() === fromYear);
+                if (source.length === 0) return alert('Keine Kosten im Jahr ' + fromYear);
+                if (!confirm(`${source.length} Kostenpositionen aus ${fromYear} nach ${toYear} kopieren?`)) return;
+                source.forEach(c => {
+                    state.costs.push({ id: generateId(), category: c.category, description: c.description, amount: c.amount, date: newDate, distributionKey: c.distributionKey, invoiceNo: '' });
+                });
+                saveData(state); render();
+                alert(`${source.length} Kostenpositionen nach ${toYear} kopiert! Beträge können Sie jetzt anpassen.`);
+            };
+            
+            // Year end copy
+            const ccy = document.getElementById('copyCostsYearBtn');
+            if (ccy) ccy.onclick = () => {
+                const fromYear = document.getElementById('copyFromYear').value;
+                const toYear = document.getElementById('copyToYear').value;
+                const newDate = document.getElementById('copyNewDate').value;
+                const source = state.costs.filter(c => new Date(c.date).getFullYear().toString() === fromYear);
+                if (source.length === 0) return alert('Keine Kosten im Jahr ' + fromYear);
+                if (!confirm(`${source.length} Kosten aus ${fromYear} nach ${toYear} kopieren?`)) return;
+                source.forEach(c => {
+                    state.costs.push({ id: generateId(), category: c.category, description: c.description, amount: c.amount, date: newDate, distributionKey: c.distributionKey, invoiceNo: '' });
+                });
+                saveData(state); render();
+                alert(`${source.length} Kosten nach ${toYear} kopiert!`);
+            };
+            
+            const cpb = document.getElementById('copyPrepaymentsBtn');
+            if (cpb) cpb.onclick = () => {
+                alert('Vorauszahlungen werden automatisch übernommen! Laufende Vorauszahlungen (ohne Enddatum) gelten auch für das neue Jahr. Sie können diese unter "Vorauszahlungen" bearbeiten.');
+            };
             
             // Dist Keys
-            const addDkBtn = document.getElementById('addDistKeyBtn');
-            if (addDkBtn) addDkBtn.onclick = () => showDistKeyForm();
-            document.querySelectorAll('[data-delete-dk]').forEach(btn => btn.onclick = () => {
-                state.customDistKeys = (state.customDistKeys || []).filter(k => k.id !== btn.dataset.deleteDk);
-                saveData(state); render();
-            });
+            const adk = document.getElementById('addDistKeyBtn');
+            if (adk) adk.onclick = () => showDistKeyForm();
+            document.querySelectorAll('[data-delete-dk]').forEach(b => b.onclick = () => { state.customDistKeys = (state.customDistKeys||[]).filter(k=>k.id!==b.dataset.deleteDk); saveData(state); render(); });
             
             // Settlement
-            const yearSelect = document.getElementById('yearSelect');
-            if (yearSelect) yearSelect.onchange = () => { settlementYear = yearSelect.value; pdfTenantId = null; render(); };
-            const printBtn = document.getElementById('printBtn');
-            if (printBtn) printBtn.onclick = () => window.print();
+            const ys = document.getElementById('yearSelect');
+            if (ys) ys.onchange = () => { settlementYear = ys.value; pdfView = null; render(); };
+            const pa = document.getElementById('printAllBtn');
+            if (pa) pa.onclick = () => { pdfView = { type: 'all', year: settlementYear }; render(); setTimeout(() => window.scrollTo(0,0), 100); };
+            document.querySelectorAll('[data-pdf-tenant]').forEach(b => b.onclick = () => { pdfView = { type: 'tenant', tenantId: b.dataset.pdfTenant, year: settlementYear }; render(); setTimeout(() => window.scrollTo(0,0), 100); });
             
-            // PDF per tenant
-            document.querySelectorAll('[data-pdf-tenant]').forEach(btn => btn.onclick = () => {
-                pdfTenantId = btn.dataset.pdfTenant;
-                render();
-                // Scroll to PDF
-                setTimeout(() => {
-                    const pdfEl = document.querySelector('.pdf-print');
-                    if (pdfEl) pdfEl.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            });
+            // Protokoll
+            const pys = document.getElementById('protokollYearSelect');
+            if (pys) pys.onchange = () => { settlementYear = pys.value; render(); };
+            const ppb = document.getElementById('printProtokollBtn');
+            if (ppb) ppb.onclick = () => { pdfView = { type: 'protokoll', year: settlementYear }; render(); setTimeout(() => window.scrollTo(0,0), 100); };
         }
         
-        // Initial render
         render();
     </script>
 </body>

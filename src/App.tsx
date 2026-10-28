@@ -136,8 +136,22 @@ export default function App() {
             <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
               <i className="fas fa-file-pdf text-red-600 mt-0.5"></i>
               <div>
-                <div className="text-sm font-medium text-gray-800">Einzel-PDFs pro Mieter</div>
-                <div className="text-xs text-gray-500">Professionelle Abrechnung als PDF drucken</div>
+                <div className="text-sm font-medium text-gray-800">Einzel-PDFs mit Briefkopf</div>
+                <div className="text-xs text-gray-500">Professionelle Abrechnung mit Vermieter-Briefkopf</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-clipboard-list text-teal-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Vermieter-Protokoll</div>
+                <div className="text-xs text-gray-500">Übersicht über alle Nachzahlungen/Guthaben</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-calendar-plus text-cyan-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Jahreswechsel</div>
+                <div className="text-xs text-gray-500">Daten übernehmen, nur Änderungen eingeben</div>
               </div>
             </div>
             <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
