@@ -1,5 +1,5 @@
 use crossterm::event::KeyEvent;
-use crate::database::Database;
+use crate::database::connection::Database;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum View {
