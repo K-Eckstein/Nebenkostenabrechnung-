@@ -154,6 +154,13 @@ export default function App() {
                 <div className="text-xs text-gray-500">Daten übernehmen, nur Änderungen eingeben</div>
               </div>
             </div>
+            <div className="flex items-start gap-3 p-3 bg-teal-50 rounded-lg border border-teal-100">
+              <i className="fas fa-shield-alt text-teal-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Daten-Backup (Export/Import)</div>
+                <div className="text-xs text-gray-500">JSON-Backup schützt vor Datenverlust</div>
+              </div>
+            </div>
             <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
               <i className="fas fa-database text-gray-600 mt-0.5"></i>
               <div>
