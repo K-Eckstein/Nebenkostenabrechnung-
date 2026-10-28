@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handbuch - Nebenkostenabrechnung</title>
+    <style>
+        @media print {
+            body { margin: 0; padding: 20mm; }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+            h1, h2, h3 { page-break-after: avoid; }
+            table, figure { page-break-inside: avoid; }
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .cover {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+        
+        .cover h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .cover .subtitle {
+            font-size: 24px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cover .version {
+            font-size: 18px;
+            margin-top: 60px;
+            opacity: 0.9;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin: 40px 0 20px 0;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #764ba2;
+            font-size: 24px;
+            margin: 30px 0 15px 0;
+            border-left: 4px solid #764ba2;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #555;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .legal-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .step {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .toc {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #764ba2;
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">
+        📄 Als PDF speichern
+    </button>
+
+    <!-- Deckblatt -->
+    <div class="cover">
+        <h1>📘 Handbuch</h1>
+        <div class="subtitle">Nebenkostenabrechnungs-Software</div>
+        <div style="font-size: 20px; margin-top: 30px;">
+            Vollständige Dokumentation<br>
+            aller Funktionen und Features
+        </div>
+        <div class="version">
+            Version 1.0 | Stand: Januar 2026
+        </div>
+    </div>
+
+    <!-- Inhaltsverzeichnis -->
+    <div class="toc">
+        <h2>📑 Inhaltsverzeichnis</h2>
+        <ul>
+            <li><a href="#einfuehrung">1. Einführung</a></li>
+            <li><a href="#installation">2. Installation & Start</a></li>
+            <li><a href="#uebersicht">3. Programmübersicht</a></li>
+            <li><a href="#objekt">4. Objekt & Vermieter</a></li>
+            <li><a href="#einheiten">5. Wohneinheiten</a></li>
+            <li><a href="#mieter">6. Mieter</a></li>
+            <li><a href="#vorauszahlungen">7. Vorauszahlungen</a></li>
+            <li><a href="#verbrauch">8. Verbrauchsablesung</a></li>
+            <li><a href="#kosten">9. Betriebskosten</a></li>
+            <li><a href="#wiederkehrend">10. Wiederkehrende Kosten</a></li>
+            <li><a href="#jahreswechsel">11. Jahreswechsel</a></li>
+            <li><a href="#vergleich">12. Jahresvergleich</a></li>
+            <li><a href="#abrechnung">13. Abrechnung</a></li>
+            <li><a href="#anschreiben">14. Mieteranschreiben</a></li>
+            <li><a href="#anpassung">15. Vorauszahlungsanpassung</a></li>
+            <li><a href="#pdf">16. PDF-Export</a></li>
+            <li><a href="#archiv">17. Archiv für Finanzamt</a></li>
+            <li><a href="#csv">18. CSV-Export</a></li>
+            <li><a href="#backup">19. Daten-Backup</a></li>
+            <li><a href="#recht">20. Rechtskonformität</a></li>
+            <li><a href="#faq">21. Häufige Fragen (FAQ)</a></li>
+        </ul>
+    </div>
+
+    <!-- 1. Einführung -->
+    <h1 id="einfuehrung">1. Einführung</h1>
+    
+    <p>
+        Die <strong>Nebenkostenabrechnungs-Software</strong> ist eine umfassende Lösung für Vermieter zur 
+        Erstellung rechtskonformer Nebenkostenabrechnungen nach deutschem Mietrecht. Die Software deckt 
+        den gesamten Workflow ab - von der Stammdatenverwaltung bis zur fertigen Abrechnung mit 
+        Archivierung für das Finanzamt.
+    </p>
+
+    <div class="info-box">
+        <strong>💡 Hinweis:</strong> Diese Software ersetzt keine anwaltliche Beratung. Bei komplexen 
+        rechtlichen Fragen konsultieren Sie bitte einen Fachanwalt für Mietrecht.
+    </div>
+
+    <h2>1.1 Hauptfunktionen</h2>
+    
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>📊 Stammdatenverwaltung</h4>
+            <p>Objekt, Vermieter, Wohneinheiten und Mieter verwalten</p>
+        </div>
+        <div class="feature-card">
+            <h4>💰 Kostenverwaltung</h4>
+            <p>Betriebskosten nach BetrKV erfassen und verteilen</p>
+        </div>
+        <div class="feature-card">
+            <h4>🔥 HeizkostenV</h4>
+            <p>Gesetzeskonforme Verteilung nach Verbrauch und Fläche</p>
+        </div>
+        <div class="feature-card">
+            <h4>📄 PDF-Export</h4>
+            <p>Professionelle Abrechnungen für Mieter und Finanzamt</p>
+        </div>
+        <div class="feature-card">
+            <h4>📈 Jahresvergleich</h4>
+            <p>Kostenentwicklung analysieren und darstellen</p>
+        </div>
+        <div class="feature-card">
+            <h4>💾 Datensicherheit</h4>
+            <p>Backup-Funktion und lokale Speicherung</p>
+        </div>
+    </div>
+
+    <h2>1.2 Zielgruppe</h2>
+    
+    <p>Diese Software richtet sich an:</p>
+    <ul>
+        <li>Private Vermieter von Mehrfamilienhäusern</li>
+        <li>Kleine Wohnungseigentümergemeinschaften</li>
+        <li>Hausverwaltungen mit begrenztem Budget</li>
+        <li>Immobilienmakler mit Vermietungsbestand</li>
+    </ul>
+
+    <!-- 2. Installation -->
+    <h1 id="installation" class="page-break">2. Installation & Start</h1>
+
+    <h2>2.1 Systemvoraussetzungen</h2>
+    
+    <ul>
+        <li>Moderner Webbrowser (Chrome, Firefox, Edge, Safari)</li>
+        <li>Mindestens 100 MB freier Speicherplatz</li>
+        <li>Internetverbindung nur für erstmaligen Download nötig</li>
+    </ul>
+
+    <h2>2.2 Installation</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>HTML-Datei herunterladen</strong>
+        <p style="margin-top: 10px;">
+            Laden Sie die Datei <code>nebenkosten.html</code> aus dem <code>dist</code>-Ordner herunter.
+        </p>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Datei speichern</strong>
+        <p style="margin-top: 10px;">
+            Speichern Sie die Datei an einem sicheren Ort, z.B.:
+        </p>
+        <ul>
+            <li><code>C:\Nebenkosten\nebenkosten.html</code> (Windows)</li>
+            <li><code>~/Nebenkosten/nebenkosten.html</code> (Linux/Mac)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Programm starten</strong>
+        <p style="margin-top: 10px;">
+            Doppelklicken Sie auf die HTML-Datei. Sie öffnet sich automatisch in Ihrem Standardbrowser.
+        </p>
+    </div>
+
+    <div class="info-box">
+        <strong>💡 Tipp:</strong> Erstellen Sie eine Desktop-Verknüpfung für schnellen Zugriff:
+        <br>Rechtsklick auf die Datei → "Verknüpfung erstellen" → Verknüpfung auf Desktop verschieben
+    </div>
+
+    <!-- 3. Programmübersicht -->
+    <h1 id="uebersicht" class="page-break">3. Programmübersicht</h1>
+
+    <h2>3.1 Benutzeroberfläche</h2>
+
+    <p>
+        Die Software verfügt über eine moderne, intuitive Benutzeroberfläche mit folgendem Aufbau:
+    </p>
+
+    <ul>
+        <li><strong>Linke Seitenleiste:</strong> Navigation zu allen Funktionsbereichen</li>
+        <li><strong>Obere Leiste:</strong> Aktueller Bereich und Speicherstatus</li>
+        <li><strong>Hauptbereich:</strong> Inhalte und Formulare des gewählten Bereichs</li>
+    </ul>
+
+    <h2>3.2 Navigationsstruktur</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Bereich</th>
+                <th>Funktion</th>
+                <th>Icon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dashboard</td>
+                <td>Übersicht und Statistiken</td>
+                <td>📊</td>
+            </tr>
+            <tr>
+                <td>Daten & Backup</td>
+                <td>Sicherung und Wiederherstellung</td>
+                <td>🛡️</td>
+            </tr>
+            <tr>
+                <td>Objekt & Vermieter</td>
+                <td>Stammdaten der Immobilie</td>
+                <td>🏠</td>
+            </tr>
+            <tr>
+                <td>Wohneinheiten</td>
+                <td>Wohnungen und Gewerbeeinheiten</td>
+                <td>🏢</td>
+            </tr>
+            <tr>
+                <td>Mieter</td>
+                <td>Mieterverwaltung</td>
+                <td>👥</td>
+            </tr>
+            <tr>
+                <td>Vorauszahlungen</td>
+                <td>Monatliche NK-Zahlungen</td>
+                <td>💵</td>
+            </tr>
+            <tr>
+                <td>Verbrauchsablesung</td>
+                <td>Zählerstände erfassen</td>
+                <td>🔥</td>
+            </tr>
+            <tr>
+                <td>Kosten</td>
+                <td>Betriebskosten erfassen</td>
+                <td>💶</td>
+            </tr>
+            <tr>
+                <td>Wiederkehrende Kosten</td>
+                <td>Automatische Kostenübernahme</td>
+                <td>🔄</td>
+            </tr>
+            <tr>
+                <td>Jahreswechsel</td>
+                <td>Daten ins neue Jahr übernehmen</td>
+                <td>📅</td>
+            </tr>
+            <tr>
+                <td>Jahresvergleich</td>
+                <td>Kostenentwicklung analysieren</td>
+                <td>📈</td>
+            </tr>
+            <tr>
+                <td>Abrechnung</td>
+                <td>NK-Abrechnung erstellen</td>
+                <td>🧮</td>
+            </tr>
+            <tr>
+                <td>Mieteranschreiben</td>
+                <td>Begleitschreiben generieren</td>
+                <td>✉️</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 4. Objekt & Vermieter -->
+    <h1 id="objekt" class="page-break">4. Objekt & Vermieter</h1>
+
+    <p>
+        Im Bereich "Objekt & Vermieter" legen Sie die grundlegenden Daten Ihrer Immobilie und 
+        Ihre Kontaktdaten als Vermieter fest. Diese Daten erscheinen automatisch als Briefkopf 
+        auf allen PDF-Abrechnungen.
+    </p>
+
+    <h2>4.1 Objektdaten erfassen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Navigieren Sie zu "Objekt & Vermieter"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Wechseln Sie zum Tab "Objektdaten"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Füllen Sie folgende Felder aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Objektbezeichnung:</strong> z.B. "Mehrfamilienhaus Musterstraße 12"</li>
+            <li><strong>Objektadresse:</strong> Vollständige Anschrift der Immobilie</li>
+            <li><strong>Baujahr:</strong> Jahr der Errichtung (optional)</li>
+            <li><strong>Grundstücksfläche:</strong> Größe in m² (optional)</li>
+            <li><strong>Flurstück/Grundbuch:</strong> Angaben aus dem Grundbuch (optional)</li>
+            <li><strong>Bemerkungen:</strong> Zusätzliche Informationen (optional)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Klicken Sie auf "Speichern"</strong>
+    </div>
+
+    <h2>4.2 Vermieter-Daten erfassen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Wechseln Sie zum Tab "Vermieter / Briefkopf"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie folgende Felder aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Name/Firma:</strong> Ihr Name oder Firmenname *</li>
+            <li><strong>Zusatz:</strong> z.B. "c/o Hausverwaltung Müller" (optional)</li>
+            <li><strong>Anschrift:</strong> Ihre vollständige Anschrift *</li>
+            <li><strong>Telefon:</strong> Ihre Telefonnummer</li>
+            <li><strong>E-Mail:</strong> Ihre E-Mail-Adresse</li>
+            <li><strong>Steuernummer:</strong> Ihre Steuernummer</li>
+            <li><strong>IBAN:</strong> Ihre Bankverbindung</li>
+            <li><strong>Bank:</strong> Name der Bank</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Speichern"</strong>
+    </div>
+
+    <div class="warning-box">
+        <strong>⚠️ Wichtig:</strong> Die mit * markierten Felder sind Pflichtfelder. 
+        Ohne diese Angaben können keine PDF-Abrechnungen erstellt werden.
+    </div>
+
+    <!-- 5. Wohneinheiten -->
+    <h1 id="einheiten" class="page-break">5. Wohneinheiten</h1>
+
+    <p>
+        Im Bereich "Wohneinheiten" verwalten Sie alle Wohnungen und Gewerbeeinheiten Ihrer Immobilie. 
+        Jede Einheit muss mit Fläche, Zimmeranzahl und Etage definiert werden.
+    </p>
+
+    <h2>5.1 Neue Einheit anlegen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neue Einheit"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Bezeichnung:</strong> z.B. "Whg 1.1" oder "Büro EG"</li>
+            <li><strong>Fläche (m²):</strong> Wohnfläche in Quadratmetern</li>
+            <li><strong>Zimmer:</strong> Anzahl der Räume</li>
+            <li><strong>Etage:</strong> Stockwerk (0 = Erdgeschoss)</li>
+            <li><strong>Einheitentyp:</strong> Wohnung, Gewerbe, Stellplatz oder Keller</li>
+            <li><strong>Heizungsart:</strong> Zentral, Etagenheizung oder Fernwärme</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <h2>5.2 Leerstandserkennung</h2>
+
+    <p>
+        Die Software erkennt automatisch, welche Einheiten leer stehen. Leerstehende Einheiten 
+        werden gelb markiert und ihre Kosten werden nicht auf die übrigen Mieter umgelegt 
+        (gemäß § 556a BGB).
+    </p>
+
+    <div class="legal-box">
+        <strong>⚖️ Rechtlicher Hinweis:</strong> Nach § 556a BGB dürfen Kosten für leerstehende 
+        Einheiten nicht auf die verbleibenden Mieter umgelegt werden. Der Vermieter trägt diese 
+        Kosten selbst.
+    </div>
+
+    <!-- 6. Mieter -->
+    <h1 id="mieter" class="page-break">6. Mieter</h1>
+
+    <p>
+        Im Bereich "Mieter" verwalten Sie alle Mieter Ihrer Immobilie. Jeder Mieter wird einer 
+        Wohneinheit zugeordnet und mit Ein-/Auszugsdatum erfasst.
+    </p>
+
+    <h2>6.1 Neuen Mieter anlegen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neuer Mieter"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Name:</strong> Vollständiger Name des Mieters *</li>
+            <li><strong>E-Mail:</strong> E-Mail-Adresse für Korrespondenz</li>
+            <li><strong>Telefon:</strong> Telefonnummer für Rückfragen</li>
+            <li><strong>Wohneinheit:</strong> Zugehörige Einheit auswählen *</li>
+            <li><strong>Einzugsdatum:</strong> Datum des Mietbeginns *</li>
+            <li><strong>Auszugsdatum:</strong> Datum des Mietendes (optional)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <h2>6.2 Mieterstatus</h2>
+
+    <p>Die Software unterscheidet zwischen aktiven und ausgezogenen Mietern:</p>
+    
+    <ul>
+        <li><strong>Aktiv (grün):</strong> Mieter wohnt noch in der Einheit</li>
+        <li><strong>Ausgezogen (rot):</strong> Mieter ist ausgezogen (mit Datum)</li>
+    </ul>
+
+    <!-- 7. Vorauszahlungen -->
+    <h1 id="vorauszahlungen" class="page-break">7. Vorauszahlungen</h1>
+
+    <p>
+        Im Bereich "Vorauszahlungen" erfassen Sie die monatlichen Nebenkostenvorauszahlungen 
+        Ihrer Mieter. Diese werden später mit den tatsächlichen Kosten verrechnet.
+    </p>
+
+    <h2>7.1 Vorauszahlung erfassen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neue Vorauszahlung"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Mieter:</strong> Mieter auswählen *</li>
+            <li><strong>Monatlicher Betrag:</strong> Höhe der Vorauszahlung in Euro *</li>
+            <li><strong>Startdatum:</strong> Beginn der Zahlung *</li>
+            <li><strong>Enddatum:</strong> Ende der Zahlung (optional, leer = unbefristet)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <h2>7.2 Automatische Berechnung</h2>
+
+    <p>
+        Die Software berechnet automatisch die jährlichen Vorauszahlungen basierend auf dem 
+        monatlichen Betrag und dem Zeitraum. Bei der Abrechnung werden diese mit den tatsächlichen 
+        Kosten verrechnet, um Guthaben oder Nachzahlungen zu ermitteln.
+    </p>
+
+    <!-- 8. Verbrauchsablesung -->
+    <h1 id="verbrauch" class="page-break">8. Verbrauchsablesung</h1>
+
+    <p>
+        Im Bereich "Verbrauchsablesung" erfassen Sie die Zählerstände für Heizung und Warmwasser. 
+        Diese Daten sind notwendig für die gesetzeskonforme Abrechnung nach HeizkostenV.
+    </p>
+
+    <div class="legal-box">
+        <strong>⚖️ Heizkostenverordnung:</strong> Bei zentraler Heizung und Warmwasserversorgung 
+        sind 50-70% der Kosten nach Verbrauch und 30-50% nach Fläche zu verteilen. Die Software 
+        verwendet standardmäßig 70% Verbrauch und 30% Fläche.
+    </div>
+
+    <h2>8.1 Zählerstand erfassen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neue Ablesung"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Jahr:</strong> Abrechnungsjahr *</li>
+            <li><strong>Einheit:</strong> Wohneinheit auswählen *</li>
+            <li><strong>Zähler-Nr.:</strong> Nummer des Zählers (optional)</li>
+            <li><strong>Verbrauch:</strong> Abgelesener Wert *</li>
+            <li><strong>Einheit:</strong> kWh, m³ oder Liter</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <!-- 9. Betriebskosten -->
+    <h1 id="kosten" class="page-break">9. Betriebskosten</h1>
+
+    <p>
+        Im Bereich "Betriebskosten" erfassen Sie alle umlagefähigen Betriebskosten gemäß 
+        Betriebskostenverordnung (BetrKV). Die Software unterscheidet zwischen umlegbaren 
+        und nicht umlegbaren Kosten.
+    </p>
+
+    <h2>9.1 Umlagefähige Kostenarten</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Kategorie</th>
+                <th>BetrKV § 2</th>
+                <th>Verteilerschlüssel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Heizung</td>
+                <td>Ja</td>
+                <td>Nach Verbrauch (HeizkostenV)</td>
+            </tr>
+            <tr>
+                <td>Warmwasser</td>
+                <td>Ja</td>
+                <td>Nach Verbrauch (HeizkostenV)</td>
+            </tr>
+            <tr>
+                <td>Kaltwasser</td>
+                <td>Ja</td>
+                <td>Nach Verbrauch oder Fläche</td>
+            </tr>
+            <tr>
+                <td>Abwasser</td>
+                <td>Ja</td>
+                <td>Nach Verbrauch oder Fläche</td>
+            </tr>
+            <tr>
+                <td>Müllabfuhr</td>
+                <td>Ja</td>
+                <td>Nach Personen oder Fläche</td>
+            </tr>
+            <tr>
+                <td>Allgemeinstrom</td>
+                <td>Ja</td>
+                <td>Nach Fläche oder Einheiten</td>
+            </tr>
+            <tr>
+                <td>Versicherungen</td>
+                <td>Ja</td>
+                <td>Nach Fläche</td>
+            </tr>
+            <tr>
+                <td>Grundsteuer</td>
+                <td>Ja</td>
+                <td>Nach Fläche</td>
+            </tr>
+            <tr>
+                <td>Reinigung</td>
+                <td>Ja</td>
+                <td>Nach Fläche oder Personen</td>
+            </tr>
+            <tr>
+                <td>Gartenpflege</td>
+                <td>Ja</td>
+                <td>Nach Fläche</td>
+            </tr>
+            <tr>
+                <td>Aufzug</td>
+                <td>Ja</td>
+                <td>Nach Fläche oder Etage</td>
+            </tr>
+            <tr>
+                <td>Schornsteinfeger</td>
+                <td>Ja</td>
+                <td>Nach Fläche</td>
+            </tr>
+            <tr>
+                <td>Instandhaltung</td>
+                <td><strong>Nein</strong></td>
+                <td>Nicht umlegbar (§ 555a BGB)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>9.2 Kosten erfassen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neue Kosten"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Kategorie:</strong> Kostenart auswählen *</li>
+            <li><strong>Beschreibung:</strong> z.B. "Gasrechnung Q1 2024" *</li>
+            <li><strong>Betrag:</strong> Rechnungsbetrag in Euro *</li>
+            <li><strong>Datum:</strong> Rechnungsdatum *</li>
+            <li><strong>Verteilerschlüssel:</strong> Art der Verteilung *</li>
+            <li><strong>Rechnungsnummer:</strong> Nummer der Rechnung (optional)</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <div class="warning-box">
+        <strong>⚠️ Achtung:</strong> Nicht umlegbare Kosten (z.B. Instandhaltung) werden rot 
+        markiert und automatisch vom Vermieter getragen. Diese dürfen nicht auf Mieter umgelegt werden.
+    </div>
+
+    <!-- 10. Wiederkehrende Kosten -->
+    <h1 id="wiederkehrend" class="page-break">10. Wiederkehrende Kosten</h1>
+
+    <p>
+        Im Bereich "Wiederkehrende Kosten" verwalten Sie Kosten, die jedes Jahr anfallen, wie 
+        Versicherungen, Grundsteuer oder Schornsteinfeger. Diese Kosten werden automatisch beim 
+        Jahreswechsel ins nächste Jahr übernommen.
+    </p>
+
+    <h2>10.1 Vorteile</h2>
+
+    <ul>
+        <li><strong>Zeitersparnis:</strong> 70-80% weniger Tipparbeit beim Jahreswechsel</li>
+        <li><strong>Konsistenz:</strong> Gleiche Kostenarten jedes Jahr</li>
+        <li><strong>Übersicht:</strong> Alle wiederkehrenden Kosten auf einen Blick</li>
+    </ul>
+
+    <h2>10.2 Wiederkehrende Kosten anlegen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Neue wiederkehrende Kosten"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Füllen Sie das Formular aus:</strong>
+        <ul style="margin-top: 10px;">
+            <li><strong>Kategorie:</strong> Kostenart auswählen *</li>
+            <li><strong>Beschreibung:</strong> z.B. "Gebäudeversicherung" *</li>
+            <li><strong>Betrag:</strong> Jahresbetrag in Euro *</li>
+            <li><strong>Verteilerschlüssel:</strong> Art der Verteilung *</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Anlegen"</strong>
+    </div>
+
+    <div class="success-box">
+        <strong>✅ Tipp:</strong> Typische wiederkehrende Kosten sind:
+        <ul style="margin-top: 10px;">
+            <li>Gebäudeversicherung</li>
+            <li>Grundsteuer</li>
+            <li>Schornsteinfeger</li>
+            <li>Kabel-TV</li>
+            <li>Gartenpflege</li>
+            <li>Aufzugswartung</li>
+        </ul>
+    </div>
+
+    <!-- 11. Jahreswechsel -->
+    <h1 id="jahreswechsel" class="page-break">11. Jahreswechsel</h1>
+
+    <p>
+        Der Bereich "Jahreswechsel" hilft Ihnen beim Übergang von einem Abrechnungsjahr zum nächsten. 
+        Stammdaten werden automatisch übernommen, nur die Kosten müssen neu erfasst oder kopiert werden.
+    </p>
+
+    <h2>11.1 Automatische Übernahme</h2>
+
+    <p>Folgende Daten werden automatisch ins neue Jahr übernommen:</p>
+    
+    <ul>
+        <li>✅ Objekt-Stammdaten</li>
+        <li>✅ Vermieter-Daten</li>
+        <li>✅ Alle Wohneinheiten</li>
+        <li>✅ Alle Mieter (aktive)</li>
+        <li>✅ Verteilerschlüssel</li>
+        <li>✅ Vorauszahlungen (laufende)</li>
+        <li>✅ Wiederkehrende Kosten</li>
+    </ul>
+
+    <h2>11.2 Kosten kopieren</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Wählen Sie das Quelljahr aus</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Geben Sie das Zieljahr ein</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Wählen Sie das neue Datum für die kopierten Kosten</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Klicken Sie auf "Kosten kopieren"</strong>
+    </div>
+
+    <div class="info-box">
+        <strong>💡 Hinweis:</strong> Nach dem Kopieren können Sie die Beträge der wiederkehrenden 
+        Kosten anpassen (z.B. wenn die Versicherung teurer geworden ist).
+    </div>
+
+    <!-- 12. Jahresvergleich -->
+    <h1 id="vergleich" class="page-break">12. Jahresvergleich</h1>
+
+    <p>
+        Im Bereich "Jahresvergleich" analysieren Sie die Kostenentwicklung über mehrere Jahre. 
+        Dies hilft Ihnen, das Wirtschaftlichkeitsgebot einzuhalten und Steigerungen zu begründen.
+    </p>
+
+    <h2>12.1 Grafische Darstellung</h2>
+
+    <p>
+        Die Software erstellt automatisch ein Balkendiagramm mit den Gesamtkosten aller Jahre. 
+        So erkennen Sie auf einen Blick:
+    </p>
+
+    <ul>
+        <li>Kostensteigerungen oder -senkungen</li>
+        <li>Ausreißer in einzelnen Jahren</li>
+        <li>Langfristige Trends</li>
+    </ul>
+
+    <h2>12.2 Wirtschaftlichkeitsgebot</h2>
+
+    <div class="legal-box">
+        <strong>⚖️ Rechtlicher Hinweis:</strong> Nach dem Wirtschaftlichkeitsgebot müssen 
+        Nebenkosten angemessen sein. Steigerungen von mehr als 10-15% pro Jahr sollten 
+        begründet werden können (z.B. durch gestiegene Energiepreise).
+    </div>
+
+    <h2>12.3 Auswertung</h2>
+
+    <p>Die Tabelle zeigt für jedes Jahr:</p>
+    
+    <ul>
+        <li>Gesamtkosten</li>
+        <li>Veränderung zum Vorjahr (in Prozent)</li>
+        <li>Farbige Markierung (grün = Senkung, rot = Steigerung)</li>
+    </ul>
+
+    <!-- 13. Abrechnung -->
+    <h1 id="abrechnung" class="page-break">13. Abrechnung</h1>
+
+    <p>
+        Im Bereich "Abrechnung" erstellen Sie die eigentliche Nebenkostenabrechnung. Die Software 
+        berechnet automatisch die Verteilung auf alle Mieter und ermittelt Guthaben oder Nachzahlungen.
+    </p>
+
+    <h2>13.1 Abrechnung erstellen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Wählen Sie das Abrechnungsjahr aus</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Die Software berechnet automatisch:</strong>
+        <ul style="margin-top: 10px;">
+            <li>Verteilung aller Kosten auf die Mieter</li>
+            <li>Berücksichtigung von Leerstand</li>
+            <li>Ausschluss nicht umlegbarer Kosten</li>
+            <li>Verrechnung mit Vorauszahlungen</li>
+            <li>Ermittlung von Guthaben/Nachzahlungen</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Überprüfen Sie die Ergebnisse in der Tabelle</strong>
+    </div>
+
+    <h2>13.2 Abrechnungstabelle</h2>
+
+    <p>Die Tabelle zeigt für jeden Mieter:</p>
+
+    <ul>
+        <li><strong>Name:</strong> Mietername</li>
+        <li><strong>Einheit:</strong> Zugehörige Wohneinheit</li>
+        <li><strong>Kosten nach Kategorie:</strong> Einzelne Kostenarten</li>
+        <li><strong>Gesamtkosten:</strong> Summe aller umgelegten Kosten</li>
+        <li><strong>Vorauszahlung:</strong> Geleistete Zahlungen</li>
+        <li><strong>Saldo:</strong> Guthaben (grün) oder Nachzahlung (rot)</li>
+    </ul>
+
+    <h2>13.3 PDF-Export</h2>
+
+    <p>Für jeden Mieter können Sie eine einzelne PDF-Abrechnung erstellen:</p>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf den PDF-Button beim jeweiligen Mieter</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Die PDF-Vorschau öffnet sich</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Download PDF" oder "Drucken"</strong>
+    </div>
+
+    <!-- 14. Mieteranschreiben -->
+    <h1 id="anschreiben" class="page-break">14. Mieteranschreiben</h1>
+
+    <p>
+        Im Bereich "Mieteranschreiben" generieren Sie professionelle Begleitschreiben zu den 
+        Abrechnungen. Diese enthalten eine Zusammenfassung und bei Nachzahlungen eine 
+        Zahlungsaufforderung.
+    </p>
+
+    <h2>14.1 Anschreiben erstellen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Wählen Sie das Jahr aus</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Klicken Sie auf "Anschreiben" beim jeweiligen Mieter</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Das Anschreiben wird automatisch generiert mit:</strong>
+        <ul style="margin-top: 10px;">
+            <li>Briefkopf mit Vermieterdaten</li>
+            <li>Empfängeradresse</li>
+            <li>Persönlicher Anrede</li>
+            <li>Zusammenfassung der Abrechnung</li>
+            <li>Zahlungsaufforderung bei Nachzahlung</li>
+            <li>Fristangabe (30 Tage)</li>
+            <li>Unterschriftenfeld</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Klicken Sie auf "Download PDF"</strong>
+    </div>
+
+    <!-- 15. Vorauszahlungsanpassung -->
+    <h1 id="anpassung" class="page-break">15. Vorauszahlungsanpassung</h1>
+
+    <p>
+        Nach der Abrechnung können Sie die Vorauszahlungen für das nächste Jahr automatisch 
+        anpassen lassen. Die Software berechnet die neue Höhe basierend auf den tatsächlichen Kosten.
+    </p>
+
+    <h2>15.1 Automatische Anpassung</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Klicken Sie auf "Vorauszahlung anpassen"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Die Software berechnet für jeden Mieter:</strong>
+        <ul style="margin-top: 10px;">
+            <li>Aktuelle monatliche Vorauszahlung</li>
+            <li>Neue vorgeschlagene Vorauszahlung</li>
+            <li>Änderungsbetrag</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Überprüfen Sie die Vorschläge</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Klicken Sie auf "Vorauszahlungen übernehmen"</strong>
+    </div>
+
+    <div class="info-box">
+        <strong>💡 Berechnungsformel:</strong>
+        <br>Neue Vorauszahlung = (Tatsächliche Kosten ÷ 12 Monate) + 10% Sicherheitszuschlag
+    </div>
+
+    <!-- 16. PDF-Export -->
+    <h1 id="pdf" class="page-break">16. PDF-Export</h1>
+
+    <p>
+        Die Software bietet verschiedene PDF-Export-Funktionen für unterschiedliche Zwecke.
+    </p>
+
+    <h2>16.1 Einzelabrechnung</h2>
+
+    <p>Enthält für einen Mieter:</p>
+    <ul>
+        <li>Briefkopf mit Vermieterdaten</li>
+        <li>Empfängeradresse</li>
+        <li>Detaillierte Kostenaufstellung</li>
+        <li>Verrechnung mit Vorauszahlungen</li>
+        <li>Guthaben/Nachzahlung</li>
+        <li>Rechtliche Hinweise</li>
+        <li>Unterschriftenfeld</li>
+    </ul>
+
+    <h2>16.2 Alle Abrechnungen</h2>
+
+    <p>Enthält alle Einzelabrechnungen in einem Dokument:</p>
+    <ul>
+        <li>Eine Seite pro Mieter</li>
+        <li>Kompatibel für Massendruck</li>
+    </ul>
+
+    <h2>16.3 PDF-Download</h2>
+
+    <p>So speichern Sie eine PDF-Datei:</p>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>PDF-Vorschau öffnen</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Auf "Download PDF" klicken</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Datei wird automatisch heruntergeladen</strong>
+    </div>
+
+    <div class="info-box">
+        <strong>💡 Dateinamen:</strong> Die Dateien werden automatisch sinnvoll benannt:
+        <ul style="margin-top: 10px;">
+            <li><code>NK_[Objekt]_[Jahr]_[Mieter].pdf</code> - Einzelabrechnung</li>
+            <li><code>Alle_Abrechnungen_[Objekt]_[Jahr].pdf</code> - Alle Abrechnungen</li>
+            <li><code>Archiv_[Objekt]_[Jahr].pdf</code> - Archiv für Finanzamt</li>
+        </ul>
+    </div>
+
+    <!-- 17. Archiv -->
+    <h1 id="archiv" class="page-break">17. Archiv für Finanzamt</h1>
+
+    <p>
+        Das Archiv-PDF enthält alle Abrechnungen eines Jahres in einem Dokument und ist für 
+        die Aufbewahrungspflicht nach § 147 AO (10 Jahre) geeignet.
+    </p>
+
+    <h2>17.1 Inhalt des Archivs</h2>
+
+    <p>Das Archiv-PDF enthält:</p>
+
+    <ol>
+        <li><strong>Deckblatt</strong>
+            <ul>
+                <li>Objektname und Adresse</li>
+                <li>Vermieterdaten</li>
+                <li>Abrechnungszeitraum</li>
+                <li>Gesamtkosten und -übersicht</li>
+            </ul>
+        </li>
+        <li><strong>Vermieter-Protokoll</strong>
+            <ul>
+                <li>Übersicht aller Nachzahlungen</li>
+                <li>Übersicht aller Guthaben</li>
+                <li>Vermieteranteil (Leerstand + Instandhaltung)</li>
+            </ul>
+        </li>
+        <li><strong>Alle Einzelabrechnungen</strong>
+            <ul>
+                <li>Eine Seite pro Mieter</li>
+                <li>Vollständige Kostenaufstellung</li>
+                <li>Guthaben/Nachzahlung</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>17.2 Archiv erstellen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Gehen Sie zur Abrechnungsseite</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Wählen Sie das Jahr aus</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Klicken Sie auf "Archiv-PDF (Finanzamt)"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Klicken Sie auf "Download Archiv-PDF"</strong>
+    </div>
+
+    <div class="legal-box">
+        <strong>⚖️ Aufbewahrungspflicht:</strong> Nach § 147 AO müssen Steuerunterlagen 
+        10 Jahre aufbewahrt werden. Das Archiv-PDF erfüllt diese Anforderung.
+    </div>
+
+    <!-- 18. CSV-Export -->
+    <h1 id="csv" class="page-break">18. CSV-Export</h1>
+
+    <p>
+        Der CSV-Export ermöglicht den Export von Daten für Steuerberater oder eigene Auswertungen. 
+        CSV-Dateien können mit Excel, LibreOffice oder Google Sheets geöffnet werden.
+    </p>
+
+    <h2>18.1 Verfügbare Exporte</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Export</th>
+                <th>Inhalt</th>
+                <th>Verwendung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Abrechnungs-Export</td>
+                <td>Komplette Abrechnung mit allen Mietern</td>
+                <td>Steuerberater, Auswertungen</td>
+            </tr>
+            <tr>
+                <td>Kosten-Export</td>
+                <td>Alle Kostenpositionen</td>
+                <td>Buchhaltung, Auswertungen</td>
+            </tr>
+            <tr>
+                <td>Mieter-Export</td>
+                <td>Mieterliste mit Vorauszahlungen</td>
+                <td>Mieterverwaltung</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>18.2 CSV-Export durchführen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Gehen Sie zum gewünschten Bereich</strong>
+        <p style="margin-top: 10px;">(Abrechnung, Kosten oder Mieter)</p>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Klicken Sie auf "Export CSV"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>CSV-Datei wird heruntergeladen</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Öffnen Sie die Datei mit Excel oder LibreOffice</strong>
+    </div>
+
+    <!-- 19. Daten-Backup -->
+    <h1 id="backup" class="page-break">19. Daten-Backup</h1>
+
+    <p>
+        Die Backup-Funktion schützt Ihre Daten vor Verlust. Alle Daten werden als JSON-Datei 
+        exportiert und können bei Bedarf wieder importiert werden.
+    </p>
+
+    <h2>19.1 Warum Backups wichtig sind</h2>
+
+    <div class="warning-box">
+        <strong>⚠️ Achtung:</strong> Ihre Daten werden nur lokal im Browser gespeichert 
+        (LocalStorage). Bei Browser-Reset, Cache-Löschung oder Gerätewechsel gehen die Daten 
+        verloren, wenn kein Backup erstellt wurde!
+    </div>
+
+    <h2>19.2 Backup erstellen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Gehen Sie zu "Daten & Backup"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Klicken Sie auf "Backup erstellen"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>JSON-Datei wird heruntergeladen</strong>
+        <p style="margin-top: 10px;">
+            Dateiname: <code>Nebenkosten_Backup_[Objekt]_[Datum].json</code>
+        </p>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Speichern Sie die Datei sicher</strong>
+        <ul style="margin-top: 10px;">
+            <li>USB-Stick</li>
+            <li>Externe Festplatte</li>
+            <li>Cloud-Speicher (Dropbox, Google Drive, etc.)</li>
+        </ul>
+    </div>
+
+    <h2>19.3 Backup wiederherstellen</h2>
+
+    <div class="step">
+        <span class="step-number">1</span>
+        <strong>Gehen Sie zu "Daten & Backup"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">2</span>
+        <strong>Klicken Sie auf "Backup importieren"</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">3</span>
+        <strong>Wählen Sie die JSON-Datei aus</strong>
+    </div>
+
+    <div class="step">
+        <span class="step-number">4</span>
+        <strong>Bestätigen Sie den Import</strong>
+        <p style="margin-top: 10px; color: #d32f2f;">
+            ⚠️ Alle aktuellen Daten werden überschrieben!
+        </p>
+    </div>
+
+    <div class="success-box">
+        <strong>✅ Empfehlung:</strong> Erstellen Sie regelmäßig Backups:
+        <ul style="margin-top: 10px;">
+            <li>Vor dem Jahreswechsel</li>
+            <li>Nach größeren Änderungen</li>
+            <li>Mindestens monatlich</li>
+            <li>Vor Browser-Updates</li>
+        </ul>
+    </div>
+
+    <!-- 20. Rechtskonformität -->
+    <h1 id="recht" class="page-break">20. Rechtskonformität</h1>
+
+    <p>
+        Die Software berücksichtigt alle relevanten gesetzlichen Vorschriften des deutschen 
+        Mietrechts.
+    </p>
+
+    <h2>20.1 Betriebskostenverordnung (BetrKV)</h2>
+
+    <p>Gemäß § 2 BetrKV werden nur die folgenden Kosten auf Mieter umgelegt:</p>
+
+    <ul>
+        <li>Laufende öffentliche Lasten (Grundsteuer)</li>
+        <li>Wasserversorgung</li>
+        <li>Entwässerung</li>
+        <li>Heizung und Warmwasser</li>
+        <li>Aufzug</li>
+        <li>Straßenreinigung, Müllabfuhr</li>
+        <li>Gebäudereinigung, Ungezieferbekämpfung</li>
+        <li>Gartenpflege</li>
+        <li>Beleuchtung</li>
+        <li>Sachversicherungen</li>
+        <li>Betriebstrom</li>
+        <li>Wärtemessung</li>
+        <li>Kabel-TV</li>
+    </ul>
+
+    <h2>20.2 § 556a BGB - Verteilerschlüssel</h2>
+
+    <p>Die Software unterstützt folgende Verteilerschlüssel:</p>
+
+    <ul>
+        <li><strong>Nach Wohnfläche:</strong> Kosten werden nach m² verteilt</li>
+        <li><strong>Nach Personenzahl:</strong> Kosten werden nach Köpfen verteilt</li>
+        <li><strong>Nach Wohneinheiten:</strong> Kosten werden gleichmäßig verteilt</li>
+        <li><strong>Nach Verbrauch:</strong> Kosten werden nach Zählerständen verteilt</li>
+    </ul>
+
+    <h2>20.3 Heizkostenverordnung (HeizkostenV)</h2>
+
+    <p>Bei zentraler Heizung und Warmwasser gilt:</p>
+
+    <ul>
+        <li><strong>50-70% nach Verbrauch:</strong> Anteil basierend auf Zählerständen</li>
+        <li><strong>30-50% nach Fläche:</strong> Anteil basierend auf Wohnfläche</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>💡 Standardeinstellung:</strong> Die Software verwendet 70% Verbrauch und 
+        30% Fläche, was der gängigen Praxis entspricht.
+    </div>
+
+    <h2>20.4 § 555a BGB - Nicht umlegbare Kosten</h2>
+
+    <p>Folgende Kosten dürfen nicht auf Mieter umgelegt werden:</p>
+
+    <ul>
+        <li>Instandhaltungskosten</li>
+        <li>Instandsetzungskosten</li>
+        <li>Verbesserungsmaßnahmen</li>
+        <li>Verwaltungskosten</li>
+    </ul>
+
+    <div class="warning-box">
+        <strong>⚠️ Wichtig:</strong> Diese Kosten werden in der Software rot markiert und 
+        automatisch vom Vermieter getragen.
+    </div>
+
+    <h2>20.5 § 147 AO - Aufbewahrungspflicht</h2>
+
+    <p>Steuerunterlagen müssen 10 Jahre aufbewahrt werden:</p>
+
+    <ul>
+        <li>Beginn: Ende des Kalenderjahres, in dem die Abrechnung erstellt wurde</li>
+        <li>Beispiel: Abrechnung 2024 erstellt am 15.01.2025 → aufbewahren bis 31.12.2035</li>
+    </ul>
+
+    <div class="success-box">
+        <strong>✅ Archiv-Funktion:</strong> Das Archiv-PDF erfüllt die Anforderungen der 
+        Aufbewahrungspflicht und enthält alle relevanten Informationen.
+    </div>
+
+    <!-- 21. FAQ -->
+    <h1 id="faq" class="page-break">21. Häufige Fragen (FAQ)</h1>
+
+    <h2>❓ Wo werden meine Daten gespeichert?</h2>
+    <p>
+        Alle Daten werden lokal in Ihrem Browser gespeichert (LocalStorage). Es gibt keinen 
+        Server und keine Cloud. Die Daten sind nur auf diesem Computer in diesem Browser verfügbar.
+    </p>
+
+    <h2>❓ Kann ich die Daten auf einen anderen Computer übertragen?</h2>
+    <p>
+        Ja, verwenden Sie die Backup-Funktion. Exportieren Sie die Daten als JSON-Datei und 
+        importieren Sie diese auf dem anderen Computer.
+    </p>
+
+    <h2>❓ Was passiert, wenn ich den Browser-Cache lösche?</h2>
+    <p>
+        Alle Daten gehen verloren! Erstellen Sie daher regelmäßig Backups.
+    </p>
+
+    <h2>❓ Kann ich mehrere Objekte verwalten?</h2>
+    <p>
+        In der aktuellen Version nur ein Objekt. Für mehrere Objekte erstellen Sie separate 
+        Backups oder verwenden mehrere Browser-Profile.
+    </p>
+
+    <h2>❓ Wie erstelle ich eine Abrechnung für einen Mieter, der mitten im Jahr eingezogen ist?</h2>
+    <p>
+        Geben Sie das genaue Einzugsdatum ein. Die Software berechnet automatisch den 
+        anteiligen Zeitraum und verteilt die Kosten entsprechend.
+    </p>
+
+    <h2>❓ Was ist mit Leerstandskosten?</h2>
+    <p>
+        Leerstandskosten werden automatisch erkannt und nicht auf die übrigen Mieter umgelegt. 
+        Der Vermieter trägt diese Kosten selbst (gemäß § 556a BGB).
+    </p>
+
+    <h2>❓ Kann ich die Abrechnung per E-Mail versenden?</h2>
+    <p>
+        Die Software hat keine integrierte E-Mail-Funktion. Laden Sie die PDF herunter und 
+        versenden Sie diese manuell per E-Mail.
+    </p>
+
+    <h2>❓ Wie oft sollte ich ein Backup erstellen?</h2>
+    <p>
+        Empfehlung:
+    </p>
+    <ul>
+        <li>Vor dem Jahreswechsel</li>
+        <li>Nach größeren Änderungen</li>
+        <li>Mindestens monatlich</li>
+        <li>Vor Browser-Updates</li>
+    </ul>
+
+    <h2>❓ Ist die Software kostenlos?</h2>
+    <p>
+        Ja, die Software ist kostenlos und Open Source.
+    </p>
+
+    <h2>❓ Kann ich die Software offline nutzen?</h2>
+    <p>
+        Ja, nach dem einmaligen Download funktioniert die Software komplett offline.
+    </p>
+
+    <h2>❓ Welche Browser werden unterstützt?</h2>
+    <p>
+        Alle modernen Browser:
+    </p>
+    <ul>
+        <li>Google Chrome (empfohlen)</li>
+        <li>Mozilla Firefox</li>
+        <li>Microsoft Edge</li>
+        <li>Apple Safari</li>
+    </ul>
+
+    <h2>❓ Kann ich die Software auf einem Server hosten?</h2>
+    <p>
+        Ja, die HTML-Datei kann auf jedem Webserver gehostet werden. Beachten Sie, dass die 
+        Daten dann browser-spezifisch gespeichert werden.
+    </p>
+
+    <h2>❓ Gibt es eine mobile Version?</h2>
+    <p>
+        Die Software ist responsiv und funktioniert auch auf Tablets und Smartphones, ist aber 
+        für Desktop-Bildschirme optimiert.
+    </p>
+
+    <h2>❓ Wie aktualisiere ich die Software?</h2>
+    <p>
+        Laden Sie die neue Version herunter und ersetzen Sie die alte HTML-Datei. Ihre Daten 
+        bleiben im Browser gespeichert und gehen nicht verloren.
+    </p>
+
+    <h2>❓ Kann ich eigene Verteilerschlüssel definieren?</h2>
+    <p>
+        Ja, im Bereich "Verteilerschlüssel" können Sie eigene Schlüssel definieren und diese 
+        dann bei den Kosten auswählen.
+    </p>
+
+    <h2>❓ Was ist der Unterschied zwischen "Einzel-PDF" und "Alle PDFs"?</h2>
+    <p>
+        <strong>Einzel-PDF:</strong> Enthält nur die Abrechnung für einen bestimmten Mieter.
+        <br>
+        <strong>Alle PDFs:</strong> Enthält alle Einzelabrechnungen in einem Dokument.
+    </p>
+
+    <h2>❓ Kann ich die Abrechnung rückwirkend für vergangene Jahre erstellen?</h2>
+    <p>
+        Ja, geben Sie einfach die Kosten mit dem entsprechenden Datum ein. Die Software 
+        gruppiert automatisch nach Jahren.
+    </p>
+
+    <h2>❓ Wie drucke ich das Archiv-PDF?</h2>
+    <p>
+        Öffnen Sie das Archiv-PDF und klicken Sie auf "Drucken". Wählen Sie im Druckdialog 
+        "Als PDF speichern" als Ziel.
+    </p>
+
+    <h2>❓ Kann ich die Software auf mehreren Computern nutzen?</h2>
+    <p>
+        Ja, aber die Daten sind nicht synchronisiert. Verwenden Sie die Backup-Funktion, um 
+        Daten zwischen Computern zu übertragen.
+    </p>
+
+    <h2>❓ Gibt es Support bei Problemen?</h2>
+    <p>
+        Bei Fragen oder Problemen erstellen Sie bitte ein Issue im Repository oder kontaktieren 
+        Sie den Entwickler.
+    </p>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            <strong>Nebenkostenabrechnungs-Software</strong> | Version 1.0 | Januar 2026
+            <br>
+            Rechtskonform nach deutschem Mietrecht (BetrKV, § 556a BGB, HeizkostenV, § 147 AO)
+            <br><br>
+            Dieses Handbuch darf für den persönlichen Gebrauch kopiert und weitergegeben werden.
+            <br>
+            Keine Gewähr für die Vollständigkeit und Richtigkeit der Informationen.
+        </p>
+    </footer>
+
+</body>
+</html>
