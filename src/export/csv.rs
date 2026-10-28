@@ -7,12 +7,17 @@ pub fn export_costs_to_csv(costs: &[Cost]) -> Result<String> {
     wtr.write_record(&["Datum", "Kategorie", "Beschreibung", "Betrag", "Verteiler"])?;
     
     for cost in costs {
+        let date_str = cost.date.to_string();
+        let category_str = cost.category.to_string();
+        let amount_str = cost.amount.to_string();
+        let dist_key_str = cost.distribution_key.to_string();
+        
         wtr.write_record(&[
-            cost.date.to_string(),
-            cost.category.to_string(),
+            &date_str,
+            &category_str,
             &cost.description,
-            &cost.amount.to_string(),
-            cost.distribution_key.to_string(),
+            &amount_str,
+            &dist_key_str,
         ])?;
     }
     
