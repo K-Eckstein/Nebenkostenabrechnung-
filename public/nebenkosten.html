@@ -109,6 +109,8 @@
         .summary-card.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .summary-card.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
         .summary-card.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .summary-card.emerald { background: linear-gradient(135deg, #10b981, #059669); }
+        .summary-card.amber { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .summary-label { font-size: 12px; opacity: 0.9; }
         .summary-value { font-size: 22px; font-weight: 700; margin-top: 4px; }
         .summary-sub { font-size: 11px; opacity: 0.7; margin-top: 3px; }
@@ -123,25 +125,65 @@
         .legal-note i { margin-right: 6px; }
         .settlement-table th, .settlement-table td { padding: 8px 10px; font-size: 12px; }
         .settlement-table tfoot td { font-weight: 700; border-top: 2px solid #e5e7eb; background: #f9fafb; }
-        .vacant-row { background: #fefce8 !important; }
-        .vacant-row td { color: #92400e; font-style: italic; }
+        .amount-positive { color: #dc2626; font-weight: 600; }
+        .amount-negative { color: #16a34a; font-weight: 600; }
+        .amount-zero { color: #6b7280; }
+        .prepayment-display { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 13px; }
+        .prepayment-display .amount { font-weight: 700; color: #166534; }
         .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
         .tab-btn { padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 13px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
         .tab-btn:hover { color: #374151; }
         .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+        
+        /* PDF Print Styles */
+        .pdf-page { display: none; }
+        .pdf-page.active { display: block; }
+        
         @media print {
             .sidebar, .topbar, .btn, .no-print, .nav-section { display: none !important; }
             .main { margin-left: 0 !important; }
             .content { padding: 0; max-width: 100%; }
             .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
             body { background: white; }
+            .pdf-print { display: block !important; }
+            .pdf-print .pdf-page { display: block !important; page-break-after: always; }
+            .pdf-print .pdf-page:last-child { page-break-after: auto; }
         }
+        
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto 20px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+        .pdf-header { display: flex; justify-content: space-between; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #2563eb; }
+        .pdf-header-left h1 { font-size: 18pt; color: #1f2937; margin-bottom: 4px; }
+        .pdf-header-left p { font-size: 10pt; color: #6b7280; }
+        .pdf-header-right { text-align: right; font-size: 10pt; color: #4b5563; }
+        .pdf-section { margin-bottom: 20px; }
+        .pdf-section h2 { font-size: 13pt; color: #1f2937; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #e5e7eb; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .pdf-table th { background: #f3f4f6; padding: 8px 10px; text-align: left; font-size: 10pt; font-weight: 600; border: 1px solid #e5e7eb; }
+        .pdf-table td { padding: 8px 10px; font-size: 10pt; border: 1px solid #e5e7eb; }
+        .pdf-table .text-right { text-align: right; }
+        .pdf-total-row { background: #eff6ff !important; font-weight: 700; }
+        .pdf-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #6b7280; }
+        .pdf-balance { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f0fdf4; border: 2px solid #16a34a; border-radius: 8px; margin-top: 20px; }
+        .pdf-balance.nachzahlung { background: #fef2f2; border-color: #dc2626; }
+        .pdf-balance-label { font-size: 12pt; font-weight: 600; }
+        .pdf-balance-amount { font-size: 16pt; font-weight: 700; }
+        
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.mobile-open { transform: translateX(0); }
             .main { margin-left: 0 !important; }
             .form-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
+            .pdf-page { width: 100%; padding: 10mm; }
         }
     </style>
 </head>
@@ -150,7 +192,7 @@
 
     <script>
         // ============ DATENMODELL ============
-        const STORAGE_KEY = 'nebenkosten_v3';
+        const STORAGE_KEY = 'nebenkosten_v4';
         
         function loadData() {
             try {
@@ -158,11 +200,12 @@
                 if (raw) return JSON.parse(raw);
             } catch(e) { console.error(e); }
             return {
-                property: null, // Gesamtobjekt
+                property: null,
                 units: [],
                 tenants: [],
                 costs: [],
-                customDistKeys: [], // Frei definierbare Schlüssel
+                customDistKeys: [],
+                prepayments: [], // { tenantId, monthlyAmount, startDate, endDate }
             };
         }
         
@@ -221,7 +264,7 @@
             return keys;
         }
         
-        // ============ BERECHNUNGEN (REchtskonform) ============
+        // ============ BERECHNUNGEN ============
         function isUnitVacant(unitId, costDate) {
             const activeTenants = state.tenants.filter(t => {
                 if (t.unitId !== unitId) return false;
@@ -235,26 +278,49 @@
             return activeTenants.length === 0;
         }
         
+        function calculatePrepayments(tenantId, year) {
+            const prepayments = state.prepayments.filter(p => p.tenantId === tenantId);
+            if (prepayments.length === 0) return 0;
+            
+            const yearStart = new Date(year + '-01-01');
+            const yearEnd = new Date(year + '-12-31');
+            let total = 0;
+            
+            for (const p of prepayments) {
+                const startDate = new Date(p.startDate);
+                const endDate = p.endDate ? new Date(p.endDate) : yearEnd;
+                
+                // Berechne Monate im Abrechnungszeitraum
+                const effectiveStart = startDate > yearStart ? startDate : yearStart;
+                const effectiveEnd = endDate < yearEnd ? endDate : yearEnd;
+                
+                if (effectiveStart > effectiveEnd) continue;
+                
+                const months = (effectiveEnd.getFullYear() - effectiveStart.getFullYear()) * 12 + 
+                              (effectiveEnd.getMonth() - effectiveStart.getMonth()) + 1;
+                
+                total += p.monthlyAmount * months;
+            }
+            
+            return total;
+        }
+        
         function calculateSettlement(year) {
             const filteredCosts = state.costs.filter(c => new Date(c.date).getFullYear().toString() === year);
             const totalCosts = filteredCosts.reduce((s, c) => s + c.amount, 0);
             
-            // Leerstandskosten berechnen (geht zu Lasten des Vermieters!)
             let vacantCosts = 0;
             let occupiedCosts = 0;
             
-            // Nur umlegbare Kosten nach BetrKV
             const umlegbarCosts = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv !== false);
             const nichtUmlagbar = filteredCosts.filter(c => COST_CATEGORIES[c.category]?.betrkv === false);
             
             const distributions = [];
             
             for (const cost of umlegbarCosts) {
-                // Prüfe ob Einheit leer steht
                 const occupiedUnits = state.units.filter(u => !isUnitVacant(u.id, cost.date));
                 
                 if (occupiedUnits.length === 0) {
-                    // Kompletter Leerstand = Vermieter trägt Kosten
                     vacantCosts += cost.amount;
                     continue;
                 }
@@ -263,7 +329,6 @@
                 const occupiedArea = occupiedUnits.reduce((s, u) => s + u.size, 0);
                 const totalArea = allUnits.reduce((s, u) => s + u.size, 0);
                 
-                // Anteil der vermieteten Fläche
                 const occupiedShare = cost.distributionKey === 'area' ? occupiedArea / totalArea : 1;
                 const umlageFähig = cost.amount * occupiedShare;
                 const vacantShare = cost.amount - umlageFähig;
@@ -271,8 +336,6 @@
                 vacantCosts += vacantShare;
                 occupiedCosts += umlageFähig;
                 
-                // Verteilung auf Mieter
-                let totalWeight = 0;
                 const activeTenants = state.tenants.filter(t => {
                     const unit = state.units.find(u => u.id === t.unitId);
                     if (!unit) return false;
@@ -284,12 +347,12 @@
                     return true;
                 });
                 
+                let totalWeight = 0;
                 for (const tenant of activeTenants) {
                     const unit = state.units.find(u => u.id === tenant.unitId);
                     if (!unit) continue;
                     let weight = 1;
                     if (cost.distributionKey === 'area') weight = unit.size;
-                    // Custom key: gleichmäßig
                     totalWeight += weight;
                 }
                 
@@ -315,7 +378,6 @@
                 }
             }
             
-            // Leerstehende Einheiten ermitteln
             const vacantUnits = state.units.filter(u => {
                 return state.tenants.filter(t => {
                     if (t.unitId !== u.id) return false;
@@ -374,6 +436,7 @@
                 { id: 'property', label: 'Objekt', icon: 'fas fa-home' },
                 { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building' },
                 { id: 'tenants', label: 'Mieter', icon: 'fas fa-users' },
+                { id: 'prepayments', label: 'Vorauszahlungen', icon: 'fas fa-money-bill-wave' },
             ];
             const bewirtschaftung = [
                 { id: 'costs', label: 'Kosten', icon: 'fas fa-receipt' },
@@ -415,8 +478,8 @@
         function renderTopbar() {
             const titles = {
                 dashboard: 'Dashboard', property: 'Objekt-Stammdaten', units: 'Wohneinheiten',
-                tenants: 'Mieter', costs: 'Betriebskosten', distkeys: 'Verteilerschlüssel',
-                settlement: 'Nebenkostenabrechnung'
+                tenants: 'Mieter', prepayments: 'Vorauszahlungen', costs: 'Betriebskosten',
+                distkeys: 'Verteilerschlüssel', settlement: 'Nebenkostenabrechnung'
             };
             return `
                 <header class="topbar">
@@ -435,6 +498,7 @@
                 case 'property': return renderProperty();
                 case 'units': return renderUnits();
                 case 'tenants': return renderTenants();
+                case 'prepayments': return renderPrepayments();
                 case 'costs': return renderCosts();
                 case 'distkeys': return renderDistKeys();
                 case 'settlement': return renderSettlement();
@@ -451,6 +515,7 @@
             const yearCosts = state.costs.filter(c => new Date(c.date).getFullYear() === currentYear);
             const yearTotal = yearCosts.reduce((s,c) => s + c.amount, 0);
             const nichtUmlagbar = state.costs.filter(c => COST_CATEGORIES[c.category]?.betrkv === false).reduce((s,c) => s + c.amount, 0);
+            const totalPrepayments = state.prepayments.reduce((s,p) => s + p.monthlyAmount * 12, 0);
             
             return `
                 <div class="stats-grid">
@@ -526,14 +591,19 @@
                     </div>
                     
                     <div class="card">
-                        <h3 class="card-title">Rechtliche Hinweise</h3>
-                        <div style="margin-top:12px; font-size:12px; color:#4b5563; line-height:1.8;">
-                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>BetrKV</strong>: Nur Betriebskosten nach § 2 BetrKV umlegbar</p>
-                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>§ 556a BGB</strong>: Abrechnung nach Fläche oder Verbrauch</p>
-                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>HeizkostenV</strong>: 50-70% nach Verbrauch</p>
-                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>§ 556 BGB</strong>: Abrechnungsfrist 12 Monate</p>
-                            <p style="margin-bottom:8px;"><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>Leerstand</strong>: Kosten trägt der Vermieter</p>
-                            <p><i class="fas fa-gavel" style="color:#7c3aed; width:18px;"></i> <strong>Wirtschaftlichkeitsgebot</strong>: Kosten müssen angemessen sein</p>
+                        <h3 class="card-title">Vorauszahlungen ${currentYear}</h3>
+                        <div style="margin-top:12px;">
+                            <div style="display:flex; justify-content:space-between; padding:12px; background:#f0fdf4; border-radius:8px; margin-bottom:8px;">
+                                <span style="font-size:13px; color:#166534;">Monatlich gesamt</span>
+                                <span style="font-weight:700; color:#166534;">${formatCurrency(totalPrepayments / 12)}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; padding:12px; background:#eff6ff; border-radius:8px;">
+                                <span style="font-size:13px; color:#1e40af;">Jährlich gesamt</span>
+                                <span style="font-weight:700; color:#1e40af;">${formatCurrency(totalPrepayments)}</span>
+                            </div>
+                            <div style="margin-top:12px; font-size:12px; color:#6b7280;">
+                                <i class="fas fa-info-circle"></i> ${state.prepayments.length} Vorauszahlungen erfasst
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -549,7 +619,7 @@
             `;
         }
         
-        // ============ OBJEKT / IMMOBILIE ============
+        // ============ OBJEKT ============
         function renderProperty() {
             const p = state.property;
             return `
@@ -731,21 +801,19 @@
                     <div style="overflow-x:auto; margin-top:16px;">
                         <table>
                             <thead><tr>
-                                <th>Name</th><th>Einheit</th><th>Einzug</th><th>Auszug</th><th>Kontakt</th><th class="text-right">Aktionen</th>
+                                <th>Name</th><th>Einheit</th><th>Einzug</th><th>Auszug</th><th>Vorauszahlung</th><th class="text-right">Aktionen</th>
                             </tr></thead>
                             <tbody>
                                 ${state.tenants.map(t => {
                                     const unit = state.units.find(u => u.id === t.unitId);
+                                    const prepay = state.prepayments.find(p => p.tenantId === t.id);
                                     return `
                                     <tr>
                                         <td style="font-weight:500;">${t.name}</td>
                                         <td>${unit ? unit.name : '—'}</td>
                                         <td>${formatDate(t.moveInDate)}</td>
                                         <td>${t.moveOutDate ? `<span class="badge badge-red">${formatDate(t.moveOutDate)}</span>` : '<span class="badge badge-green">Aktiv</span>'}</td>
-                                        <td style="font-size:12px; color:#6b7280;">
-                                            ${t.email ? '<div><i class="fas fa-envelope"></i> ' + t.email + '</div>' : ''}
-                                            ${t.phone ? '<div><i class="fas fa-phone"></i> ' + t.phone + '</div>' : ''}
-                                        </td>
+                                        <td>${prepay ? `<span class="badge badge-blue">${formatCurrency(prepay.monthlyAmount)}/Monat</span>` : '<span class="badge badge-gray">Keine</span>'}</td>
                                         <td class="text-right">
                                             <button class="btn btn-sm btn-secondary" data-edit-tenant="${t.id}"><i class="fas fa-edit"></i></button>
                                             <button class="btn btn-sm btn-danger" data-delete-tenant="${t.id}"><i class="fas fa-trash"></i></button>
@@ -756,6 +824,74 @@
                         </table>
                     </div>
                     ` : '<div class="empty-state"><i class="fas fa-users"></i><p>Noch keine Mieter angelegt</p></div>'}
+                </div>
+            `;
+        }
+        
+        // ============ VORAUSZAHLUNGEN ============
+        function renderPrepayments() {
+            const totalMonthly = state.prepayments.reduce((s,p) => s + p.monthlyAmount, 0);
+            const totalYearly = totalMonthly * 12;
+            
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Vorauszahlungen</h2>
+                            <p class="card-subtitle">${state.prepayments.length} Vorauszahlungen · ${formatCurrency(totalMonthly)}/Monat</p>
+                        </div>
+                        <button class="btn btn-success" id="addPrepayBtn" ${state.tenants.length === 0 ? 'disabled style="opacity:0.5"' : ''}><i class="fas fa-plus"></i> Neue Vorauszahlung</button>
+                    </div>
+                    
+                    ${state.tenants.length === 0 ? '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Bitte legen Sie zuerst Mieter an.</div>' : ''}
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Vorauszahlungen</strong> sind die monatlichen Zahlungen der Mieter für Betriebskosten. 
+                            In der Abrechnung werden Vorauszahlungen mit den tatsächlichen Kosten verrechnet, 
+                            um Guthaben oder Nachzahlungen zu berechnen.
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid" style="margin-bottom:20px;">
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fas fa-money-bill-wave"></i></div>
+                            <div><div class="stat-value">${formatCurrency(totalMonthly)}</div><div class="stat-label">Monatlich gesamt</div></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fas fa-calendar-alt"></i></div>
+                            <div><div class="stat-value">${formatCurrency(totalYearly)}</div><div class="stat-label">Jährlich gesamt</div></div>
+                        </div>
+                    </div>
+                    
+                    <div id="prepayFormArea"></div>
+                    
+                    ${state.prepayments.length > 0 ? `
+                    <div style="overflow-x:auto; margin-top:16px;">
+                        <table>
+                            <thead><tr>
+                                <th>Mieter</th><th>Monatlich</th><th>Jährlich</th><th>Zeitraum</th><th class="text-right">Aktionen</th>
+                            </tr></thead>
+                            <tbody>
+                                ${state.prepayments.map(p => {
+                                    const tenant = state.tenants.find(t => t.id === p.tenantId);
+                                    return `
+                                    <tr>
+                                        <td style="font-weight:500;">${tenant ? tenant.name : 'Unbekannt'}</td>
+                                        <td><span class="badge badge-green">${formatCurrency(p.monthlyAmount)}</span></td>
+                                        <td style="font-weight:600;">${formatCurrency(p.monthlyAmount * 12)}</td>
+                                        <td style="font-size:12px;">${formatDate(p.startDate)}${p.endDate ? ' – ' + formatDate(p.endDate) : ' (laufend)'}</td>
+                                        <td class="text-right">
+                                            <button class="btn btn-sm btn-secondary" data-edit-prepay="${p.id}"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger" data-delete-prepay="${p.id}"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>`;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ` : '<div class="empty-state"><i class="fas fa-money-bill-wave"></i><p>Noch keine Vorauszahlungen erfasst</p></div>'}
                 </div>
             `;
         }
@@ -883,6 +1019,8 @@
         
         // ============ ABRECHNUNG ============
         let settlementYear = new Date().getFullYear().toString();
+        let pdfTenantId = null;
+        
         function renderSettlement() {
             const years = [...new Set(state.costs.map(c => new Date(c.date).getFullYear().toString()))];
             if (years.length === 0) years.push(new Date().getFullYear().toString());
@@ -899,10 +1037,18 @@
                 tenantTotals[d.tenantId].total += d.amount;
             });
             
+            // Add prepayments and balance
+            Object.keys(tenantTotals).forEach(tId => {
+                const prepayments = calculatePrepayments(tId, settlementYear);
+                tenantTotals[tId].prepayments = prepayments;
+                tenantTotals[tId].balance = prepayments - tenantTotals[tId].total; // positive = Guthaben, negative = Nachzahlung
+            });
+            
             const usedCats = Object.keys(result.costsByCategory);
             const avgPerTenant = Object.keys(tenantTotals).length > 0 ? result.occupiedCosts / Object.keys(tenantTotals).length : 0;
             
-            // Vorauszahlungen (simuliert)
+            const totalPrepayments = Object.values(tenantTotals).reduce((s,t) => s + t.prepayments, 0);
+            const totalBalance = Object.values(tenantTotals).reduce((s,t) => s + t.balance, 0);
             
             return `
                 <div class="card no-print">
@@ -915,7 +1061,7 @@
                             <select class="form-input" id="yearSelect">
                                 ${years.map(y => `<option value="${y}" ${y === settlementYear ? 'selected' : ''}>${y}</option>`).join('')}
                             </select>
-                            <button class="btn btn-purple" id="printBtn"><i class="fas fa-print"></i> Drucken / PDF</button>
+                            <button class="btn btn-purple" id="printBtn"><i class="fas fa-print"></i> Gesamt-PDF</button>
                         </div>
                     </div>
                 </div>
@@ -931,15 +1077,15 @@
                         <div class="summary-value">${formatCurrency(result.occupiedCosts)}</div>
                         <div class="summary-sub">auf Mieter verteilt</div>
                     </div>
-                    <div class="summary-card red">
-                        <div class="summary-label">Vermieteranteil</div>
-                        <div class="summary-value">${formatCurrency(result.vacantCosts + result.nichtUmlagbar)}</div>
-                        <div class="summary-sub">Leerstand + nicht umlegbar</div>
+                    <div class="summary-card amber">
+                        <div class="summary-label">Vorauszahlungen</div>
+                        <div class="summary-value">${formatCurrency(totalPrepayments)}</div>
+                        <div class="summary-sub">von Mietern gezahlt</div>
                     </div>
-                    <div class="summary-card purple">
-                        <div class="summary-label">Ø pro Mieter</div>
-                        <div class="summary-value">${formatCurrency(avgPerTenant)}</div>
-                        <div class="summary-sub">${Object.keys(tenantTotals).length} Mieter</div>
+                    <div class="summary-card ${totalBalance >= 0 ? 'emerald' : 'red'}">
+                        <div class="summary-label">Saldo gesamt</div>
+                        <div class="summary-value">${formatCurrency(Math.abs(totalBalance))}</div>
+                        <div class="summary-sub">${totalBalance >= 0 ? 'Guthaben Mieter' : 'Nachzahlung Mieter'}</div>
                     </div>
                 </div>
                 
@@ -993,22 +1139,39 @@
                             <thead><tr>
                                 <th>Mieter</th><th>Einheit</th>
                                 ${usedCats.map(c => `<th class="text-right">${COST_CATEGORIES[c]?.label || c}</th>`).join('')}
-                                <th class="text-right">Gesamt</th>
+                                <th class="text-right">Kosten</th>
+                                <th class="text-right">Voraus-zahlung</th>
+                                <th class="text-right">Saldo</th>
+                                <th class="text-right no-print">PDF</th>
                             </tr></thead>
                             <tbody>
-                                ${Object.entries(tenantTotals).map(([id, data]) => `
+                                ${Object.entries(tenantTotals).map(([id, data]) => {
+                                    const balanceClass = data.balance > 0 ? 'amount-negative' : data.balance < 0 ? 'amount-positive' : 'amount-zero';
+                                    const balanceLabel = data.balance > 0 ? 'Guthaben' : data.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen';
+                                    return `
                                     <tr>
                                         <td style="font-weight:500;">${data.name}</td>
                                         <td>${data.unit}</td>
                                         ${usedCats.map(c => `<td class="text-right">${data.categories[c] ? formatCurrency(data.categories[c]) : '—'}</td>`).join('')}
-                                        <td class="text-right" style="font-weight:700;">${formatCurrency(data.total)}</td>
-                                    </tr>
-                                `).join('')}
+                                        <td class="text-right" style="font-weight:600;">${formatCurrency(data.total)}</td>
+                                        <td class="text-right" style="color:#16a34a;">${formatCurrency(data.prepayments)}</td>
+                                        <td class="text-right ${balanceClass}">
+                                            ${formatCurrency(Math.abs(data.balance))}<br>
+                                            <span style="font-size:10px;">${balanceLabel}</span>
+                                        </td>
+                                        <td class="text-right no-print">
+                                            <button class="btn btn-sm btn-purple" data-pdf-tenant="${id}"><i class="fas fa-file-pdf"></i></button>
+                                        </td>
+                                    </tr>`;
+                                }).join('')}
                             </tbody>
                             <tfoot><tr>
-                                <td colspan="2" style="font-weight:700;">Summe umlagefähig</td>
+                                <td colspan="2" style="font-weight:700;">Summe</td>
                                 ${usedCats.map(c => `<td class="text-right" style="font-weight:700;">${formatCurrency(result.costsByCategory[c] || 0)}</td>`).join('')}
-                                <td class="text-right" style="font-weight:700; color:#2563eb; font-size:14px;">${formatCurrency(result.occupiedCosts)}</td>
+                                <td class="text-right" style="font-weight:700; color:#2563eb;">${formatCurrency(result.occupiedCosts)}</td>
+                                <td class="text-right" style="font-weight:700; color:#16a34a;">${formatCurrency(totalPrepayments)}</td>
+                                <td class="text-right" style="font-weight:700; color:${totalBalance >= 0 ? '#16a34a' : '#dc2626'};">${formatCurrency(Math.abs(totalBalance))}</td>
+                                <td class="no-print"></td>
                             </tr></tfoot>
                         </table>
                     </div>
@@ -1022,6 +1185,7 @@
                         <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Umlage nach <strong>§ 556a BGB</strong> (Fläche/Verbrauch)</p>
                         <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Leerstandskosten</strong> zu Lasten des Vermieters (§ 556a BGB)</p>
                         <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Nicht umlegbare Kosten</strong> (Instandhaltung) separat ausgewiesen</p>
+                        <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Vorauszahlungsverrechnung</strong> nach § 556 Abs. 3 BGB</p>
                         <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> Abrechnungsfrist <strong>12 Monate</strong> (§ 556 Abs. 3 BGB)</p>
                         <p><i class="fas fa-check" style="color:#16a34a; width:18px;"></i> <strong>Wirtschaftlichkeitsgebot</strong> beachtet</p>
                     </div>
@@ -1035,7 +1199,140 @@
                 </div>
                 
                 ${state.costs.length === 0 ? '<div class="empty-state"><i class="fas fa-file-invoice-dollar"></i><p>Keine Kosten erfasst.</p></div>' : ''}
+                
+                ${pdfTenantId ? renderTenantPDF(pdfTenantId, tenantTotals[pdfTenantId], result, settlementYear) : ''}
             `;
+        }
+        
+        function renderTenantPDF(tenantId, data, result, year) {
+            if (!data) return '';
+            const tenant = state.tenants.find(t => t.id === tenantId);
+            if (!tenant) return '';
+            
+            const balanceClass = data.balance > 0 ? '' : 'nachzahlung';
+            const balanceLabel = data.balance > 0 ? 'Guthaben (Rückzahlung an Mieter)' : data.balance < 0 ? 'Nachzahlung (Zahlung durch Mieter)' : 'Ausgeglichen';
+            
+            const usedCats = Object.keys(result.costsByCategory);
+            
+            return `
+                <div class="pdf-print" style="margin-top:30px;">
+                    <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="font-size:18px; font-weight:700;">PDF-Vorschau: ${data.name}</h3>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-purple" onclick="window.print()"><i class="fas fa-print"></i> Drucken / Als PDF speichern</button>
+                            <button class="btn btn-secondary" onclick="closePdfPreview()"><i class="fas fa-times"></i> Schließen</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pdf-page">
+                        <div class="pdf-header">
+                            <div class="pdf-header-left">
+                                <h1>Nebenkostenabrechnung ${year}</h1>
+                                <p>${state.property?.name || 'Objekt'}</p>
+                            </div>
+                            <div class="pdf-header-right">
+                                <strong>${state.property?.owner || 'Eigentümer'}</strong><br>
+                                ${state.property?.address || ''}<br>
+                                ${state.property?.phone ? 'Tel: ' + state.property.phone + '<br>' : ''}
+                                ${state.property?.email ? state.property.email : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="pdf-section">
+                            <h2>Mieter</h2>
+                            <p><strong>${tenant.name}</strong><br>
+                            ${state.units.find(u => u.id === tenant.unitId)?.name || ''}<br>
+                            ${state.property?.address || ''}</p>
+                            <p style="margin-top:10px; font-size:10pt; color:#6b7280;">
+                                Abrechnungszeitraum: 01.01.${year} – 31.12.${year}<br>
+                                Einzug: ${formatDate(tenant.moveInDate)}${tenant.moveOutDate ? ' | Auszug: ' + formatDate(tenant.moveOutDate) : ''}
+                            </p>
+                        </div>
+                        
+                        <div class="pdf-section">
+                            <h2>Umlegbare Betriebskosten</h2>
+                            <table class="pdf-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kostenart</th>
+                                        <th class="text-right">Gesamt</th>
+                                        <th class="text-right">Verteilerschlüssel</th>
+                                        <th class="text-right">Ihr Anteil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${usedCats.map(cat => {
+                                        const catAmount = result.costsByCategory[cat] || 0;
+                                        const tenantAmount = data.categories[cat] || 0;
+                                        if (tenantAmount === 0) return '';
+                                        const cost = state.costs.find(c => c.category === cat && new Date(c.date).getFullYear().toString() === year);
+                                        const distKey = cost ? getAllDistKeys()[cost.distributionKey] : '—';
+                                        return `
+                                            <tr>
+                                                <td>${COST_CATEGORIES[cat]?.label || cat}</td>
+                                                <td class="text-right">${formatCurrency(catAmount)}</td>
+                                                <td class="text-right" style="font-size:9pt;">${distKey}</td>
+                                                <td class="text-right"><strong>${formatCurrency(tenantAmount)}</strong></td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                    <tr class="pdf-total-row">
+                                        <td><strong>Gesamtkosten</strong></td>
+                                        <td class="text-right">${formatCurrency(result.occupiedCosts)}</td>
+                                        <td></td>
+                                        <td class="text-right"><strong>${formatCurrency(data.total)}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="pdf-section">
+                            <h2>Verrechnung mit Vorauszahlungen</h2>
+                            <table class="pdf-table">
+                                <tbody>
+                                    <tr>
+                                        <td>Umlegbare Betriebskosten (siehe oben)</td>
+                                        <td class="text-right"><strong>${formatCurrency(data.total)}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Geleistete Vorauszahlungen (${formatCurrency(data.prepayments / 12)}/Monat)</td>
+                                        <td class="text-right" style="color:#16a34a;"><strong>– ${formatCurrency(data.prepayments)}</strong></td>
+                                    </tr>
+                                    <tr class="pdf-total-row">
+                                        <td><strong>${data.balance > 0 ? 'Guthaben' : data.balance < 0 ? 'Nachzahlung' : 'Ausgeglichen'}</strong></td>
+                                        <td class="text-right"><strong>${formatCurrency(Math.abs(data.balance))}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="pdf-balance ${balanceClass}">
+                            <div class="pdf-balance-label">${balanceLabel}</div>
+                            <div class="pdf-balance-amount">${formatCurrency(Math.abs(data.balance))}</div>
+                        </div>
+                        
+                        <div class="pdf-footer">
+                            <p><strong>Rechtliche Hinweise:</strong></p>
+                            <p style="margin-top:5px;">
+                                Diese Abrechnung erfolgt nach der Betriebskostenverordnung (BetrKV) und § 556 BGB. 
+                                Leerstandskosten wurden nicht auf Sie umgelegt (§ 556a BGB). 
+                                Die Abrechnungsfrist beträgt 12 Monate nach Ende des Abrechnungszeitraums.
+                                ${result.nichtUmlagbar > 0 ? ' Nicht umlegbare Kosten (z.B. Instandhaltung) sind nicht enthalten.' : ''}
+                            </p>
+                            <p style="margin-top:10px;">
+                                ${state.property?.address || ''}, den ${new Date().toLocaleDateString('de-DE')}<br><br>
+                                _________________________________________<br>
+                                ${state.property?.owner || 'Eigentümer'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function closePdfPreview() {
+            pdfTenantId = null;
+            render();
         }
         
         // ============ MODAL ============
@@ -1176,6 +1473,58 @@
             };
         }
         
+        function showPrepayForm(editId) {
+            const prepay = editId ? state.prepayments.find(p => p.id === editId) : null;
+            modalContent = `
+                <h2 class="modal-title">${prepay ? 'Vorauszahlung bearbeiten' : 'Neue Vorauszahlung'}</h2>
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label class="form-label">Mieter <span class="req">*</span></label>
+                        <select class="form-input" id="mPrepayTenant">
+                            <option value="">Bitte wählen...</option>
+                            ${state.tenants.map(t => {
+                                const unit = state.units.find(u => u.id === t.unitId);
+                                return `<option value="${t.id}" ${prepay?.tenantId === t.id ? 'selected' : ''}>${t.name} (${unit?.name || '—'})</option>`;
+                            }).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Monatlicher Betrag (€) <span class="req">*</span></label>
+                        <input class="form-input" type="number" id="mPrepayAmount" value="${prepay?.monthlyAmount || ''}" step="0.01" min="0" placeholder="z.B. 150.00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Startdatum <span class="req">*</span></label>
+                        <input class="form-input" type="date" id="mPrepayStart" value="${prepay?.startDate || new Date().getFullYear() + '-01-01'}">
+                    </div>
+                    <div class="form-group full">
+                        <label class="form-label">Enddatum (optional)</label>
+                        <input class="form-input" type="date" id="mPrepayEnd" value="${prepay?.endDate || ''}">
+                        <div class="form-hint">Leer = Vorauszahlung läuft unbefristet</div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-success" id="savePrepayModal">${prepay ? 'Speichern' : 'Anlegen'}</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                </div>
+            `;
+            render();
+            document.getElementById('savePrepayModal').onclick = () => {
+                const tenantId = document.getElementById('mPrepayTenant').value;
+                const monthlyAmount = parseFloat(document.getElementById('mPrepayAmount').value);
+                const startDate = document.getElementById('mPrepayStart').value;
+                const endDate = document.getElementById('mPrepayEnd').value || null;
+                if (!tenantId || !monthlyAmount || !startDate) return alert('Bitte alle Pflichtfelder ausfüllen.');
+                if (editId) {
+                    const idx = state.prepayments.findIndex(p => p.id === editId);
+                    state.prepayments[idx] = { ...state.prepayments[idx], tenantId, monthlyAmount, startDate, endDate };
+                } else {
+                    state.prepayments.push({ id: generateId(), tenantId, monthlyAmount, startDate, endDate });
+                }
+                saveData(state);
+                closeModal();
+            };
+        }
+        
         function showCostForm(editId) {
             const cost = editId ? state.costs.find(c => c.id === editId) : null;
             const allKeys = getAllDistKeys();
@@ -1278,7 +1627,7 @@
         // ============ EVENTS ============
         function attachEvents() {
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.onclick = () => { activeTab = btn.dataset.tab; render(); };
+                btn.onclick = () => { activeTab = btn.dataset.tab; pdfTenantId = null; render(); };
             });
             const toggleBtn = document.getElementById('toggleSidebar');
             if (toggleBtn) toggleBtn.onclick = () => { sidebarCollapsed = !sidebarCollapsed; render(); };
@@ -1331,6 +1680,14 @@
                 if (confirm('Mieter löschen?')) { state.tenants = state.tenants.filter(t => t.id !== btn.dataset.deleteTenant); saveData(state); render(); }
             });
             
+            // Prepayments
+            const addPrepayBtn = document.getElementById('addPrepayBtn');
+            if (addPrepayBtn && state.tenants.length > 0) addPrepayBtn.onclick = () => showPrepayForm(null);
+            document.querySelectorAll('[data-edit-prepay]').forEach(btn => btn.onclick = () => showPrepayForm(btn.dataset.editPrepay));
+            document.querySelectorAll('[data-delete-prepay]').forEach(btn => btn.onclick = () => {
+                if (confirm('Vorauszahlung löschen?')) { state.prepayments = state.prepayments.filter(p => p.id !== btn.dataset.deletePrepay); saveData(state); render(); }
+            });
+            
             // Costs
             const addCostBtn = document.getElementById('addCostBtn');
             if (addCostBtn) addCostBtn.onclick = () => showCostForm(null);
@@ -1350,9 +1707,20 @@
             
             // Settlement
             const yearSelect = document.getElementById('yearSelect');
-            if (yearSelect) yearSelect.onchange = () => { settlementYear = yearSelect.value; render(); };
+            if (yearSelect) yearSelect.onchange = () => { settlementYear = yearSelect.value; pdfTenantId = null; render(); };
             const printBtn = document.getElementById('printBtn');
             if (printBtn) printBtn.onclick = () => window.print();
+            
+            // PDF per tenant
+            document.querySelectorAll('[data-pdf-tenant]').forEach(btn => btn.onclick = () => {
+                pdfTenantId = btn.dataset.pdfTenant;
+                render();
+                // Scroll to PDF
+                setTimeout(() => {
+                    const pdfEl = document.querySelector('.pdf-print');
+                    if (pdfEl) pdfEl.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            });
         }
         
         // Initial render

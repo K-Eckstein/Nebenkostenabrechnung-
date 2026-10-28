@@ -126,6 +126,20 @@ export default function App() {
                 <div className="text-xs text-gray-500">Einzelabrechnung je Mieter mit PDF-Druck</div>
               </div>
             </div>
+            <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+              <i className="fas fa-money-bill-wave text-emerald-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Vorauszahlungen & Saldo</div>
+                <div className="text-xs text-gray-500">Guthaben/Nachzahlung automatisch berechnen</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+              <i className="fas fa-file-pdf text-red-600 mt-0.5"></i>
+              <div>
+                <div className="text-sm font-medium text-gray-800">Einzel-PDFs pro Mieter</div>
+                <div className="text-xs text-gray-500">Professionelle Abrechnung als PDF drucken</div>
+              </div>
+            </div>
             <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
               <i className="fas fa-database text-gray-600 mt-0.5"></i>
               <div>
@@ -162,8 +176,9 @@ export default function App() {
               { n: 1, color: 'blue', title: 'Datei herunterladen', desc: 'Klicke auf den blauen Download-Button' },
               { n: 2, color: 'indigo', title: 'Objekt anlegen', desc: 'Trage Immobilie, Eigentümer und Adresse ein' },
               { n: 3, color: 'green', title: 'Einheiten & Mieter', desc: 'Wohneinheiten erfassen und Mieter zuordnen' },
-              { n: 4, color: 'orange', title: 'Kosten eintragen', desc: 'Alle Betriebskosten mit Verteilerschlüssel erfassen' },
-              { n: 5, color: 'purple', title: 'Abrechnung erstellen', desc: 'Automatische Berechnung und PDF-Druck' },
+              { n: 4, color: 'orange', title: 'Vorauszahlungen erfassen', desc: 'Monatliche NK-Vorauszahlungen je Mieter eintragen' },
+              { n: 5, color: 'amber', title: 'Kosten eintragen', desc: 'Alle Betriebskosten mit Verteilerschlüssel erfassen' },
+              { n: 6, color: 'purple', title: 'Abrechnung & PDF', desc: 'Guthaben/Nachzahlung berechnen, Einzel-PDFs pro Mieter drucken' },
             ].map(s => (
               <div key={s.n} className="flex items-start gap-3">
                 <div className={`w-6 h-6 rounded-full bg-${s.color}-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5`}>{s.n}</div>
