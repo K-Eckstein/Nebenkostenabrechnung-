@@ -48,11 +48,19 @@ impl Default for NebenkostenApp {
             current_view: "dashboard".to_string(),
             property: data.property,
             units: data.units,
+            tenants: data.tenants,
             show_unit_dialog: false,
+            show_tenant_dialog: false,
             new_unit_name: String::new(),
             new_unit_size: 0.0,
             new_unit_rooms: 1,
             new_unit_floor: 0,
+            new_tenant_name: String::new(),
+            new_tenant_unit_idx: 0,
+            new_tenant_email: String::new(),
+            new_tenant_phone: String::new(),
+            new_tenant_movein: String::new(),
+            new_tenant_prepay: 0.0,
         }
     }
 }
