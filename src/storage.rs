@@ -2,6 +2,7 @@ use anyhow::Result;
 use std::fs;
 use std::path::PathBuf;
 use crate::models::property::Property;
+use crate::models::unit::Unit;
 
 pub fn get_data_path() -> PathBuf {
     let mut path = dirs::data_local_dir().unwrap_or_else(|| PathBuf::from("."));
@@ -11,19 +12,34 @@ pub fn get_data_path() -> PathBuf {
     path
 }
 
-pub fn save_property(property: &Property) -> Result<()> {
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct AppData {
+    pub property: Property,
+    pub units: Vec<Unit>,
+}
+
+impl Default for AppData {
+    fn default() -> Self {
+        Self {
+            property: Property::new(),
+            units: Vec::new(),
+        }
+    }
+}
+
+pub fn save_data(data: &AppData) -> Result<()> {
     let path = get_data_path();
-    let json = serde_json::to_string_pretty(property)?;
+    let json = serde_json::to_string_pretty(data)?;
     fs::write(path, json)?;
     Ok(())
 }
 
-pub fn load_property() -> Result<Property> {
+pub fn load_data() -> Result<AppData> {
     let path = get_data_path();
     if !path.exists() {
-        return Ok(Property::new());
+        return Ok(AppData::default());
     }
     let json = fs::read_to_string(path)?;
-    let property: Property = serde_json::from_str(&json)?;
-    Ok(property)
+    let data: AppData = serde_json::from_str(&json)?;
+    Ok(data)
 }
