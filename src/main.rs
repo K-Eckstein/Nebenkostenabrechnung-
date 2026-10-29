@@ -11,7 +11,7 @@ fn main() -> eframe::Result<()> {
     eframe::run_native(
         "Nebenkostenabrechnung",
         options,
-        Box::new(|_cc| Ok(Box::new(NebenkostenApp::default()))),
+        Box::new(|_cc| Box::new(NebenkostenApp::default())),
     )
 }
 
