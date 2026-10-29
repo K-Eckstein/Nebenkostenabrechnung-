@@ -148,11 +148,11 @@ impl eframe::App for NebenkostenApp {
                         egui::Grid::new("units_grid")
                             .striped(true)
                             .show(ui, |ui| {
-                                ui.label("Name").strong();
-                                ui.label("Groesse (qm)").strong();
-                                ui.label("Zimmer").strong();
-                                ui.label("Etage").strong();
-                                ui.label("Aktionen").strong();
+                                ui.strong("Name");
+                                ui.strong("Groesse (qm)");
+                                ui.strong("Zimmer");
+                                ui.strong("Etage");
+                                ui.strong("Aktionen");
                                 ui.end_row();
                                 
                                 for (i, unit) in self.units.iter().enumerate() {
