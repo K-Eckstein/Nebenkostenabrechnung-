@@ -1,5 +1,8 @@
 use eframe::egui;
 
+mod models;
+use models::property::Property;
+
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
