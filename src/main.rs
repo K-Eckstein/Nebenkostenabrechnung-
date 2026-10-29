@@ -1,6 +1,7 @@
 use eframe::egui;
 
 mod models;
+mod storage;
 use models::property::Property;
 
 fn main() -> eframe::Result<()> {
@@ -25,9 +26,10 @@ struct NebenkostenApp {
 
 impl Default for NebenkostenApp {
     fn default() -> Self {
+        let property = storage::load_property().unwrap_or_else(|_| Property::new());
         Self {
             current_view: "dashboard".to_string(),
-            property: Property::new(),
+            property,
         }
     }
 }
@@ -111,7 +113,10 @@ impl eframe::App for NebenkostenApp {
                     
                     ui.add_space(10.0);
                     if ui.button("Speichern").clicked() {
-                        println!("Objekt gespeichert: {:?}", self.property);
+                        match storage::save_property(&self.property) {
+                            Ok(_) => println!("Objekt gespeichert!"),
+                            Err(e) => println!("Fehler beim Speichern: {}", e),
+                        }
                     }
                 }
                 _ => {
