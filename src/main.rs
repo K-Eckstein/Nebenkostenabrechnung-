@@ -110,6 +110,7 @@ impl eframe::App for NebenkostenApp {
                             &self.property.name 
                         }));
                     ui.label(format!("Wohneinheiten: {}", self.units.len()));
+                    ui.label(format!("Mieter: {}", self.tenants.len()));
                 }
                 "property" => {
                     ui.heading("Objekt & Vermieter");
@@ -141,6 +142,7 @@ impl eframe::App for NebenkostenApp {
                         let data = AppData {
                             property: self.property.clone(),
                             units: self.units.clone(),
+                            tenants: self.tenants.clone(),
                         };
                         match storage::save_data(&data) {
                             Ok(_) => println!("Gespeichert!"),
@@ -188,6 +190,7 @@ impl eframe::App for NebenkostenApp {
                                     let data = AppData {
                                         property: self.property.clone(),
                                         units: self.units.clone(),
+                                        tenants: self.tenants.clone(),
                                     };
                                     let _ = storage::save_data(&data);
                                 }
@@ -226,6 +229,7 @@ impl eframe::App for NebenkostenApp {
                                         let data = AppData {
                                             property: self.property.clone(),
                                             units: self.units.clone(),
+                                            tenants: self.tenants.clone(),
                                         };
                                         let _ = storage::save_data(&data);
                                         
@@ -238,6 +242,134 @@ impl eframe::App for NebenkostenApp {
                                 }
                                 if ui.button("Abbrechen").clicked() {
                                     self.show_unit_dialog = false;
+                                }
+                            });
+                    }
+                }
+                "tenants" => {
+                    ui.heading("Mieter");
+                    ui.separator();
+                    ui.add_space(10.0);
+                    
+                    if ui.button("Neuen Mieter anlegen").clicked() {
+                        self.show_tenant_dialog = true;
+                    }
+                    
+                    ui.add_space(10.0);
+                    
+                    if self.tenants.is_empty() {
+                        ui.label("Keine Mieter vorhanden.");
+                    } else {
+                        egui::Grid::new("tenants_grid")
+                            .striped(true)
+                            .show(ui, |ui| {
+                                ui.strong("Name");
+                                ui.strong("Einheit");
+                                ui.strong("E-Mail");
+                                ui.strong("Telefon");
+                                ui.strong("Einzug");
+                                ui.strong("Vorauszahlung");
+                                ui.strong("Aktionen");
+                                ui.end_row();
+                                
+                                let mut to_remove = None;
+                                for (i, tenant) in self.tenants.iter().enumerate() {
+                                    ui.label(&tenant.name);
+                                    let unit_name = self.units.iter()
+                                        .find(|u| u.id == Some(tenant.unit_id))
+                                        .map(|u| u.name.clone())
+                                        .unwrap_or_else(|| "Unbekannt".to_string());
+                                    ui.label(&unit_name);
+                                    ui.label(&tenant.email);
+                                    ui.label(&tenant.phone);
+                                    ui.label(&tenant.move_in_date);
+                                    ui.label(format!("{:.2} EUR", tenant.prepayment_monthly));
+                                    if ui.button("Loeschen").clicked() {
+                                        to_remove = Some(i);
+                                    }
+                                    ui.end_row();
+                                }
+                                if let Some(i) = to_remove {
+                                    self.tenants.remove(i);
+                                    let data = AppData {
+                                        property: self.property.clone(),
+                                        units: self.units.clone(),
+                                        tenants: self.tenants.clone(),
+                                    };
+                                    let _ = storage::save_data(&data);
+                                }
+                            });
+                    }
+                    
+                    if self.show_tenant_dialog {
+                        egui::Window::new("Neuer Mieter")
+                            .collapsible(false)
+                            .resizable(false)
+                            .show(ctx, |ui| {
+                                ui.label("Name:");
+                                ui.text_edit_singleline(&mut self.new_tenant_name);
+                                ui.add_space(5.0);
+                                
+                                ui.label("Einheit:");
+                                if self.units.is_empty() {
+                                    ui.label("Keine Einheiten vorhanden. Bitte zuerst eine Einheit anlegen.");
+                                } else {
+                                    egui::ComboBox::from_id_salt("unit_select")
+                                        .selected_text(if self.new_tenant_unit_idx < self.units.len() {
+                                            self.units[self.new_tenant_unit_idx].name.clone()
+                                        } else {
+                                            "Auswaehlen".to_string()
+                                        })
+                                        .show_ui(ui, |ui| {
+                                            for (idx, unit) in self.units.iter().enumerate() {
+                                                ui.selectable_value(&mut self.new_tenant_unit_idx, idx, &unit.name);
+                                            }
+                                        });
+                                }
+                                ui.add_space(5.0);
+                                
+                                ui.label("E-Mail:");
+                                ui.text_edit_singleline(&mut self.new_tenant_email);
+                                ui.add_space(5.0);
+                                
+                                ui.label("Telefon:");
+                                ui.text_edit_singleline(&mut self.new_tenant_phone);
+                                ui.add_space(5.0);
+                                
+                                ui.label("Einzugsdatum (YYYY-MM-DD):");
+                                ui.text_edit_singleline(&mut self.new_tenant_movein);
+                                ui.add_space(5.0);
+                                
+                                ui.label("Vorauszahlung monatlich (EUR):");
+                                ui.add(egui::DragValue::new(&mut self.new_tenant_prepay).speed(10.0));
+                                ui.add_space(10.0);
+                                
+                                if ui.button("Anlegen").clicked() {
+                                    if !self.new_tenant_name.is_empty() && !self.units.is_empty() {
+                                        let unit_id = self.units[self.new_tenant_unit_idx].id.unwrap_or(1);
+                                        let tenant = Tenant::new(
+                                            unit_id,
+                                            self.new_tenant_name.clone(),
+                                        );
+                                        self.tenants.push(tenant);
+                                        
+                                        let data = AppData {
+                                            property: self.property.clone(),
+                                            units: self.units.clone(),
+                                            tenants: self.tenants.clone(),
+                                        };
+                                        let _ = storage::save_data(&data);
+                                        
+                                        self.new_tenant_name.clear();
+                                        self.new_tenant_email.clear();
+                                        self.new_tenant_phone.clear();
+                                        self.new_tenant_movein.clear();
+                                        self.new_tenant_prepay = 0.0;
+                                        self.show_tenant_dialog = false;
+                                    }
+                                }
+                                if ui.button("Abbrechen").clicked() {
+                                    self.show_tenant_dialog = false;
                                 }
                             });
                     }
