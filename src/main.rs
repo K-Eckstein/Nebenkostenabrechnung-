@@ -155,20 +155,24 @@ impl eframe::App for NebenkostenApp {
                                 ui.strong("Aktionen");
                                 ui.end_row();
                                 
+                                let mut to_remove = None;
                                 for (i, unit) in self.units.iter().enumerate() {
                                     ui.label(&unit.name);
                                     ui.label(format!("{:.1}", unit.size));
                                     ui.label(unit.rooms.to_string());
                                     ui.label(unit.floor.to_string());
                                     if ui.button("Loeschen").clicked() {
-                                        self.units.remove(i);
-                                        let data = AppData {
-                                            property: self.property.clone(),
-                                            units: self.units.clone(),
-                                        };
-                                        let _ = storage::save_data(&data);
+                                        to_remove = Some(i);
                                     }
                                     ui.end_row();
+                                }
+                                if let Some(i) = to_remove {
+                                    self.units.remove(i);
+                                    let data = AppData {
+                                        property: self.property.clone(),
+                                        units: self.units.clone(),
+                                    };
+                                    let _ = storage::save_data(&data);
                                 }
                             });
                     }
