@@ -4,6 +4,7 @@ mod models;
 mod storage;
 use models::property::Property;
 use models::unit::Unit;
+use models::tenant::Tenant;
 use storage::AppData;
 
 fn main() -> eframe::Result<()> {
@@ -25,11 +26,19 @@ struct NebenkostenApp {
     current_view: String,
     property: Property,
     units: Vec<Unit>,
+    tenants: Vec<Tenant>,
     show_unit_dialog: bool,
+    show_tenant_dialog: bool,
     new_unit_name: String,
     new_unit_size: f64,
     new_unit_rooms: i32,
     new_unit_floor: i32,
+    new_tenant_name: String,
+    new_tenant_unit_idx: usize,
+    new_tenant_email: String,
+    new_tenant_phone: String,
+    new_tenant_movein: String,
+    new_tenant_prepay: f64,
 }
 
 impl Default for NebenkostenApp {
