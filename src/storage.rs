@@ -3,6 +3,7 @@ use std::fs;
 use std::path::PathBuf;
 use crate::models::property::Property;
 use crate::models::unit::Unit;
+use crate::models::tenant::Tenant;
 
 pub fn get_data_path() -> PathBuf {
     let mut path = dirs::data_local_dir().unwrap_or_else(|| PathBuf::from("."));
@@ -16,6 +17,7 @@ pub fn get_data_path() -> PathBuf {
 pub struct AppData {
     pub property: Property,
     pub units: Vec<Unit>,
+    pub tenants: Vec<Tenant>,
 }
 
 impl Default for AppData {
@@ -23,6 +25,7 @@ impl Default for AppData {
         Self {
             property: Property::new(),
             units: Vec::new(),
+            tenants: Vec::new(),
         }
     }
 }

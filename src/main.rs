@@ -314,7 +314,7 @@ impl eframe::App for NebenkostenApp {
                                 if self.units.is_empty() {
                                     ui.label("Keine Einheiten vorhanden. Bitte zuerst eine Einheit anlegen.");
                                 } else {
-                                    egui::ComboBox::from_id_salt("unit_select")
+                                    egui::ComboBox::from_id_source("unit_select")
                                         .selected_text(if self.new_tenant_unit_idx < self.units.len() {
                                             self.units[self.new_tenant_unit_idx].name.clone()
                                         } else {
