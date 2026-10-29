@@ -5,6 +5,7 @@ mod storage;
 use models::property::Property;
 use models::unit::Unit;
 use models::tenant::Tenant;
+use models::cost::Cost;
 use storage::AppData;
 
 fn main() -> eframe::Result<()> {
@@ -50,6 +51,7 @@ impl Default for NebenkostenApp {
             property: data.property,
             units: data.units,
             tenants: data.tenants,
+            costs: data.costs,
             show_unit_dialog: false,
             show_tenant_dialog: false,
             new_unit_name: String::new(),
