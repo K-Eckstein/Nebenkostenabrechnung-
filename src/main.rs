@@ -27,6 +27,7 @@ struct NebenkostenApp {
     property: Property,
     units: Vec<Unit>,
     tenants: Vec<Tenant>,
+    costs: Vec<Cost>,
     show_unit_dialog: bool,
     show_tenant_dialog: bool,
     new_unit_name: String,
