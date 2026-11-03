@@ -1,28 +1,74 @@
-export interface Tenant {
+export interface Property {
   id: string;
   name: string;
+  address: string;
+  owner: string;
+  ownerAddress: string;
+  phone: string;
+  email: string;
+  taxId: string;
+  bank: string;
+  bankName: string;
+  archivedYears?: number[];
+  totalArea?: number;
+}
+
+export interface Prepayment {
+  id: string;
+  propertyId: string;
+  tenantId: string;
+  monthlyAmount: number;
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface PersonHistory {
+  startDate: string;
+  persons: number;
+}
+
+export interface Tenant {
+  id: string;
+  propertyId: string;
+  name: string;
+  address?: string; // NEU
+  tenantNumber?: string; // NEU
+  iban?: string; // NEU
   email: string;
   phone: string;
   moveInDate: string;
   moveOutDate: string | null;
   unitId: string;
+  personsHistory: PersonHistory[];
 }
 
 export interface Unit {
   id: string;
+  propertyId: string;
   name: string;
-  size: number; // in m²
+  size: number;
   rooms: number;
-  floor: number;
+  floor: string; // GEÄNDERT: jetzt String (für "EG", "1. OG" etc.)
+  referenceValue?: number;
+  heatingConsumption?: number;
 }
 
 export interface CostEntry {
   id: string;
+  propertyId: string;
   category: CostCategory;
+  customCategoryLabel?: string;
   description: string;
   amount: number;
   date: string;
   distributionKey: DistributionKey;
+  co2Emissions?: number;
+  co2PricePerTon?: number;
+  referenceTotal?: number;
+  isRecoverable?: boolean;
+  applyHeizkostenV?: boolean;
+  heatingConsumptionPercent?: number;
+  is35a?: boolean;
 }
 
 export type CostCategory =
@@ -39,7 +85,13 @@ export type CostCategory =
   | 'elevator'
   | 'other';
 
-export type DistributionKey = 'area' | 'persons' | 'consumption' | 'units';
+export type DistributionKey =
+  | 'area'
+  | 'persons'
+  | 'consumption'
+  | 'units'
+  | 'reference'
+  | 'reference_total';
 
 export interface Settlement {
   id: string;
@@ -54,7 +106,7 @@ export interface CostDistribution {
   tenantId: string;
   tenantName: string;
   unitName: string;
-  category: CostCategory;
+  category: string;
   amount: number;
   share: number;
 }
@@ -79,4 +131,11 @@ export const DISTRIBUTION_KEY_LABELS: Record<DistributionKey, string> = {
   persons: 'Nach Personenzahl',
   consumption: 'Nach Verbrauch',
   units: 'Nach Wohneinheiten',
+  reference: 'Nach Bezugsgröße (Mieter-Summe)',
+  reference_total: 'Nach Gesamtbezugsgröße (mit Vermieteranteil)',
 };
+
+export function getCostLabel(key: string): string {
+  if (key.startsWith('custom:')) return key.slice(7);
+  return COST_CATEGORY_LABELS[key as CostCategory] || key;
+}

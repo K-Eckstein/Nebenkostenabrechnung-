@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Nebenkostenabrechnung – Benutzerhandbuch</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1f2937;
+    line-height: 1.65;
+    font-size: 11pt;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    background: #fff;
+  }
+  h1 { font-size: 26pt; color: #1d4ed8; margin-bottom: 8px; }
+  h2 {
+    font-size: 16pt; color: #1d4ed8; margin: 32px 0 12px;
+    padding-bottom: 6px; border-bottom: 2px solid #dbeafe;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 13pt; color: #1f2937; margin: 20px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #4b5563; margin: 14px 0 6px; font-weight: 600; }
+  p { margin-bottom: 10px; }
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 4px; }
+  code {
+    background: #f3f4f6; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em;
+    color: #be123c;
+  }
+  pre {
+    background: #1f2937; color: #e5e7eb; padding: 12px 16px;
+    border-radius: 6px; font-size: 9pt; overflow-x: auto;
+    margin: 10px 0; font-family: 'Consolas', 'Monaco', monospace;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  .cover {
+    text-align: center; padding: 80px 20px;
+    page-break-after: always;
+  }
+  .cover h1 { font-size: 32pt; margin-bottom: 16px; }
+  .cover .subtitle {
+    font-size: 14pt; color: #6b7280; margin-bottom: 60px;
+  }
+  .cover .version {
+    font-size: 11pt; color: #9ca3af; margin-top: 80px;
+  }
+  .cover .icon {
+    display: inline-block; width: 120px; height: 120px;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    border-radius: 24px; margin-bottom: 30px;
+    line-height: 120px; font-size: 60px; color: white;
+  }
+  .toc {
+    page-break-after: always;
+  }
+  .toc h2 { margin-top: 0; }
+  .toc ol { list-style: none; margin-left: 0; }
+  .toc ol li {
+    margin-bottom: 6px; font-size: 11pt;
+    border-bottom: 1px dotted #e5e7eb; padding-bottom: 4px;
+  }
+  .toc ol li a {
+    color: #1f2937; text-decoration: none;
+    display: flex; justify-content: space-between;
+  }
+  .toc ol li a:hover { color: #1d4ed8; }
+  .toc .num {
+    color: #9ca3af; font-weight: 600; margin-right: 8px;
+  }
+  .box {
+    padding: 12px 16px; border-radius: 8px; margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .box-info { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+  .box-warn { background: #fefce8; border-left: 4px solid #eab308; color: #713f12; }
+  .box-danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+  .box-success { background: #f0fdf4; border-left: 4px solid #16a34a; color: #166534; }
+  .box strong { display: block; margin-bottom: 4px; font-size: 11pt; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 12px 0;
+    font-size: 10pt; page-break-inside: avoid;
+  }
+  th, td { padding: 8px 10px; text-align: left; border: 1px solid #e5e7eb; }
+  th { background: #f9fafb; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 9pt; font-weight: 600;
+  }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-yellow { background: #fef9c3; color: #713f12; }
+  .page-break { page-break-before: always; }
+  .footer {
+    margin-top: 60px; padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 9pt; color: #9ca3af; text-align: center;
+  }
+  @media print {
+    body { padding: 0; }
+    .no-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ DECKBLATT ============ -->
+<div class="cover">
+  <div class="icon">&#128202;</div>
+  <h1>Nebenkosten&shy;abrechnung</h1>
+  <div class="subtitle">Benutzerhandbuch</div>
+  <p style="font-size: 12pt; color: #6b7280;">
+    Rechtskonforme Betriebskostenverwaltung<br>nach deutschem Mietrecht
+  </p>
+  <div class="version">
+    Version 1.2.0 · Stand: <span id="coverDate"></span>
+  </div>
+</div>
+
+<!-- ============ INHALTSVERZEICHNIS ============ -->
+<div class="toc">
+  <h2>Inhaltsverzeichnis</h2>
+  <ol>
+    <li><a href="#sec1"><span><span class="num">1.</span> Einführung</span></a></li>
+    <li><a href="#sec2"><span><span class="num">2.</span> Installation & Start</span></a></li>
+    <li><a href="#sec3"><span><span class="num">3.</span> Erste Schritte</span></a></li>
+    <li><a href="#sec4"><span><span class="num">4.</span> Objekte & Vermieter</span></a></li>
+    <li><a href="#sec5"><span><span class="num">5.</span> Wohneinheiten</span></a></li>
+    <li><a href="#sec6"><span><span class="num">6.</span> Mieter</span></a></li>
+    <li><a href="#sec7"><span><span class="num">7.</span> Vorauszahlungen</span></a></li>
+    <li><a href="#sec8"><span><span class="num">8.</span> Betriebskosten</span></a></li>
+    <li><a href="#sec9"><span><span class="num">9.</span> Abrechnung</span></a></li>
+    <li><a href="#sec10"><span><span class="num">10.</span> Mieteranschreiben</span></a></li>
+    <li><a href="#sec11"><span><span class="num">11.</span> Archiv & Finanzamt</span></a></li>
+    <li><a href="#sec12"><span><span class="num">12.</span> Datensicherung (Backup)</span></a></li>
+    <li><a href="#sec13"><span><span class="num">13.</span> Arbeiten mit USB-Stick</span></a></li>
+    <li><a href="#sec14"><span><span class="num">14.</span> Rechtliche Hinweise</span></a></li>
+    <li><a href="#sec15"><span><span class="num">15.</span> Häufige Fragen (FAQ)</span></a></li>
+    <li><a href="#sec16"><span><span class="num">16.</span> Über diese Software</span></a></li>
+    <li><a href="#sec17"><span><span class="num">17.</span> Änderungshistorie</span></a></li>
+  </ol>
+</div>
+
+<!-- ============ 1. EINFÜHRUNG ============ -->
+<h2 id="sec1">1. Einführung</h2>
+<p>
+  Diese Anwendung hilft Ihnen, die jährliche <strong>Nebenkostenabrechnung</strong> 
+  für Ihre Mieter zu erstellen – rechtskonform nach <strong>BetrKV</strong>, 
+  <strong>§ 556 BGB</strong>, <strong>HeizkostenV</strong> und dem 
+  <strong>CO₂-Kostenaufteilungsgesetz</strong>.
+</p>
+
+<h3>Was die Anwendung kann</h3>
+<table>
+  <tr><th style="width: 45%;">Funktion</th><th>Kurzbeschreibung</th></tr>
+  <tr><td>Objekte & Vermieter</td><td>Beliebig viele Immobilien mit vollständigem Briefkopf und Gesamtfläche</td></tr>
+  <tr><td>Wohneinheiten</td><td>Fläche, Zimmer, Etage (Freitext), Heizverbrauch, Bezugsgröße</td></tr>
+  <tr><td>Mieter</td><td>Adresse, Mieternummer, IBAN, Ein- und Auszüge, Haushaltsgröße mit Historie</td></tr>
+  <tr><td>Vorauszahlungen</td><td>Monatliche Zahlungen mit Zeiträumen</td></tr>
+  <tr><td>Betriebskosten</td><td>17 Kategorien, eigener Name, umlagefähig/nicht umlagefähig</td></tr>
+  <tr><td>CO₂-Aufteilung</td><td>Stufenmodell nach CO2KostAufG</td></tr>
+  <tr><td>HeizkostenV</td><td>Verbrauchsanteil frei wählbar (50–70 %)</td></tr>
+  <tr><td>Leerstand</td><td>Automatische Zuordnung zum Vermieter</td></tr>
+  <tr><td>§ 35a EStG</td><td>Handwerkerbescheinigung für Mieter</td></tr>
+  <tr><td>Abrechnung</td><td>PDF-Vorschau, Salden-Übersicht, CSV-Export</td></tr>
+  <tr><td>Mieteranschreiben</td><td>Formelle Begleitschreiben inkl. IBAN für Rücküberweisung</td></tr>
+  <tr><td>Archiv</td><td>Jahresabschluss für das Finanzamt (10 Jahre)</td></tr>
+  <tr><td>Daten & Backup</td><td>JSON-Export/Import zur Sicherung</td></tr>
+</table>
+
+<div class="box box-info">
+  <strong>Hinweis</strong>
+  Diese Anwendung ist eine Hilfestellung und ersetzt keine anwaltliche oder 
+  steuerliche Beratung. Alle Daten bleiben lokal auf Ihrem Rechner.
+</div>
+
+<!-- ============ 2. INSTALLATION ============ -->
+<h2 id="sec2" class="page-break">2. Installation & Start</h2>
+
+<p>Sie haben drei Möglichkeiten, die Anwendung zu nutzen:</p>
+
+<h3>Variante A: Linux</h3>
+<ol>
+  <li>Datei <code>Nebenkostenabrechnung-1.0.0.AppImage</code> auf den USB-Stick oder Desktop kopieren.</li>
+  <li>Rechtsklick → <em>Eigenschaften</em> → <em>Berechtigungen</em> → Haken bei 
+    <strong>„Datei als Programm ausführen"</strong> setzen.</li>
+  <li><strong>Doppelklick</strong> auf die Datei.</li>
+</ol>
+<p>Alternativ im Terminal:</p>
+<pre><code>chmod +x Nebenkostenabrechnung-1.0.0.AppImage
+./Nebenkostenabrechnung-1.0.0.AppImage</code></pre>
+
+<h3>Variante B: Windows</h3>
+<ol>
+  <li>Datei <code>Nebenkostenabrechnung-Portable.exe</code> auf USB-Stick oder Desktop kopieren.</li>
+  <li><strong>Doppelklick</strong> auf die Datei.</li>
+  <li>Beim ersten Start evtl. „Windows hat den PC geschützt" → 
+    <em>Weitere Informationen</em> → <em>Trotzdem ausführen</em>.</li>
+</ol>
+
+<h3>Variante C: Web-Browser</h3>
+<p>
+  Die Datei <code>index.html</code> kann direkt im Browser geöffnet werden. 
+  <strong>Achtung:</strong> Daten werden pro Browser und Pfad getrennt gespeichert. 
+  Für den Alltag nutzen Sie bitte Variante A oder B.
+</p>
+
+<div class="box box-warn">
+  <strong>Wichtig beim ersten Start</strong>
+  Neben der App-Datei wird automatisch ein Ordner <code>userdata</code> angelegt. 
+  <strong>Dieser Ordner enthält alle Ihre Daten</strong> (Objekte, Mieter, Kosten). 
+  Löschen Sie ihn niemals, außer Sie haben vorher ein Backup erstellt.
+</div>
+
+<!-- ============ 3. ERSTE SCHRITTE ============ -->
+<h2 id="sec3" class="page-break">3. Erste Schritte</h2>
+
+<p>Beim ersten Start ist die App leer. In dieser Reihenfolge gehen Sie vor:</p>
+
+<ol>
+  <li><strong>Objekt anlegen</strong> – inkl. <em>Gesamtfläche Gebäude</em> (wichtig für kalte Kosten).</li>
+  <li><strong>Wohneinheiten anlegen</strong> – mit Fläche und Etage.</li>
+  <li><strong>Mieter anlegen</strong> – mit Adresse, Mieternummer, IBAN.</li>
+  <li><strong>Vorauszahlungen erfassen</strong>.</li>
+  <li><strong>Betriebskosten erfassen</strong> – mit passendem Umlageschlüssel und ggf. eigenem Namen.</li>
+  <li><strong>Abrechnung prüfen</strong>.</li>
+  <li><strong>Anschreiben erstellen</strong>.</li>
+  <li><strong>Jahr archivieren</strong>.</li>
+</ol>
+
+<div class="box box-success">
+  <strong>Tipp: Erst testen, dann echt</strong>
+  Legen Sie zuerst ein Testobjekt mit einem Testmieter an und spielen Sie alle Schritte 
+  durch. Wenn alles passt, löschen Sie das Testobjekt und starten mit den echten Daten.
+</div>
+
+<!-- ============ 4. OBJEKTE ============ -->
+<h2 id="sec4" class="page-break">4. Objekte & Vermieter</h2>
+
+<p>
+  Jede Immobilie ist ein „Objekt". Sie können beliebig viele Objekte parallel verwalten 
+  und oben rechts im Kopfbereich mit dem Dropdown wechseln.
+</p>
+
+<h3>Felder im Objekt-Formular</h3>
+<table>
+  <tr><th style="width: 35%;">Feld</th><th>Bedeutung</th></tr>
+  <tr><td>Objektbezeichnung</td><td>Name der Immobilie (z. B. „Haus Meier") – erscheint im Briefkopf</td></tr>
+  <tr><td>Objektadresse</td><td>Vollständige Anschrift inkl. PLZ und Ort</td></tr>
+  <tr><td><strong>Gesamtfläche Gebäude</strong></td><td><strong>NEU:</strong> Gesamtfläche inkl. nicht vermieteter Flächen (z. B. 114 m² bei 48,53 m² Wohnung + 65,47 m² Nebenflächen). Wichtig für kalte Kosten wie Grundsteuer und Versicherung.</td></tr>
+  <tr><td>Name / Firma</td><td>Ihr Name als Vermieter</td></tr>
+  <tr><td>Anschrift Briefkopf</td><td>Ihre Adresse für Anschreiben</td></tr>
+  <tr><td>Telefon / E-Mail</td><td>Kontaktdaten für Mieter</td></tr>
+  <tr><td>IBAN / Bank</td><td>Zielkonto für Nachzahlungen</td></tr>
+  <tr><td>Steuernummer</td><td>Wird auf Archiv-PDF ausgewiesen</td></tr>
+</table>
+
+<div class="box box-info">
+  <strong>Wozu die Gesamtfläche?</strong>
+  Bei Verteilerschlüssel „Nach Wohnfläche" wird der Mieteranteil durch die Gesamtfläche 
+  geteilt. Ist die Gesamtfläche größer als die Summe der Einheiten (z. B. wegen 
+  unbeheizter Nebenflächen), trägt der Vermieter den Rest automatisch. Bei den 
+  Heizkosten wird die Gesamtfläche bewusst <strong>nicht</strong> angewendet – sie 
+  dient nur dem beheizten Wohnraum.
+</div>
+
+<!-- ============ 5. WOHNEINHEITEN ============ -->
+<h2 id="sec5" class="page-break">5. Wohneinheiten</h2>
+
+<p>Jede Mietwohnung, jedes Gewerbe und jeder Stellplatz ist eine „Einheit".</p>
+
+<h3>Felder</h3>
+<table>
+  <tr><th style="width: 35%;">Feld</th><th>Bedeutung</th></tr>
+  <tr><td>Bezeichnung</td><td>z. B. „Whg. EG links" oder „Whg. 1. OG rechts"</td></tr>
+  <tr><td>Fläche (m²)</td><td>Wohnfläche – wichtig für flächenbezogene Verteilungen</td></tr>
+  <tr><td>Zimmer</td><td>Anzahl Zimmer (nur informativ)</td></tr>
+  <tr><td><strong>Etage</strong></td><td><strong>NEU:</strong> Freitext – z. B. „EG", „1. OG", „2. OG", „DG" oder auch „EG links"</td></tr>
+  <tr><td>Heizungsverbrauch</td><td>Verbrauchswert für die HeizkostenV (kWh, Liter, Einheiten)</td></tr>
+  <tr><td>Bezugsgröße</td><td>Optional: abweichende Größe für Miteigentumsanteile</td></tr>
+</table>
+
+<div class="box box-info">
+  <strong>Etage ist jetzt Freitext</strong>
+  Sie können beliebige Bezeichnungen eingeben: „EG", „1. OG", „2. OG" oder – falls Sie 
+  die Wohnungslage genauer unterscheiden wollen – auch „EG links", „EG rechts", „EG mitte". 
+  Die Bezeichnung erscheint auf der Abrechnung und im Anschreiben.
+</div>
+
+<div class="box box-warn">
+  <strong>Heizungsverbrauch eintragen</strong>
+  Wenn Sie die <strong>HeizkostenV</strong> nutzen möchten, tragen Sie pro Einheit den 
+  Verbrauch ein (z. B. 1.200 kWh). Fehlt der Wert, rechnet die App rein flächenbasiert.
+</div>
+
+<!-- ============ 6. MIETER ============ -->
+<h2 id="sec6" class="page-break">6. Mieter</h2>
+
+<h3>Mieter anlegen</h3>
+<ol>
+  <li>Klick auf <em>Neuer Mieter</em>.</li>
+  <li>Name, Einheit, Einzugsdatum eingeben.</li>
+  <li>Optional: <strong>Adresse</strong> (für das Anschreiben), <strong>Mieternummer</strong> (z. B. M-001), <strong>IBAN</strong> (für Guthaben-Rücküberweisung), E-Mail, Telefon.</li>
+  <li><strong>Personen im Haushalt</strong> eintragen (Standard: 1).</li>
+  <li>Speichern.</li>
+</ol>
+
+<h3>Haushaltsgröße ändern (Personen ein-/ausziehend)</h3>
+<p>
+  Wenn eine Person in den Haushalt kommt (z. B. Geburt eines Kindes) oder auszieht, 
+  ändert sich die Personenzahl. Dies ist relevant für Schlüssel wie „Wasser" oder 
+  „Müllabfuhr", die oft nach Personenzahl verteilt werden.
+</p>
+<ol>
+  <li>In der Mieterliste auf den Button <strong>„X Pers."</strong> in der Spalte <em>Haushalt</em> klicken.</li>
+  <li>Im Dialog: Datum der Änderung und neue Gesamtanzahl eingeben.</li>
+  <li>Auf <em>Hinzufügen</em> klicken.</li>
+</ol>
+<p>
+  Die App speichert eine Historie und rechnet bei der Abrechnung <strong>zeitanteilig</strong>:
+  Wenn eine Person zum 1. Juli dazukommt, wird für Januar–Juni die alte Zahl und für 
+  Juli–Dezember die neue Zahl verwendet.
+</p>
+
+<h3>Mieterwechsel innerhalb eines Jahres</h3>
+<p>
+  Wenn ein Mieter A zum 30.06. auszieht und Mieter B zum 01.07. einzieht:
+</p>
+<ol>
+  <li>Mieter A: Einzug 01.01., Auszug 30.06.</li>
+  <li>Mieter B: Einzug 01.07., Auszug leer (laufend).</li>
+  <li>Beide werden <strong>derselben Einheit</strong> zugeordnet.</li>
+</ol>
+<p>
+  Die App verteilt alle Jahreskosten automatisch nach Tagen (pro rata temporis). 
+  Stand die Wohnung zwischen Aus- und Einzug leer, trägt der Vermieter diesen Anteil 
+  (erscheint unter <em>Vermieteranteil → Leerstandskosten</em>).
+</p>
+
+<!-- ============ 7. VORAUSZAHLUNGEN ============ -->
+<h2 id="sec7" class="page-break">7. Vorauszahlungen</h2>
+
+<p>
+  Vorauszahlungen sind die monatlichen Zahlungen der Mieter auf die Nebenkosten. 
+  Sie sind die Grundlage für die Berechnung von <strong>Guthaben</strong> oder 
+  <strong>Nachzahlung</strong>.
+</p>
+
+<h3>Neue Vorauszahlung anlegen</h3>
+<ol>
+  <li>Klick auf <em>Neue Vorauszahlung</em>.</li>
+  <li>Mieter auswählen.</li>
+  <li>Monatlichen Betrag eingeben (z. B. 200 €).</li>
+  <li>Startdatum (üblicherweise Mietbeginn).</li>
+  <li>Enddatum optional (bei Mieterwechsel oder Mieterhöhung).</li>
+</ol>
+
+<div class="box box-info">
+  <strong>Mieterhöhung der Vorauszahlung</strong>
+  Wenn sich die Vorauszahlung ändert (z. B. ab 01.07. von 200 € auf 220 €), legen Sie 
+  einen neuen Eintrag ab 01.07. an. Der alte Eintrag bekommt ein Enddatum 30.06. 
+  Die App summiert beide korrekt auf.
+</div>
+
+<!-- ============ 8. BETRIEBSKOSTEN ============ -->
+<h2 id="sec8" class="page-break">8. Betriebskosten</h2>
+
+<p>Hier erfassen Sie alle Rechnungen des Jahres. Jede Position wird auf die Mieter verteilt.</p>
+
+<h3>Felder</h3>
+<table>
+  <tr><th style="width: 35%;">Feld</th><th>Bedeutung</th></tr>
+  <tr><td>Kategorie</td><td>z. B. Heizung, Wasser, Müll, Grundsteuer</td></tr>
+  <tr><td><strong>Eigener Name</strong></td><td><strong>NEU:</strong> Überschreibt das Kategorie-Label (z. B. „Schornsteinfeger" statt „Sonstiges", „Niederschlagswasser" statt „Sonstiges")</td></tr>
+  <tr><td>Beschreibung</td><td>Freitext, z. B. „Heizöllieferung 2024"</td></tr>
+  <tr><td>Betrag</td><td>Rechnungsbetrag in Euro</td></tr>
+  <tr><td>Datum</td><td>Rechnungsdatum (bestimmt das Abrechnungsjahr)</td></tr>
+  <tr><td>Umlageschlüssel</td><td>Wie die Kosten auf die Mieter verteilt werden</td></tr>
+  <tr><td>Umlagefähig</td><td>Wenn deaktiviert: nur Vermieter trägt diese Kosten (z. B. Reparaturen)</td></tr>
+  <tr><td>§ 35a Handwerker</td><td>Für Mieter-Steuerbescheinigung</td></tr>
+</table>
+
+<h3>Eigener Name – Beispiele</h3>
+<p>
+  Bei der Kategorie <strong>„Sonstiges"</strong> ist der eigene Name besonders sinnvoll, 
+  weil der Mieter dann genau sieht, wofür er zahlt:
+</p>
+<ul>
+  <li>„Schornsteinfeger"</li>
+  <li>„Niederschlagswasser"</li>
+  <li>„Winterdienst"</li>
+  <li>„Aufzugswartung"</li>
+  <li>„Rauchmelderprüfung"</li>
+</ul>
+<p>
+  Aber auch bei anderen Kategorien können Sie den Namen überschreiben, z. B. Kategorie 
+  „Heizung" mit eigenem Namen „Heizöl 2024 (Volltank)".
+</p>
+
+<div class="box box-info">
+  <strong>Eigene Namen werden getrennt geführt</strong>
+  Wenn Sie zwei Positionen mit unterschiedlichem eigenen Namen anlegen (z. B. 
+  „Schornsteinfeger" und „Niederschlagswasser"), erscheinen diese in der Abrechnung 
+  als <strong>zwei getrennte Zeilen</strong> – nicht beide unter „Sonstiges".
+</div>
+
+<h3>Verteilerschlüssel im Detail</h3>
+<table>
+  <tr><th style="width: 40%;">Schlüssel</th><th>Verteilung</th></tr>
+  <tr><td>Nach Wohnfläche</td><td>Nach Quadratmetern der Einheit (mit Gesamtfläche im Objekt: Vermieter trägt Rest)</td></tr>
+  <tr><td>Nach Personenzahl</td><td>Nach Personen im Haushalt (mit Historie)</td></tr>
+  <tr><td>Nach Verbrauch</td><td>Nach erfasstem Heiz-/Wasserverbrauch</td></tr>
+  <tr><td>Nach Wohneinheiten</td><td>Gleichmäßig pro Einheit (1/N)</td></tr>
+  <tr><td>Nach Bezugsgröße</td><td>Nach der optionalen Bezugsgröße pro Einheit</td></tr>
+  <tr><td>Nach Gesamtbezugsgröße</td><td>Nach Gesamtbezugsgröße, Rest trägt Vermieter</td></tr>
+</table>
+
+<h3>Heizöl und CO₂-Aufteilung</h3>
+<p>
+  Bei <strong>Heizungskosten</strong> erscheinen zwei zusätzliche Felder:
+</p>
+<ul>
+  <li><strong>CO₂-Ausstoß (kg)</strong> – Menge aus der Heizölrechnung. Falls nur Liter angegeben: <code>Liter × 2,65 = kg CO₂</code>.</li>
+  <li><strong>CO₂-Preis (€/Tonne)</strong> – den genauen Wert aus Ihrer Rechnung eintragen (2024: ca. 45 €, 2025: ca. 55 €).</li>
+</ul>
+<p>
+  Die App zieht den CO₂-Anteil automatisch von den Heizkosten ab und teilt ihn nach dem 
+  Stufenmodell (CO2KostAufG) auf Mieter und Vermieter. Der restliche Heizölpreis wird 
+  regulär verteilt.
+</p>
+
+<h3>HeizkostenV – Verbrauchsanteil frei wählbar</h3>
+<p>
+  Bei zentraler Heizung ist eine verbrauchsabhängige Abrechnung gesetzlich vorgeschrieben. 
+  Der Verbrauchsanteil muss laut § 7 HeizkostenV <strong>zwischen 50 % und 70 %</strong> liegen.
+</p>
+<ul>
+  <li><strong>Slider:</strong> 50 % bis 70 % in 5er-Schritten.</li>
+  <li><strong>Zahleneingabe:</strong> für abweichende Werte (mit Warnung, falls außerhalb 50–70 %).</li>
+  <li><strong>Standard:</strong> 70 % (Maximum).</li>
+</ul>
+
+<div class="box box-warn">
+  <strong>Wahl des Verbrauchsanteils</strong>
+  Bei nur einer beheizten Einheit im Gebäude empfiehlt sich oft ein niedriger Wert (z. B. 50/50), 
+  weil der Verbrauch ohnehin vollständig auf den Mieter entfällt. Die Wahl innerhalb 
+  des gesetzlichen Rahmens liegt beim Vermieter.
+</div>
+
+<h3>Nicht umlagefähige Kosten</h3>
+<p>
+  Manche Kosten dürfen nicht auf den Mieter umgelegt werden (z. B. Instandhaltung, 
+  Verwaltung, Reparaturen). Entfernen Sie den Haken <strong>„Umlagefähig"</strong>:
+  Die App weist diese Kosten zu 100 % beim Vermieteranteil aus.
+</p>
+
+<h3>§ 35a EStG – Handwerkerbescheinigung</h3>
+<p>
+  Setzen Sie bei Handwerkerleistungen (Schornsteinfeger, Gartenpflege, kleine Reparaturen) 
+  den Haken <strong>„§ 35a Handwerker"</strong>. Die App erzeugt automatisch eine 
+  Steuerbescheinigung für den Mieter.
+</p>
+
+<h3>Jahreswechsel: Kosten ins Folgejahr kopieren</h3>
+<p>
+  Statt jede Rechnung neu zu tippen, klicken Sie auf <strong>„Ins Folgejahr kopieren"</strong>. 
+  Alle Kosten des aktuellen Jahres werden nach nächstes Jahr kopiert. CO₂-Werte werden 
+  zurückgesetzt, da sie sich ändern können.
+</p>
+
+<!-- ============ 9. ABRECHNUNG ============ -->
+<h2 id="sec9" class="page-break">9. Abrechnung</h2>
+
+<p>Die Abrechnung zeigt für das gewählte Jahr:</p>
+
+<ul>
+  <li><strong>Gesamtkosten</strong> (alle Rechnungen des Jahres)</li>
+  <li><strong>Vorauszahlungen</strong> (Summe der Mieterzahlungen)</li>
+  <li><strong>Vermieteranteil</strong> (was Sie selbst tragen)</li>
+  <li><strong>Salden-Übersicht</strong> (wer Guthaben / Nachzahlung hat)</li>
+  <li><strong>Detaillierte Einzelabrechnung</strong> pro Mieter</li>
+</ul>
+
+<h3>PDF-Vorschau</h3>
+<p>
+  Klicken Sie auf <strong>„PDF-Vorschau"</strong>. Ein schwarzer Vollbild-Modus öffnet 
+  sich, in dem Sie das komplette PDF prüfen können, bevor Sie es speichern.
+</p>
+<ul>
+  <li><strong>Jetzt speichern</strong> – speichert die Datei.</li>
+  <li><strong>Schließen</strong> – zurück zur Abrechnung.</li>
+</ul>
+
+<h3>Salden-Übersicht</h3>
+<p>
+  Zeigt alle Mieter mit Kosten, Vorauszahlung und Saldo – ideal zum schnellen Blick 
+  „wer zahlt und wer bekommt zurück".
+</p>
+
+<h3>CSV-Export</h3>
+<p>
+  Klick auf <strong>„CSV"</strong> exportiert die Salden-Übersicht als Excel-kompatible 
+  Datei – z. B. für Ihre Buchhaltung oder den Steuerberater.
+</p>
+
+<!-- ============ 10. MIETERANSCHREIBEN ============ -->
+<h2 id="sec10" class="page-break">10. Mieteranschreiben</h2>
+
+<p>
+  Ein formelles DIN-5008-Begleitschreiben zur Abrechnung. Es enthält Briefkopf, 
+  Mieter-Adresse, Mieternummer (falls erfasst), Datum und – bei Nachzahlung – eine 
+  Zahlungsaufforderung mit 30-Tage-Frist. Bei Guthaben wird die IBAN des Mieters für 
+  die Rücküberweisung genannt.
+</p>
+
+<h3>Anschreiben erstellen</h3>
+<ol>
+  <li>Menüpunkt <em>Mieteranschreiben</em> öffnen.</li>
+  <li>Jahr wählen.</li>
+  <li>Links Mieter auswählen.</li>
+  <li>Rechts die Vorschau prüfen.</li>
+  <li>Auf <strong>„PDF-Vorschau"</strong> klicken, um das fertige PDF zu prüfen.</li>
+  <li><strong>„Jetzt speichern"</strong> → Datei landet im gewählten Ordner.</li>
+</ol>
+
+<div class="box box-info">
+  <strong>Wichtig für das Anschreiben</strong>
+  Tragen Sie beim Mieter die <strong>Adresse</strong> ein (sonst wird die Objektadresse 
+  als Empfänger verwendet) und die <strong>IBAN</strong> (für die Rücküberweisung bei 
+  Guthaben). Beides optional, aber empfohlen.
+</div>
+
+<h3>Textbaustein Guthaben</h3>
+<p>
+  Bei einem Guthaben lautet der Text im Anschreiben:
+</p>
+<p style="padding: 10px; background: #f0fdf4; border-left: 3px solid #16a34a; margin: 10px 0;">
+  <em>„Der Betrag in Höhe von X € wird in den nächsten Tagen auf Ihr Konto (IBAN: DE...) 
+  überwiesen."</em>
+</p>
+<p>
+  Ist keine IBAN hinterlegt, lautet der Text: <em>„…wird in den nächsten Tagen auf Ihr 
+  Konto überwiesen."</em>
+</p>
+
+<!-- ============ 11. ARCHIV ============ -->
+<h2 id="sec11" class="page-break">11. Archiv & Finanzamt</h2>
+
+<p>
+  Das Finanzamt verlangt eine <strong>10-jährige Aufbewahrung</strong> aller 
+  Abrechnungsunterlagen. Die App hilft Ihnen dabei.
+</p>
+
+<h3>Archiv-PDF erstellen</h3>
+<ol>
+  <li>Menüpunkt <em>Archiv & Finanzamt</em> öffnen.</li>
+  <li>Beim gewünschten Jahr auf <strong>„Vorschau"</strong> klicken.</li>
+  <li>Im Vollbild das PDF prüfen:
+    <ul>
+      <li>Deckblatt mit Objektdaten und Steuernummer</li>
+      <li><strong>Kostenaufstellung mit Vermieteranteil pro Zeile</strong> (neu)</li>
+      <li>Zusammenfassung Vermieter</li>
+      <li>Alle Mieterabrechnungen in einem Dokument</li>
+    </ul>
+  </li>
+  <li><strong>„PDF Herunterladen"</strong> klicken.</li>
+</ol>
+
+<div class="box box-info">
+  <strong>Vermieteranteil pro Zeile</strong>
+  In der Kostenaufstellung wird jetzt pro Rechnung angezeigt, welchen Anteil der 
+  Vermieter trägt. Bei „Nach Wohnfläche" mit Gesamtfläche ist das z. B. der Anteil 
+  für die nicht vermieteten Flächen – bei nicht umlagefähigen Kosten der komplette 
+  Rechnungsbetrag.
+</div>
+
+<h3>Jahr archivieren</h3>
+<p>
+  Mit Klick auf <strong>„Archivieren"</strong> markieren Sie das Jahr als abgeschlossen. 
+  Der Status wechselt auf <span class="badge badge-green">Archiviert</span>. 
+  Sie können das Jahr jederzeit mit <strong>„Öffnen"</strong> wieder zur Bearbeitung freigeben.
+</p>
+
+<div class="box box-success">
+  <strong>Bewahren Sie pro Jahr auf</strong>
+  <ul style="margin-top: 8px;">
+    <li>Archiv-PDF (Steuer)</li>
+    <li>JSON-Backup (Datensicherung)</li>
+    <li>Rechnungen und Belege (Papier oder Scan)</li>
+  </ul>
+  Legen Sie alles zusammen in einen Cloud-Ordner (z. B. <code>Nebenkosten/2024/</code>).
+</div>
+
+<!-- ============ 12. BACKUP ============ -->
+<h2 id="sec12" class="page-break">12. Datensicherung (Backup)</h2>
+
+<p>
+  Ihre Daten liegen lokal in einer Datenbank-Datei. Um sie vor Verlust zu schützen, 
+  erstellen Sie regelmäßig ein JSON-Backup.
+</p>
+
+<h3>Backup erstellen</h3>
+<ol>
+  <li>Menüpunkt <em>Daten & Backup</em> öffnen.</li>
+  <li>Auf <strong>„Backup erstellen (Export)"</strong> klicken.</li>
+  <li>Eine JSON-Datei wird heruntergeladen, z. B. <code>Nebenkosten_Backup_HausMeier_2024-11-02.json</code>.</li>
+  <li><strong>Datei an einen sicheren Ort kopieren</strong> (Cloud, USB, externe Festplatte).</li>
+</ol>
+
+<h3>Backup einspielen</h3>
+<ol>
+  <li>Menüpunkt <em>Daten & Backup</em> öffnen.</li>
+  <li>Auf <strong>„Backup einspielen (Import)"</strong> klicken.</li>
+  <li>Die JSON-Datei auswählen.</li>
+  <li>Bestätigen – die aktuellen Daten werden überschrieben.</li>
+</ol>
+
+<div class="box box-danger">
+  <strong>Achtung</strong>
+  Beim Import werden alle aktuellen Daten gelöscht und durch den Stand der 
+  Backup-Datei ersetzt. Erstellen Sie vor jedem Import ein Backup des aktuellen Stands!
+</div>
+
+<h3>Empfohlene Backup-Routine</h3>
+<table>
+  <tr><th style="width: 30%;">Wann</th><th>Was</th></tr>
+  <tr><td>Nach jeder Sitzung</td><td>Backup erstellen, Datei in Cloud kopieren</td></tr>
+  <tr><td>Monatlich</td><td>Backup-Datei auf USB / externe Platte sichern</td></tr>
+  <tr><td>Nach Jahresabschluss</td><td>Backup + Archiv-PDF gemeinsam ablegen</td></tr>
+  <tr><td>Vor jedem Import</td><td>Aktuellen Stand exportieren</td></tr>
+</table>
+
+<!-- ============ 13. USB-STICK ============ -->
+<h2 id="sec13" class="page-break">13. Arbeiten mit USB-Stick</h2>
+
+<p>
+  Die Desktop-App ist so gebaut, dass sie komplett auf einem USB-Stick laufen kann. 
+  Alle Daten wandern mit – solange die richtige Ordnerstruktur eingehalten wird.
+</p>
+
+<h3>Struktur für einen Linux-Stick</h3>
+<pre><code>USB-Stick/
+└── Nebenkosten/
+    ├── Nebenkostenabrechnung-1.0.0.AppImage
+    └── userdata/     ← automatisch angelegt, NICHT löschen
+</code></pre>
+
+<h3>Struktur für einen Windows-Stick</h3>
+<pre><code>USB-Stick/
+└── Nebenkosten/
+    ├── Nebenkostenabrechnung-Portable.exe
+    └── userdata/     ← automatisch angelegt, NICHT löschen
+</code></pre>
+
+<div class="box box-warn">
+  <strong>Nicht mischen</strong>
+  Verwenden Sie für Linux und Windows <strong>zwei getrennte Sticks</strong>. Die 
+  <code>userdata</code>-Ordner sind nicht zwischen Linux und Windows austauschbar.
+</div>
+
+<h3>Erster Start auf einem fremden PC</h3>
+<ol>
+  <li>USB-Stick einstecken.</li>
+  <li>In den Ordner <code>Nebenkosten</code> wechseln.</li>
+  <li>
+    <strong>Linux:</strong> Einmalig ausführbar machen:
+    <pre><code>cd /media/benutzer/STICKNAME/Nebenkosten
+chmod +x Nebenkostenabrechnung-1.0.0.AppImage</code></pre>
+  </li>
+  <li>Doppelklick auf die App-Datei.</li>
+  <li>Fertig – alle Ihre Daten sind da.</li>
+</ol>
+
+<h3>Datenaustausch zwischen Sticks</h3>
+<p>
+  Da jeder Stick seine eigene Datenbank hat, tauschen Sie Daten über das JSON-Backup aus:
+</p>
+<ol>
+  <li>Auf Stick 1: Backup erstellen → JSON landet im Downloads-Ordner des PCs.</li>
+  <li>JSON auf Stick 2 kopieren (oder per Cloud/E-Mail).</li>
+  <li>Auf Stick 2: Backup einspielen → JSON auswählen.</li>
+</ol>
+
+<!-- ============ 14. RECHT ============ -->
+<h2 id="sec14" class="page-break">14. Rechtliche Hinweise</h2>
+
+<h3>Gesetzliche Grundlagen</h3>
+<table>
+  <tr><th style="width: 30%;">Gesetz</th><th>Regelung</th></tr>
+  <tr><td>BetrKV § 2</td><td>Welche Betriebskosten auf Mieter umlagefähig sind</td></tr>
+  <tr><td>§ 556 BGB</td><td>Abrechnungsfrist und Form der Abrechnung</td></tr>
+  <tr><td>§ 556a BGB</td><td>Verteilerschlüssel und Leerstand</td></tr>
+  <tr><td>HeizkostenV § 7</td><td>Verbrauchsanteil 50–70 % bei zentraler Heizung</td></tr>
+  <tr><td>CO2KostAufG</td><td>Stufenmodell zur Aufteilung der CO₂-Kosten</td></tr>
+  <tr><td>§ 35a EStG</td><td>Steuerliche Absetzbarkeit von Handwerkerleistungen</td></tr>
+  <tr><td>§ 147 AO</td><td>10-jährige Aufbewahrungspflicht</td></tr>
+</table>
+
+<h3>Abrechnungsfrist (§ 556 Abs. 3 BGB)</h3>
+<p>
+  Die Abrechnung muss dem Mieter <strong>innerhalb von 12 Monaten</strong> nach Ende des 
+  Abrechnungszeitraums zugehen. Bei einer Abrechnung für 2024 also spätestens am 
+  <strong>31.12.2025</strong>. Die App zeigt auf dem Dashboard eine Warnung an, wenn 
+  die Frist naht.
+</p>
+
+<h3>Wirtschaftlichkeitsgebot</h3>
+<p>
+  Kostensteigerungen von mehr als 10–15 % pro Jahr sollten begründet werden können 
+  (z. B. Preiserhöhungen des Versorgers). Der Jahresvergleich auf dem Dashboard hilft 
+  bei der Kontrolle.
+</p>
+
+<div class="box box-danger">
+  <strong>Haftungsausschluss</strong>
+  Diese Software ist eine Hilfestellung. Sie ersetzt keine Rechtsberatung. 
+  Für die Rechtmäßigkeit Ihrer Abrechnung sind Sie als Vermieter verantwortlich.
+</div>
+
+<!-- ============ 15. FAQ ============ -->
+<h2 id="sec15" class="page-break">15. Häufige Fragen (FAQ)</h2>
+
+<h3>Die App zeigt keine Daten mehr – was tun?</h3>
+<p>
+  Wahrscheinlich wurde der <code>userdata</code>-Ordner gelöscht oder an einen anderen 
+  Pfad verschoben. Stellen Sie sicher, dass der Ordner neben der App-Datei liegt. 
+  Falls nicht: Backup einspielen.
+</p>
+
+<h3>Warum ist mein Heizkosten-Anteil so niedrig?</h3>
+<p>
+  Prüfen Sie, ob im Objekt eine <strong>Gesamtfläche</strong> hinterlegt ist. Bei 
+  Heizkosten sollte diese <strong>nicht</strong> angewendet werden – die App berücksichtigt 
+  sie automatisch nur bei kalten Kosten (Grundsteuer, Versicherung). Falls Sie eine 
+  falsche Aufteilung sehen, prüfen Sie den Umlageschlüssel und ob der Haken „HeizkostenV 
+  anwenden" gesetzt ist.
+</p>
+
+<h3>Warum werden meine Kosten nicht auf den Mieter verteilt?</h3>
+<p>
+  Prüfen Sie in dieser Reihenfolge:
+</p>
+<ol>
+  <li>Ist der Haken <strong>„Umlagefähig"</strong> gesetzt?</li>
+  <li>Liegt das Rechnungsdatum innerhalb des Mietzeitraums?</li>
+  <li>Ist bei flächenbezogenen Schlüsseln eine Fläche bei der Einheit eingetragen?</li>
+  <li>Ist bei Personenschlüsseln die Personenzahl korrekt (Historie)?</li>
+</ol>
+
+<h3>Kann ich Daten zwischen Linux und Windows übertragen?</h3>
+<p>
+  Ja, aber nur über das JSON-Backup (nicht durch Kopieren des <code>userdata</code>-Ordners). 
+  Siehe Kapitel 12.
+</p>
+
+<h3>Was ist der Unterschied zwischen eigener Name und Beschreibung?</h3>
+<p>
+  <strong>Eigener Name</strong> überschreibt das Kategorie-Label (z. B. „Sonstiges" → 
+  „Schornsteinfeger"). <strong>Beschreibung</strong> ist ein freier Zusatztext pro Position 
+  (z. B. „Rechnung 2024"). Beide erscheinen in der Abrechnung.
+</p>
+
+<h3>Wie funktioniert die CO₂-Aufteilung?</h3>
+<p>
+  Bei Heizungskosten tragen Sie den CO₂-Ausstoß in kg und den Preis pro Tonne ein. 
+  Die App berechnet den spezifischen Ausstoß (kg/m²·a), bestimmt daraus die Stufe 
+  (1–10) und teilt die CO₂-Kosten zwischen Mieter und Vermieter auf. Der restliche 
+  Ölpreis wird regulär verteilt.
+</p>
+
+<h3>Kann ich mehrere Objekte parallel verwalten?</h3>
+<p>
+  Ja. Legen Sie jedes Objekt separat an und wechseln Sie oben rechts im Kopfbereich 
+  mit dem Dropdown zwischen den Objekten. Alle Einheiten, Mieter und Kosten werden 
+  strikt pro Objekt getrennt berechnet.
+</p>
+
+<!-- ============ 16. ÜBER DIESE SOFTWARE ============ -->
+<h2 id="sec16" class="page-break">16. Über diese Software</h2>
+
+<div style="text-align: center; margin: 30px 0; padding: 30px; background: #f9fafb; border-radius: 12px;">
+  <div style="display: inline-block; width: 80px; height: 80px; background: linear-gradient(135deg, #2563eb, #4f46e5); border-radius: 16px; line-height: 80px; font-size: 40px; color: white; margin-bottom: 16px;">&#128202;</div>
+  <h3 style="margin: 0; color: #1f2937;">Nebenkostenabrechnung</h3>
+  <p style="color: #6b7280; margin-top: 4px;">Version 1.2.0</p>
+</div>
+
+<h3>Entwickelt von</h3>
+<p>
+  <strong>Klaus Eckstein</strong><br>
+  mit freundlicher Unterstützung von <strong>DeepSeek</strong> (KI-Assistenz)
+</p>
+
+<h3>Verwendete Technologien</h3>
+<table>
+  <tr><th style="width: 35%;">Technologie</th><th>Verwendung</th></tr>
+  <tr><td>React 18</td><td>Benutzeroberfläche</td></tr>
+  <tr><td>TypeScript</td><td>Typsichere Programmierung</td></tr>
+  <tr><td>Vite</td><td>Build-Tool</td></tr>
+  <tr><td>Tailwind CSS</td><td>Styling</td></tr>
+  <tr><td>Electron</td><td>Desktop-Anwendung (Linux & Windows)</td></tr>
+  <tr><td>html2pdf</td><td>PDF-Export</td></tr>
+  <tr><td>Recharts</td><td>Diagramme</td></tr>
+</table>
+
+<h3>Datenschutz</h3>
+<p>
+  Alle Daten bleiben <strong>lokal auf Ihrem Rechner</strong>. Es findet keine 
+  Übertragung an Cloud-Dienste, keine Analyse und kein Tracking statt. 
+  Die Anwendung funktioniert vollständig offline.
+</p>
+
+<div class="box box-info">
+  <strong>Über DeepSeek</strong>
+  DeepSeek ist ein KI-Assistenzsystem, das bei der Programmierung dieser Anwendung 
+  unterstützt hat – von der Code-Erstellung über die Fehlersuche bis zur Dokumentation. 
+  Die fachlichen Entscheidungen (Steuerlogik, rechtliche Auslegung, Abrechnungsregeln) 
+  wurden vom Autor getroffen und geprüft.
+</div>
+
+<h3>Versionsschema</h3>
+<p>
+  Die Version folgt dem Schema <code>Major.Minor.Patch</code>:
+</p>
+<ul>
+  <li><strong>Major:</strong> Größere Umbauten mit möglichen Inkompatibilitäten</li>
+  <li><strong>Minor:</strong> Neue Funktionen (abwärtskompatibel)</li>
+  <li><strong>Patch:</strong> Fehlerbehebungen</li>
+</ul>
+
+<h3>Kontakt</h3>
+<p>
+  Bei Fragen, Anregungen oder Fehlermeldungen wenden Sie sich bitte an den Autor.
+</p>
+
+<!-- ============ 17. ÄNDERUNGSHISTORIE ============ -->
+<h2 id="sec17" class="page-break">17. Änderungshistorie</h2>
+
+<h3>Version 1.2.0 (aktuell)</h3>
+<ul>
+  <li><strong>Neu:</strong> Info-Dialog „Über diese App" in der Seitenleiste</li>
+  <li><strong>Neu:</strong> Kapitel „Über diese Software" im Handbuch</li>
+</ul>
+
+<h3>Version 1.1.0</h3>
+<ul>
+  <li><strong>Neu:</strong> Gesamtfläche Gebäude im Objekt (für korrekte Flächenverteilung bei kalten Kosten)</li>
+  <li><strong>Neu:</strong> Eigener Name für Kostenarten (z. B. „Schornsteinfeger" statt „Sonstiges")</li>
+  <li><strong>Neu:</strong> HeizkostenV-Verbrauchsanteil frei einstellbar (50–70 %)</li>
+  <li><strong>Neu:</strong> Mieter-Adresse, Mieternummer, IBAN</li>
+  <li><strong>Neu:</strong> Etage als Freitext (EG, 1. OG, DG etc.)</li>
+  <li><strong>Verbessert:</strong> Anschreiben nennt bei Guthaben die IBAN für Rücküberweisung</li>
+  <li><strong>Verbessert:</strong> Archiv zeigt Vermieteranteil pro Kostenzeile</li>
+  <li><strong>Fix:</strong> Heizkosten wurden fälschlich mit Gesamtfläche statt beheizter Fläche berechnet</li>
+</ul>
+
+<h3>Version 1.0.0</h3>
+<ul>
+  <li>Erste stabile Version mit Objekt-, Einheiten-, Mieter-, Vorauszahlungs-, Kostenverwaltung</li>
+  <li>CO₂-Aufteilung nach CO2KostAufG</li>
+  <li>Abrechnung mit PDF-Vorschau, Salden-Übersicht, CSV-Export</li>
+  <li>Mieteranschreiben, Archiv für das Finanzamt</li>
+  <li>Backup-Funktion</li>
+  <li>Linux-AppImage und Windows-Portable-EXE</li>
+</ul>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <p><strong>Nebenkostenabrechnung</strong> · Version 1.2.0</p>
+  <p>Benutzerhandbuch · Stand: <span id="footerDate"></span></p>
+  <p style="margin-top: 12px;">
+    Diese Software wird ohne Gewähr bereitgestellt. Sie ersetzt keine 
+    Rechts- oder Steuerberatung.
+  </p>
+</div>
+
+<script>
+  document.getElementById('coverDate').textContent = new Date().toLocaleDateString('de-DE');
+  document.getElementById('footerDate').textContent = new Date().toLocaleDateString('de-DE');
+</script>
+
+</body>
+</html>

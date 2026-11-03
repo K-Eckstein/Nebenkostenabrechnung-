@@ -1,222 +1,168 @@
 import { useState } from 'react';
+import { useAppData } from './store';
+import Dashboard from './components/Dashboard';
+import UnitsManager from './components/UnitsManager';
+import TenantsManager from './components/TenantsManager';
+import CostsManager from './components/CostsManager';
+import Settlement from './components/Settlement';
+import PropertyManager from './components/PropertyManager';
+import PrepaymentsManager from './components/PrepaymentsManager';
+import BackupManager from './components/BackupManager';
+import LettersManager from './components/LettersManager';
+import ArchiveManager from './components/ArchiveManager';
+
+type Tab = 'property' | 'dashboard' | 'units' | 'tenants' | 'prepayments' | 'costs' | 'settlement' | 'letters' | 'archive' | 'backup';
+
+interface NavItem { id: Tab; label: string; icon: string; }
+
+const NAV_ITEMS: NavItem[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-line' },
+  { id: 'property', label: 'Objekte & Vermieter', icon: 'fas fa-home' },
+  { id: 'units', label: 'Wohneinheiten', icon: 'fas fa-building' },
+  { id: 'tenants', label: 'Mieter', icon: 'fas fa-users' },
+  { id: 'prepayments', label: 'Vorauszahlungen', icon: 'fas fa-money-bill-wave' },
+  { id: 'costs', label: 'Betriebskosten', icon: 'fas fa-receipt' },
+  { id: 'settlement', label: 'Abrechnung', icon: 'fas fa-file-invoice-dollar' },
+  { id: 'letters', label: 'Mieteranschreiben', icon: 'fas fa-envelope' },
+  { id: 'archive', label: 'Archiv & Finanzamt', icon: 'fas fa-archive' },
+  { id: 'backup', label: 'Daten & Backup', icon: 'fas fa-shield-alt' },
+];
 
 export default function App() {
-  const [downloading, setDownloading] = useState(false);
+  const [tab, setTab] = useState<Tab>('dashboard');
+  const [showAbout, setShowAbout] = useState(false);
+  const appData = useAppData();
 
-  const handleDownload = () => {
-    setDownloading(true);
-    const a = document.createElement('a');
-    a.href = './nebenkosten.html';
-    a.download = 'Nebenkostenabrechnung.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => setDownloading(false), 1000);
-  };
+  const {
+    properties, activePropertyId, setActiveProperty, addProperty, updateProperty,
+    units, addUnit, updateUnit, deleteUnit,
+    tenants, addTenant, updateTenant, deleteTenant,
+    prepayments, addPrepayment, updatePrepayment, deletePrepayment,
+    costs, addCost, updateCost, deleteCost,
+    archiveYear, unarchiveYear,
+    importData,
+  } = appData;
+
+  const activeProperty = properties.find(p => p.id === activePropertyId);
+
+  const activeUnits = units.filter(u => u.propertyId === activePropertyId);
+  const activeTenants = tenants.filter(t => t.propertyId === activePropertyId);
+  const activeCosts = costs.filter(c => c.propertyId === activePropertyId);
+  const activePrepayments = prepayments.filter(p => p.propertyId === activePropertyId);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-4">
-      <div className="max-w-3xl w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-200">
-            <i className="fas fa-calculator text-white text-3xl"></i>
+    <div className="min-h-screen bg-gray-50 flex">
+      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-screen print:hidden">
+        <div className="p-4 border-b border-gray-200 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center"><i className="fas fa-calculator text-white"></i></div>
+          <div>
+            <div className="font-bold text-sm text-gray-800">{activeProperty?.name || 'Nebenkosten'}</div>
+            <div className="text-xs text-gray-500">{activeProperty?.address || 'Abrechnung'}</div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Nebenkostenabrechnung</h1>
-          <p className="text-gray-500 text-lg">Rechtskonforme Betriebskostenverwaltung nach deutschem Mietrecht</p>
         </div>
 
-        {/* Download Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
-              <i className="fas fa-download text-green-600 text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800 mb-1">Standalone-Version herunterladen</h2>
-              <p className="text-gray-500 text-sm">
-                Einzelne HTML-Datei – per Doppelklick im Browser öffnen. Keine Installation, kein Server nötig.
-              </p>
-            </div>
-          </div>
+        <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
+          {NAV_ITEMS.map((item) => (
+            <button key={item.id} onClick={() => setTab(item.id)} className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${tab === item.id ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}`}>
+              <i className={`${item.icon} w-5 text-center`}></i><span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
 
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-3 disabled:opacity-50"
-          >
-            {downloading ? (
-              <>
-                <i className="fas fa-spinner fa-spin"></i>
-                Wird heruntergeladen...
-              </>
-            ) : (
-              <>
-                <i className="fas fa-file-download text-xl"></i>
-                Nebenkostenabrechnung.html herunterladen
-              </>
-            )}
+        <div className="p-4 border-t border-gray-200 space-y-2">
+          <button onClick={() => setShowAbout(true)} className="w-full text-left text-xs text-gray-500 hover:text-blue-600 flex items-center gap-2 transition-colors">
+            <i className="fas fa-info-circle w-4"></i>
+            <span>Über diese App</span>
           </button>
-
-          <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <p className="text-sm text-blue-800 mb-2">
-              <i className="fas fa-info-circle mr-2"></i>
-              <strong>Tipp:</strong> Nach dem Download die Datei einfach doppelklicken – sie funktioniert komplett offline!
-            </p>
-            <p className="text-xs text-blue-600">
-              <i className="fas fa-link mr-1"></i>
-              Alternativ: <a href="./nebenkosten.html" target="_blank" className="underline font-medium">Direkt zur Standalone-Version</a>
-            </p>
+          <div className="text-xs text-gray-400 flex items-center gap-2">
+            <i className="fas fa-database w-4"></i>
+            <span>Lokale Speicherung</span>
           </div>
         </div>
+      </aside>
 
-        {/* Features */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
-          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i className="fas fa-star text-yellow-500"></i>
-            Funktionen (Rechtskonform nach deutschem Mietrecht)
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-home text-blue-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Objekt-Stammdaten</div>
-                <div className="text-xs text-gray-500">Immobilie, Eigentümer, Adresse, Grundbuch</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-building text-indigo-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Wohneinheiten</div>
-                <div className="text-xs text-gray-500">Fläche, Zimmer, Etage, Heizungstyp</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-              <i className="fas fa-exclamation-triangle text-yellow-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Leerstandserkennung</div>
-                <div className="text-xs text-gray-500">Kosten werden NICHT auf andere Mieter umgelegt (§ 556a BGB)</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-sliders-h text-purple-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Frei definierbare Schlüssel</div>
-                <div className="text-xs text-gray-500">Eigene Verteilerschlüssel erstellen</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
-              <i className="fas fa-times-circle text-red-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Nicht umlegbare Kosten</div>
-                <div className="text-xs text-gray-500">Instandhaltung wird automatisch als Vermieteranteil erkannt</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg border border-purple-100">
-              <i className="fas fa-balance-scale text-purple-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Rechtskonform</div>
-                <div className="text-xs text-gray-500">BetrKV, § 556a BGB, HeizkostenV, Wirtschaftlichkeitsgebot</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-file-invoice-dollar text-green-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Automatische Abrechnung</div>
-                <div className="text-xs text-gray-500">Einzelabrechnung je Mieter mit PDF-Druck</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-100">
-              <i className="fas fa-money-bill-wave text-emerald-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Vorauszahlungen & Saldo</div>
-                <div className="text-xs text-gray-500">Guthaben/Nachzahlung automatisch berechnen</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-file-pdf text-red-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Einzel-PDFs mit Briefkopf</div>
-                <div className="text-xs text-gray-500">Professionelle Abrechnung mit Vermieter-Briefkopf</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-clipboard-list text-teal-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Vermieter-Protokoll</div>
-                <div className="text-xs text-gray-500">Übersicht über alle Nachzahlungen/Guthaben</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-calendar-plus text-cyan-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Jahreswechsel</div>
-                <div className="text-xs text-gray-500">Daten übernehmen, nur Änderungen eingeben</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-teal-50 rounded-lg border border-teal-100">
-              <i className="fas fa-shield-alt text-teal-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">Daten-Backup (Export/Import)</div>
-                <div className="text-xs text-gray-500">JSON-Backup schützt vor Datenverlust</div>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-              <i className="fas fa-database text-gray-600 mt-0.5"></i>
-              <div>
-                <div className="text-sm font-medium text-gray-800">100% Offline & Privat</div>
-                <div className="text-xs text-gray-500">Alle Daten bleiben lokal auf Ihrem Computer</div>
-              </div>
-            </div>
-          </div>
+      <main className="flex-1 ml-64">
+        <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10 flex justify-between items-center print:hidden">
+          <h1 className="text-lg font-bold text-gray-800">{NAV_ITEMS.find((n) => n.id === tab)?.label}</h1>
+          {properties.length > 1 && (
+            <select value={activePropertyId || ''} onChange={(e) => setActiveProperty(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-1 text-sm bg-gray-50">
+              {properties.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+          )}
+        </header>
+
+        <div className="p-6 max-w-6xl mx-auto print:p-0 print:max-w-full">
+          {(!activePropertyId && tab !== 'property' && tab !== 'backup') ? (
+            <div className="text-center py-20 text-gray-500">Bitte legen Sie zuerst unter "Objekte & Vermieter" ein Objekt an.</div>
+          ) : (
+            <>
+              {tab === 'property' && <PropertyManager properties={properties} activePropertyId={activePropertyId} onSelect={setActiveProperty} onAdd={addProperty} onUpdate={updateProperty} />}
+              {tab === 'dashboard' && <Dashboard tenants={activeTenants} units={activeUnits} costs={activeCosts} />}
+              {tab === 'units' && <UnitsManager units={activeUnits} onAdd={addUnit} onUpdate={updateUnit} onDelete={deleteUnit} />}
+              {tab === 'tenants' && <TenantsManager tenants={activeTenants} units={activeUnits} onAdd={addTenant} onUpdate={updateTenant} onDelete={deleteTenant} />}
+              {tab === 'prepayments' && <PrepaymentsManager prepayments={activePrepayments} tenants={activeTenants} units={activeUnits} onAdd={addPrepayment} onUpdate={updatePrepayment} onDelete={deletePrepayment} />}
+              {tab === 'costs' && <CostsManager costs={activeCosts} onAdd={addCost} onUpdate={updateCost} onDelete={deleteCost} />}
+              {tab === 'settlement' && <Settlement tenants={activeTenants} units={activeUnits} costs={activeCosts} prepayments={activePrepayments} property={activeProperty} />}
+              {tab === 'letters' && <LettersManager tenants={activeTenants} units={activeUnits} costs={activeCosts} prepayments={activePrepayments} property={activeProperty} />}
+              {tab === 'archive' && activeProperty && <ArchiveManager property={activeProperty} tenants={activeTenants} units={activeUnits} costs={activeCosts} prepayments={activePrepayments} onArchive={(y) => archiveYear(activeProperty.id, y)} onUnarchive={(y) => unarchiveYear(activeProperty.id, y)} />}
+              {tab === 'backup' && <BackupManager data={appData} onImport={importData} />}
+            </>
+          )}
         </div>
+      </main>
 
-        {/* Legal */}
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
-          <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
-            <i className="fas fa-gavel"></i>
-            Rechtskonformität
-          </h3>
-          <div className="text-sm text-purple-700 space-y-2">
-            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>BetrKV § 2:</strong> Nur umlegbare Betriebskosten werden auf Mieter verteilt</p>
-            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>§ 556a BGB:</strong> Leerstandskosten werden korrekt vom Vermieter getragen</p>
-            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>§ 555a BGB:</strong> Instandhaltungskosten als nicht umlagbar markiert</p>
-            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>HeizkostenV:</strong> Hinweis auf Verbrauchserfassung bei Heizkosten</p>
-            <p><i className="fas fa-check text-green-600 mr-2"></i><strong>Abrechnungsfrist:</strong> 12 Monate nach § 556 Abs. 3 BGB</p>
-          </div>
-        </div>
-
-        {/* Instructions */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
-          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i className="fas fa-list-ol text-blue-600"></i>
-            Anleitung
-          </h3>
-          <div className="space-y-3">
-            {[
-              { n: 1, color: 'blue', title: 'Datei herunterladen', desc: 'Klicke auf den blauen Download-Button' },
-              { n: 2, color: 'indigo', title: 'Objekt anlegen', desc: 'Trage Immobilie, Eigentümer und Adresse ein' },
-              { n: 3, color: 'green', title: 'Einheiten & Mieter', desc: 'Wohneinheiten erfassen und Mieter zuordnen' },
-              { n: 4, color: 'orange', title: 'Vorauszahlungen erfassen', desc: 'Monatliche NK-Vorauszahlungen je Mieter eintragen' },
-              { n: 5, color: 'amber', title: 'Kosten eintragen', desc: 'Alle Betriebskosten mit Verteilerschlüssel erfassen' },
-              { n: 6, color: 'purple', title: 'Abrechnung & PDF', desc: 'Guthaben/Nachzahlung berechnen, Einzel-PDFs pro Mieter drucken' },
-            ].map(s => (
-              <div key={s.n} className="flex items-start gap-3">
-                <div className={`w-6 h-6 rounded-full bg-${s.color}-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5`}>{s.n}</div>
+      {/* Über-Modal */}
+      {showAbout && (
+        <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4" onClick={() => setShowAbout(false)}>
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-start mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+                  <i className="fas fa-calculator text-white text-xl"></i>
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-800">{s.title}</p>
-                  <p className="text-xs text-gray-500">{s.desc}</p>
+                  <h3 className="text-xl font-bold text-gray-800">Nebenkostenabrechnung</h3>
+                  <p className="text-sm text-gray-500">Version 1.2.0</p>
                 </div>
               </div>
-            ))}
+              <button onClick={() => setShowAbout(false)} className="text-gray-400 hover:text-gray-600">
+                <i className="fas fa-times text-xl"></i>
+              </button>
+            </div>
+
+            <div className="space-y-4 text-sm text-gray-700">
+              <p>
+                Rechtskonforme Betriebskostenverwaltung nach deutschem Mietrecht – 
+                BetrKV, § 556 BGB, HeizkostenV und CO2KostAufG.
+              </p>
+
+              <div className="border-t border-gray-100 pt-3">
+                <p className="font-semibold text-gray-800 mb-1">Entwickelt von</p>
+                <p className="text-gray-600">Klaus Eckstein</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  mit freundlicher Unterstützung von <strong>DeepSeek</strong> (KI-Assistenz)
+                </p>
+              </div>
+
+              <div className="border-t border-gray-100 pt-3">
+                <p className="font-semibold text-gray-800 mb-1">Technologien</p>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'Electron', 'html2pdf'].map(t => (
+                    <span key={t} className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">{t}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-gray-100 pt-3 bg-gray-50 -mx-6 px-6 -mb-6 py-3 rounded-b-2xl">
+                <p className="text-xs text-gray-500 flex items-start gap-2">
+                  <i className="fas fa-shield-alt text-gray-400 mt-0.5"></i>
+                  <span>Alle Daten bleiben lokal auf Ihrem Rechner. Keine Cloud, kein Tracking.</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className="text-center mt-6 text-xs text-gray-400">
-          <p>Alle Daten werden lokal in deinem Browser gespeichert (LocalStorage). Keine Daten werden an Server gesendet.</p>
-          <p className="mt-1">Dies ist eine Hilfestellung und ersetzt keine anwaltliche Beratung.</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
