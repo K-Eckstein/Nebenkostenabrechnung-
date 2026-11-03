@@ -11,8 +11,7 @@ Eine kostenlose, lokale Web- und Desktop-Anwendung zur rechtskonformen Erstellun
 - **100% lokal** – keine Cloud, kein Tracking, alle Daten bleiben auf dem eigenen Rechner.
 
 ## Installation
-Lade die fertige Version aus den [Releases](https://github.com/K-Eckstein/Nebenkostenabrechnung-/releases) herunter
-
+Lade die fertige Version aus den Releases herunter: https://github.com/K-Eckstein/Nebenkostenabrechnung-/releases
 ### Linux
 ```bash
 chmod +x Nebenkostenabrechnung-*.AppImage
