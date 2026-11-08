@@ -18,6 +18,7 @@ interface FormState {
   distributionKey: DistributionKey;
   co2Emissions: number | '';
   co2PricePerTon: number | '';
+  vatRate: number; // NEU
   referenceTotal: number | '';
   isRecoverable: boolean;
   applyHeizkostenV: boolean;
@@ -27,7 +28,7 @@ interface FormState {
 
 const emptyForm = (): FormState => ({
   category: 'heating', customCategoryLabel: '', description: '', amount: 0, date: new Date().toISOString().split('T')[0],
-  distributionKey: 'area', co2Emissions: '', co2PricePerTon: 45, referenceTotal: '',
+  distributionKey: 'area', co2Emissions: '', co2PricePerTon: 45, vatRate: 19, referenceTotal: '',
   isRecoverable: true, applyHeizkostenV: true, heatingConsumptionPercent: 70, is35a: false,
 });
 
@@ -54,6 +55,7 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
       distributionKey: form.distributionKey,
       co2Emissions: isHeating && form.co2Emissions !== '' && form.co2Emissions > 0 ? form.co2Emissions : undefined,
       co2PricePerTon: isHeating && form.co2PricePerTon !== '' && form.co2PricePerTon > 0 ? form.co2PricePerTon : undefined,
+      vatRate: form.vatRate, // NEU
       referenceTotal: needsReferenceTotal && form.referenceTotal !== '' && form.referenceTotal > 0 ? form.referenceTotal : undefined,
       isRecoverable: form.isRecoverable,
       applyHeizkostenV: form.applyHeizkostenV,
@@ -77,6 +79,7 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
       distributionKey: cost.distributionKey,
       co2Emissions: cost.co2Emissions ?? '',
       co2PricePerTon: cost.co2PricePerTon ?? 45,
+      vatRate: cost.vatRate ?? 19, // NEU
       referenceTotal: cost.referenceTotal ?? '',
       isRecoverable: cost.isRecoverable !== false,
       applyHeizkostenV: cost.applyHeizkostenV === true,
@@ -101,6 +104,7 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
         distributionKey: c.distributionKey,
         co2Emissions: undefined,
         co2PricePerTon: c.co2PricePerTon,
+        vatRate: c.vatRate,
         referenceTotal: c.referenceTotal,
         isRecoverable: c.isRecoverable,
         applyHeizkostenV: c.applyHeizkostenV,
@@ -112,13 +116,13 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
   };
 
   const handleExportCSV = () => {
-    let csv = 'Datum;Kategorie;Beschreibung;Betrag;Umlagefähig;35a;Umlageschlüssel\n';
+    let csv = 'Datum;Kategorie;Beschreibung;Betrag;MwSt;Umlagefähig;35a;Umlageschlüssel\n';
     costs.forEach(c => {
       const catLabel = getCostLabel(c.customCategoryLabel ? `custom:${c.customCategoryLabel}` : c.category);
       const key = c.category === 'heating' && c.applyHeizkostenV
         ? `${c.heatingConsumptionPercent ?? 70}/${100 - (c.heatingConsumptionPercent ?? 70)} Verbrauch/Fläche`
         : DISTRIBUTION_KEY_LABELS[c.distributionKey];
-      csv += `${c.date};"${catLabel}";"${c.description}";${c.amount.toFixed(2).replace('.', ',')};${c.isRecoverable !== false ? 'Ja' : 'Nein'};${c.is35a ? 'Ja' : 'Nein'};"${key}"\n`;
+      csv += `${c.date};"${catLabel}";"${c.description}";${c.amount.toFixed(2).replace('.', ',')};${c.vatRate ?? 19}%;${c.isRecoverable !== false ? 'Ja' : 'Nein'};${c.is35a ? 'Ja' : 'Nein'};"${key}"\n`;
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -187,21 +191,15 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
               </select>
             </div>
 
-            {/* NEU: Eigener Anzeigename */}
             <div className="md:col-span-2 lg:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Eigener Name <span className="text-gray-400 font-normal">(optional)</span>
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Eigener Name <span className="text-gray-400 font-normal">(optional)</span></label>
               <input
                 type="text"
                 value={form.customCategoryLabel}
                 onChange={(e) => setForm({ ...form, customCategoryLabel: e.target.value })}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                placeholder="z.B. Schornsteinfeger, Niederschlagswasser"
+                placeholder="z.B. Schornsteinfeger"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Überschreibt das Kategorie-Label in der Abrechnung. Leer = Standard-Label.
-              </p>
             </div>
 
             <div>
@@ -209,7 +207,7 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
               <input type="text" required value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="z.B. Rechnung 2024" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Betrag (€)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Betrag (€, Brutto)</label>
               <input type="number" required min="0" step="0.01" value={form.amount || ''} onChange={(e) => setForm({ ...form, amount: parseFloat(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" />
             </div>
             <div>
@@ -217,28 +215,26 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
               <input type="date" required value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2" />
             </div>
 
+            {/* NEU: MwSt.-Satz */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">MwSt.-Satz</label>
+              <select value={form.vatRate} onChange={(e) => setForm({ ...form, vatRate: parseInt(e.target.value) || 19 })} className="w-full border border-gray-300 rounded-lg px-3 py-2">
+                <option value={19}>19 % (Regelsteuersatz)</option>
+                <option value={7}>7 % (Ermäßigt)</option>
+                <option value={0}>0 % (Steuerfrei)</option>
+              </select>
+            </div>
+
             {isHeating && form.applyHeizkostenV && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Verbrauchsanteil (%)</label>
                 <div className="flex items-center gap-2">
-                  <input
-                    type="range" min="50" max="70" step="5"
-                    value={form.heatingConsumptionPercent}
-                    onChange={(e) => setForm({ ...form, heatingConsumptionPercent: parseInt(e.target.value) || 70 })}
-                    className="flex-1"
-                  />
-                  <input
-                    type="number" min="0" max="100" step="1"
-                    value={form.heatingConsumptionPercent}
-                    onChange={(e) => setForm({ ...form, heatingConsumptionPercent: parseInt(e.target.value) || 0 })}
-                    className="w-20 border border-gray-300 rounded-lg px-2 py-2 text-center"
-                  />
+                  <input type="range" min="50" max="70" step="5" value={form.heatingConsumptionPercent} onChange={(e) => setForm({ ...form, heatingConsumptionPercent: parseInt(e.target.value) || 70 })} className="flex-1" />
+                  <input type="number" min="0" max="100" step="1" value={form.heatingConsumptionPercent} onChange={(e) => setForm({ ...form, heatingConsumptionPercent: parseInt(e.target.value) || 0 })} className="w-20 border border-gray-300 rounded-lg px-2 py-2 text-center" />
                   <span className="text-sm text-gray-600">%</span>
                 </div>
                 <p className={`text-xs mt-1 ${percentWarning ? 'text-red-600 font-semibold' : 'text-gray-500'}`}>
-                  {percentWarning
-                    ? '⚠ Außerhalb des gesetzlichen Rahmens (50–70 %) – nur mit besonderer Begründung zulässig!'
-                    : `${form.heatingConsumptionPercent} % nach Verbrauch / ${100 - form.heatingConsumptionPercent} % nach Fläche`}
+                  {percentWarning ? '⚠ Außerhalb des Rahmens (50–70 %)' : `${form.heatingConsumptionPercent} % Verbrauch / ${100 - form.heatingConsumptionPercent} % Fläche`}
                 </p>
               </div>
             )}
@@ -246,12 +242,7 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
             {showDistributionKey && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Umlageschlüssel</label>
-                <select
-                  required
-                  value={form.distributionKey}
-                  onChange={(e) => setForm({ ...form, distributionKey: e.target.value as DistributionKey })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                >
+                <select required value={form.distributionKey} onChange={(e) => setForm({ ...form, distributionKey: e.target.value as DistributionKey })} className="w-full border border-gray-300 rounded-lg px-3 py-2">
                   {(Object.entries(DISTRIBUTION_KEY_LABELS) as [DistributionKey, string][]).map(([key, label]) => (<option key={key} value={key}>{label}</option>))}
                 </select>
               </div>
@@ -266,8 +257,15 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
 
             {isHeating && (
               <>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">CO₂ (kg)</label><input type="number" min="0" step="0.01" value={form.co2Emissions} onChange={(e) => setForm({ ...form, co2Emissions: e.target.value === '' ? '' : parseFloat(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="z.B. 4019.78" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">CO₂-Preis (€/t)</label><input type="number" min="0" step="0.01" value={form.co2PricePerTon} onChange={(e) => setForm({ ...form, co2PricePerTon: e.target.value === '' ? '' : parseFloat(e.target.value) || 45 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" /></div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">CO₂ (kg)</label>
+                  <input type="number" min="0" step="0.01" value={form.co2Emissions} onChange={(e) => setForm({ ...form, co2Emissions: e.target.value === '' ? '' : parseFloat(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="z.B. 4019.78" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">CO₂-Preis (€/t, Netto)</label>
+                  <input type="number" min="0" step="0.01" value={form.co2PricePerTon} onChange={(e) => setForm({ ...form, co2PricePerTon: e.target.value === '' ? '' : parseFloat(e.target.value) || 45 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" />
+                  <p className="text-xs text-gray-500 mt-1">Der reine CO₂-Preis ohne MwSt. (wird automatisch versteuert).</p>
+                </div>
               </>
             )}
           </div>
@@ -317,7 +315,10 @@ export default function CostsManager({ costs, onAdd, onUpdate, onDelete }: Props
                     <div className="text-xs text-gray-500 mt-0.5">Gesamt: {cost.referenceTotal}</div>
                   )}
                 </td>
-                <td className="px-6 py-4 text-right font-semibold text-gray-800">{formatCurrency(cost.amount)}</td>
+                <td className="px-6 py-4 text-right font-semibold text-gray-800">
+                  {formatCurrency(cost.amount)}
+                  <div className="text-xs text-gray-500 font-normal">{cost.vatRate ?? 19}% MwSt.</div>
+                </td>
                 <td className="px-6 py-4 text-right">
                   <button onClick={() => startEdit(cost)} className="text-blue-600 hover:text-blue-800 p-1 mr-2"><i className="fas fa-edit"></i></button>
                   <button onClick={() => onDelete(cost.id)} className="text-red-500 hover:text-red-700 p-1"><i className="fas fa-trash"></i></button>

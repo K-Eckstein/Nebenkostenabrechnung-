@@ -9,7 +9,7 @@ export function formatCurrency(amount: number): string {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// CO₂-Kostenaufteilung
+// CO₂-Kostenaufteilung (Brutto-Berechnung inkl. MwSt.)
 // ─────────────────────────────────────────────────────────────────
 interface Co2Step { maxKgPerSqm: number; tenantShare: number; }
 
@@ -32,14 +32,8 @@ export function getCo2TenantShare(specificEmissions: number): number {
 }
 
 export interface Co2Info {
-  totalEmissions: number;
-  heatedArea: number;
-  specificEmissions: number;
-  step: number;
-  tenantShare: number;
-  landlordShare: number;
-  tenantAmount: number;
-  landlordAmount: number;
+  totalEmissions: number; heatedArea: number; specificEmissions: number; step: number;
+  tenantShare: number; landlordShare: number; tenantAmount: number; landlordAmount: number;
   baseHeatingAmount: number;
 }
 
@@ -47,11 +41,13 @@ export function calculateCo2Split(costs: CostEntry[], units: Unit[]): Co2Info | 
   const heatingCosts = costs.filter((c) => c.category === 'heating' && c.co2Emissions && c.co2Emissions > 0);
   if (heatingCosts.length === 0) return null;
 
-  let totalEmissions = 0, totalCo2Cost = 0, totalHeatingAmount = 0;
+  let totalEmissions = 0, totalCo2CostGross = 0, totalHeatingAmount = 0;
   for (const c of heatingCosts) {
     totalEmissions += c.co2Emissions || 0;
     totalHeatingAmount += c.amount;
-    totalCo2Cost += ((c.co2Emissions || 0) / 1000) * (c.co2PricePerTon ?? 45);
+    const vatRate = (c.vatRate ?? 19) / 100;
+    const co2CostNet = ((c.co2Emissions || 0) / 1000) * (c.co2PricePerTon ?? 45);
+    totalCo2CostGross += co2CostNet * (1 + vatRate);
   }
 
   const heatedArea = units.reduce((s, u) => s + u.size, 0);
@@ -69,9 +65,9 @@ export function calculateCo2Split(costs: CostEntry[], units: Unit[]): Co2Info | 
     step,
     tenantShare,
     landlordShare,
-    tenantAmount: totalCo2Cost * tenantShare,
-    landlordAmount: totalCo2Cost * landlordShare,
-    baseHeatingAmount: Math.max(0, totalHeatingAmount - totalCo2Cost),
+    tenantAmount: totalCo2CostGross * tenantShare,
+    landlordAmount: totalCo2CostGross * landlordShare,
+    baseHeatingAmount: Math.max(0, totalHeatingAmount - totalCo2CostGross),
   };
 }
 
@@ -161,11 +157,8 @@ function getUnitWeight(tenant: Tenant, unit: Unit, allUnits: Unit[], cost: CostE
   }
 }
 
-// Gesamtgewicht inkl. Berücksichtigung der Gebäudegesamtfläche
 function getTotalWeightForCost(tenants: Tenant[], units: Unit[], cost: CostEntry, year: number, property?: Property | null): number {
-  // FIX: Gesamtfläche des Gebäudes NUR bei kalten Kosten (nicht bei HeizkostenV) anwenden
   const isHeizungsV = cost.category === 'heating' && cost.applyHeizkostenV;
-
   if (!isHeizungsV && cost.distributionKey === 'area' && property?.totalArea && property.totalArea > 0) {
     const unitSum = units.reduce((s, u) => s + u.size, 0);
     if (property.totalArea > unitSum) {
@@ -211,11 +204,12 @@ export function calculateLandlordShare(costs: CostEntry[], tenants: Tenant[], un
 
       let effectiveAmount = cost.amount;
       if (cost.category === 'heating' && co2Info && cost.co2Emissions) {
-        const co2Cost = (cost.co2Emissions / 1000) * (cost.co2PricePerTon ?? 45);
-        effectiveAmount = cost.amount - co2Cost;
+        const vatRate = (cost.vatRate ?? 19) / 100;
+        const co2CostNet = (cost.co2Emissions / 1000) * (cost.co2PricePerTon ?? 45);
+        const co2CostGross = co2CostNet * (1 + vatRate);
+        effectiveAmount = cost.amount - co2CostGross;
       }
 
-      // FIX: Gesamtfläche NUR bei kalten Kosten anwenden
       const isHeizungsV = cost.category === 'heating' && cost.applyHeizkostenV;
       const useTotalArea = !isHeizungsV && cost.distributionKey === 'area' && property?.totalArea && property.totalArea > unitSum;
 
@@ -247,7 +241,7 @@ export function calculateLandlordShare(costs: CostEntry[], tenants: Tenant[], un
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Verteilung auf Mieter – mit Custom-Label als eigener Key
+// Verteilung auf Mieter (Brutto-Korrektur)
 // ─────────────────────────────────────────────────────────────────
 export function calculateDistribution(costs: CostEntry[], tenants: Tenant[], units: Unit[], property?: Property | null): CostDistribution[] {
   const distributions: CostDistribution[] = [];
@@ -268,8 +262,10 @@ export function calculateDistribution(costs: CostEntry[], tenants: Tenant[], uni
 
       let effectiveAmount = cost.amount;
       if (cost.category === 'heating' && co2Info && cost.co2Emissions) {
-        const co2Cost = (cost.co2Emissions / 1000) * (cost.co2PricePerTon ?? 45);
-        effectiveAmount = (cost.amount - co2Cost) + (co2Cost * co2Info.tenantShare);
+        const vatRate = (cost.vatRate ?? 19) / 100;
+        const co2CostNet = (cost.co2Emissions / 1000) * (cost.co2PricePerTon ?? 45);
+        const co2CostGross = co2CostNet * (1 + vatRate);
+        effectiveAmount = (cost.amount - co2CostGross) + (co2CostGross * co2Info.tenantShare);
       }
 
       const totalWeight = getTotalWeightForCost(tenants, units, cost, year, property);
